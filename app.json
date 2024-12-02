@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "HelloWorld",
-    "slug": "expo-template-default",
+    "name": "The Barter App",
+    "slug": "the-barter-app",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
@@ -9,13 +9,15 @@
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.fathulfahmy.thebarterapp"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.fathulfahmy.thebarterapp"
     },
     "web": {
       "bundler": "metro",
@@ -36,6 +38,18 @@
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "eas": {
+        "projectId": "e4abf043-5a9c-433e-9ade-5c99ddd8b7f2"
+      }
+    },
+    "owner": "fathulfahmy",
+    "updates": {
+      "url": "https://u.expo.dev/e4abf043-5a9c-433e-9ade-5c99ddd8b7f2"
+    },
+    "runtimeVersion": {
+      "policy": "appVersion"
     }
   }
 }
