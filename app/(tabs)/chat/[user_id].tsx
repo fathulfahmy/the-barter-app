@@ -1,11 +1,13 @@
 import { Text } from "react-native-paper";
 
-import { ScreenWrapper } from "@/components/screens/screen-wrapper";
+import { ScreenWrapper } from "@/components/screens";
 
-export default function ChatDetailScreen() {
+const ChatDetailScreen = () => {
   return (
     <ScreenWrapper>
-      <Text>ChatDetailScreen</Text>
+      <Text variant="bodyMedium">ChatViewScreen</Text>
     </ScreenWrapper>
   );
-}
+};
+
+export default ChatDetailScreen;

@@ -2,17 +2,17 @@ import { Icon } from "react-native-paper";
 
 import { Redirect, Tabs } from "expo-router";
 
-import LoadingScreen from "@/components/screens/loading-screen";
-import { HapticTab } from "@/components/ui/tab";
+import { LoadingStateScreen } from "@/components/screens";
+import { HapticTab } from "@/components/ui";
 import { useToken } from "@/lib/auth/token";
 import { useAppTheme } from "@/lib/react-native-paper";
 
-export default function TabsLayout() {
+const TabsLayout = () => {
   const { colors } = useAppTheme();
   const { token, isLoading } = useToken();
 
   if (isLoading) {
-    return <LoadingScreen />;
+    return <LoadingStateScreen />;
   }
 
   if (!token) {
@@ -78,4 +78,6 @@ export default function TabsLayout() {
       <Tabs.Screen name="index" options={{ href: null }} />
     </Tabs>
   );
-}
+};
+
+export default TabsLayout;

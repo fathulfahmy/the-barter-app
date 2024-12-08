@@ -2,7 +2,7 @@ import { Stack } from "expo-router";
 
 import { useAppTheme } from "@/lib/react-native-paper";
 
-export default function ProvideLayout() {
+const ProvideLayout = () => {
   const { colors } = useAppTheme();
 
   return (
@@ -17,8 +17,9 @@ export default function ProvideLayout() {
     >
       <Stack.Screen name="index" />
       <Stack.Screen name="create" />
-      <Stack.Screen name="[barter_service_id]/request" />
-      <Stack.Screen name="[barter_service_id]/record" />
+      <Stack.Screen name="[barter_service_id]" />
     </Stack>
   );
-}
+};
+
+export default ProvideLayout;

@@ -5,11 +5,11 @@ import { useNotification } from "./notification-store";
 export const Notification = () => {
   const { notification, dismissNotification } = useNotification();
 
-  const messages = notification
-    ? Array.isArray(notification.messages)
-      ? notification.messages.join("\n")
-      : notification.messages
-    : "";
+  if (!notification) return null;
+
+  const { messages } = notification;
+
+  const text = notification ? (Array.isArray(messages) ? messages.join("\n") : messages) : "";
 
   return (
     <Portal>
@@ -19,7 +19,7 @@ export const Notification = () => {
         icon="close-circle"
         onIconPress={dismissNotification}
       >
-        {messages}
+        {text}
       </Snackbar>
     </Portal>
   );

@@ -5,7 +5,7 @@ import { Button, TextInput } from "react-native-paper";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Link, router } from "expo-router";
 
-import { Input } from "@/components/ui/form";
+import { AppTextInput } from "@/components/ui/form";
 import { useDisclosure } from "@/hooks/use-disclosure";
 import { registerInputSchema, useRegister } from "@/lib/auth/auth";
 
@@ -36,9 +36,9 @@ export const RegisterForm = () => {
   return (
     <>
       <View style={{ flex: 1, gap: 16 }}>
-        <Input control={control} label="Name" name="name" errors={errors.name?.message} inputMode="text" />
-        <Input control={control} label="Email" name="email" errors={errors.email?.message} inputMode="email" />
-        <Input
+        <AppTextInput control={control} label="Name" name="name" errors={errors.name?.message} inputMode="text" />
+        <AppTextInput control={control} label="Email" name="email" errors={errors.email?.message} inputMode="email" />
+        <AppTextInput
           control={control}
           label="Password"
           name="password"
@@ -46,7 +46,7 @@ export const RegisterForm = () => {
           secureTextEntry={!passwordVisible}
           right={<TextInput.Icon icon={passwordVisible ? "eye" : "eye-off"} onPress={togglePasswordVisible} />}
         />
-        <Input
+        <AppTextInput
           control={control}
           label="Confirm Password"
           name="password_confirmation"

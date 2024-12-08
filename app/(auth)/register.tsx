@@ -1,10 +1,22 @@
-import { ScreenWrapper } from "@/components/screens/screen-wrapper";
+import { Platform } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+
+import { ScreenWrapper } from "@/components/screens";
 import { RegisterForm } from "@/features/auth/components/register-form";
 
-export default function Register() {
+const RegisterScreen = () => {
+  const insets = useSafeAreaInsets();
+
+  const contentContainerStyle = {
+    padding: 16,
+    paddingBottom: Platform.OS === "web" ? 16 : insets.bottom,
+  };
+
   return (
-    <ScreenWrapper contentContainerStyle={{ flex: 1, padding: 16 }}>
+    <ScreenWrapper contentContainerStyle={contentContainerStyle}>
       <RegisterForm />
     </ScreenWrapper>
   );
-}
+};
+
+export default RegisterScreen;

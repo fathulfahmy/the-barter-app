@@ -6,6 +6,7 @@ import { useReactQueryDevTools } from "@dev-plugins/react-query";
 import { QueryClient, QueryClientProvider, focusManager } from "@tanstack/react-query";
 import { Stack } from "expo-router";
 
+import { ConfirmationDialog } from "@/components/ui/dialog";
 import { Notification } from "@/components/ui/notification";
 import { useAppState } from "@/hooks/use-app-state";
 import { useOnlineManager } from "@/hooks/use-online-manager";
@@ -20,7 +21,7 @@ function onAppStateChange(status: AppStateStatus) {
 
 const queryClient = new QueryClient();
 
-export default function RootLayout() {
+const RootLayout = () => {
   const colorScheme = useColorScheme();
   const theme = colorScheme === "dark" ? AppDarkTheme : AppLightTheme;
 
@@ -38,10 +39,13 @@ export default function RootLayout() {
               <Stack.Screen name="(auth)" options={{ headerShown: false }} />
               <Stack.Screen name="+not-found" />
             </Stack>
+            <ConfirmationDialog />
             <Notification />
           </SafeAreaProvider>
         </TokenProvider>
       </QueryClientProvider>
     </PaperProvider>
   );
-}
+};
+
+export default RootLayout;

@@ -2,16 +2,18 @@ import { Button, Text } from "react-native-paper";
 
 import { Link, Stack } from "expo-router";
 
-import { ScreenWrapper } from "@/components/screens/screen-wrapper";
+import { ScreenWrapper } from "@/components/screens";
 
-export default function NotFoundScreen() {
+const NotFoundStateScreen = () => {
   return (
-    <ScreenWrapper contentContainerStyle={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+    <ScreenWrapper contentContainerStyle={{ alignItems: "center", justifyContent: "center" }}>
       <Stack.Screen options={{ title: "Oops" }} />
       <Text variant="bodyLarge">Not Found</Text>
       <Link href="/_sitemap">
-        <Button>Sitemap</Button>
+        <Button mode="contained">Sitemap</Button>
       </Link>
     </ScreenWrapper>
   );
-}
+};
+
+export default NotFoundStateScreen;

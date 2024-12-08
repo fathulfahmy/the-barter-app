@@ -28,7 +28,7 @@ api.interceptors.response.use(
 
     const messages = Array.isArray(errors) && errors.length > 0 ? errors : message || error.message;
 
-    useNotification.getState().addNotification({
+    useNotification.getState().setNotification({
       type: "error",
       messages,
     });

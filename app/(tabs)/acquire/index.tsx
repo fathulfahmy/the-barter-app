@@ -1,16 +1,12 @@
-import { Button, Text } from "react-native-paper";
+import { ScreenWrapper } from "@/components/screens";
+import { AcquireList } from "@/features/acquire/components/acquire-list";
 
-import { Link } from "expo-router";
-
-import { ScreenWrapper } from "@/components/screens/screen-wrapper";
-
-export default function AcquireListScreen() {
+const AcquireScreen = () => {
   return (
     <ScreenWrapper>
-      <Text>Acquire</Text>
-      <Link href="/acquire/1" asChild>
-        <Button mode="contained">Go to Acquire Detail</Button>
-      </Link>
+      <AcquireList />
     </ScreenWrapper>
   );
-}
+};
+
+export default AcquireScreen;

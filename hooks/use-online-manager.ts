@@ -4,7 +4,7 @@ import { Platform } from "react-native";
 import { onlineManager } from "@tanstack/react-query";
 import * as Network from "expo-network";
 
-export function useOnlineManager() {
+export const useOnlineManager = () => {
   React.useEffect(() => {
     // React Query already supports on reconnect auto refetch in web browser
     if (Platform.OS !== "web") {
@@ -17,4 +17,4 @@ export function useOnlineManager() {
       };
     }
   }, []);
-}
+};

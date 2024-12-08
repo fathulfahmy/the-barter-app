@@ -1,11 +1,13 @@
 import { Text } from "react-native-paper";
 
-import { ScreenWrapper } from "@/components/screens/screen-wrapper";
+import { ScreenWrapper } from "@/components/screens";
 
-export default function ProvideCreateScreen() {
+const ProvideCreateScreen = () => {
   return (
     <ScreenWrapper>
-      <Text>ProvideCreateScreen</Text>
+      <Text variant="bodyMedium">ProvideCreateScreen</Text>
     </ScreenWrapper>
   );
-}
+};
+
+export default ProvideCreateScreen;

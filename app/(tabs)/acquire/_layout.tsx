@@ -2,7 +2,7 @@ import { Stack } from "expo-router";
 
 import { useAppTheme } from "@/lib/react-native-paper";
 
-export default function AcquireLayout() {
+const AcquireLayout = () => {
   const { colors } = useAppTheme();
 
   return (
@@ -17,8 +17,11 @@ export default function AcquireLayout() {
     >
       <Stack.Screen name="index" />
       <Stack.Screen name="[barter_service_id]/index" />
-      <Stack.Screen name="[barter_service_id]/request" />
       <Stack.Screen name="[barter_service_id]/chat" />
+      <Stack.Screen name="[barter_service_id]/create" />
+      <Stack.Screen name="[barter_service_id]/reviews" />
     </Stack>
   );
-}
+};
+
+export default AcquireLayout;

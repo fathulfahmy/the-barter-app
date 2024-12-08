@@ -2,7 +2,7 @@ import { Stack } from "expo-router";
 
 import { useAppTheme } from "@/lib/react-native-paper";
 
-export default function ChatLayout() {
+const ChatLayout = () => {
   const { colors } = useAppTheme();
 
   return (
@@ -19,4 +19,6 @@ export default function ChatLayout() {
       <Stack.Screen name="[user_id]" />
     </Stack>
   );
-}
+};
+
+export default ChatLayout;

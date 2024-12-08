@@ -1,11 +1,13 @@
 import { Text } from "react-native-paper";
 
-import { ScreenWrapper } from "@/components/screens/screen-wrapper";
+import { ScreenWrapper } from "@/components/screens";
 
-export default function ReviewPaymentScreen() {
+const ReviewPaymentScreen = () => {
   return (
     <ScreenWrapper>
-      <Text>ReviewPaymentScreen</Text>
+      <Text variant="bodyMedium">ReviewPaymentScreen</Text>
     </ScreenWrapper>
   );
-}
+};
+
+export default ReviewPaymentScreen;

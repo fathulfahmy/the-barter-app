@@ -1,18 +1,18 @@
 import { create } from "zustand";
 
-export type NotificationData = {
+export type NotificationProps = {
   type: "info" | "warning" | "success" | "error";
-  messages: string;
+  messages: string | string[];
 } | null;
 
 type NotificationStore = {
-  notification: NotificationData;
-  addNotification: (notification: NotificationData) => void;
+  notification: NotificationProps;
+  setNotification: (notification: NotificationProps) => void;
   dismissNotification: () => void;
 };
 
 export const useNotification = create<NotificationStore>((set) => ({
   notification: null,
-  addNotification: (notification) => set({ notification }),
+  setNotification: (notification) => set({ notification }),
   dismissNotification: () => set({ notification: null }),
 }));

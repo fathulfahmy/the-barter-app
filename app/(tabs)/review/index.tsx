@@ -1,22 +1,12 @@
-import { Button, Text } from "react-native-paper";
+import { ScreenWrapper } from "@/components/screens";
+import { BarterReviews } from "@/features/barter-review/components/barter-reviews";
 
-import { Link } from "expo-router";
-
-import { ScreenWrapper } from "@/components/screens/screen-wrapper";
-
-export default function ReviewListScreen() {
+const ReviewScreen = () => {
   return (
     <ScreenWrapper>
-      <Text>Review</Text>
-      <Link href="/review/1/edit" asChild>
-        <Button mode="contained">Go to Review Edit</Button>
-      </Link>
-      <Link href="/review/1/payment" asChild>
-        <Button mode="contained">Go to Review Payment</Button>
-      </Link>
-      <Link href="/review/1/invoice" asChild>
-        <Button mode="contained">Go to Review Invoice</Button>
-      </Link>
+      <BarterReviews />
     </ScreenWrapper>
   );
-}
+};
+
+export default ReviewScreen;

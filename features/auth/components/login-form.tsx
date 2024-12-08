@@ -5,7 +5,7 @@ import { Button, TextInput } from "react-native-paper";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Link, router } from "expo-router";
 
-import { Input } from "@/components/ui/form";
+import { AppTextInput } from "@/components/ui/form";
 import { useDisclosure } from "@/hooks/use-disclosure";
 import { loginInputSchema, useLogin } from "@/lib/auth/auth";
 
@@ -14,8 +14,8 @@ export const LoginForm = () => {
   const { isOpen: passwordVisible, toggle: togglePasswordVisibility } = useDisclosure(false);
 
   const defaultValues = {
-    email: "",
-    password: "",
+    email: "user@demo.com",
+    password: "password",
   };
 
   const {
@@ -33,8 +33,8 @@ export const LoginForm = () => {
   return (
     <>
       <View style={{ flex: 1, gap: 16 }}>
-        <Input control={control} label="Email" name="email" errors={errors.email?.message} inputMode="email" />
-        <Input
+        <AppTextInput control={control} label="Email" name="email" errors={errors.email?.message} inputMode="email" />
+        <AppTextInput
           control={control}
           label="Password"
           name="password"

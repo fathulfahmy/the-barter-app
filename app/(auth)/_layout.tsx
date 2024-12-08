@@ -2,7 +2,7 @@ import { Stack } from "expo-router";
 
 import { useAppTheme } from "@/lib/react-native-paper";
 
-export default function AuthLayout() {
+const AuthLayout = () => {
   const { colors } = useAppTheme();
 
   return (
@@ -18,4 +18,6 @@ export default function AuthLayout() {
       <Stack.Screen name="register" options={{ title: "Register" }} />
     </Stack>
   );
-}
+};
+
+export default AuthLayout;

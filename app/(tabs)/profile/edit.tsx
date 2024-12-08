@@ -1,11 +1,13 @@
 import { Text } from "react-native-paper";
 
-import { ScreenWrapper } from "@/components/screens/screen-wrapper";
+import { ScreenWrapper } from "@/components/screens";
 
-export default function ProfileEditScreen() {
+const AuthProfileEditScreen = () => {
   return (
     <ScreenWrapper>
-      <Text>ProfileEditScreen</Text>
+      <Text variant="bodyMedium">ProfileEditScreen</Text>
     </ScreenWrapper>
   );
-}
+};
+
+export default AuthProfileEditScreen;

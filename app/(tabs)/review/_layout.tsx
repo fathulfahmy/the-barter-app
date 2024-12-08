@@ -2,7 +2,7 @@ import { Stack } from "expo-router";
 
 import { useAppTheme } from "@/lib/react-native-paper";
 
-export default function ReviewLayout() {
+const ReviewLayout = () => {
   const { colors } = useAppTheme();
 
   return (
@@ -21,4 +21,6 @@ export default function ReviewLayout() {
       <Stack.Screen name="[review_id]/payment" />
     </Stack>
   );
-}
+};
+
+export default ReviewLayout;

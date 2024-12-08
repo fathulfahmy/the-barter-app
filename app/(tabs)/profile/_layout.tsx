@@ -2,7 +2,7 @@ import { Stack } from "expo-router";
 
 import { useAppTheme } from "@/lib/react-native-paper";
 
-export default function ProfileLayout() {
+const ProfileLayout = () => {
   const { colors } = useAppTheme();
 
   return (
@@ -17,7 +17,8 @@ export default function ProfileLayout() {
     >
       <Stack.Screen name="index" />
       <Stack.Screen name="edit" />
-      <Stack.Screen name="[user_id]" />
     </Stack>
   );
-}
+};
+
+export default ProfileLayout;

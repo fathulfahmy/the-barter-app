@@ -1,16 +1,9 @@
-export type SuccessResponse<T> = {
+export type ApiResponse<T> = {
   success: boolean;
   message: string;
-  data: T[];
+  data?: T[];
+  error?: string[];
 };
-
-export type ErrorResponse = {
-  success: boolean;
-  message: string;
-  error: string[];
-};
-
-export type ApiResponse<T> = SuccessResponse<T> | ErrorResponse;
 
 export type AuthResponse = {
   token: string;
@@ -58,7 +51,7 @@ export type BarterCategory = {
   updated_at: Date;
 };
 
-export type BarterServiceStatus = "inactive" | "active";
+export type BarterServiceStatus = "enabled" | "disabled";
 
 export type BarterServicePivot = {
   barter_invoice_id: number;
@@ -71,18 +64,21 @@ export type BarterService = {
   barter_category_id: number;
   title: string;
   description: string;
-  price: string;
+  min_price: number;
+  max_price: number;
+  price_unit: string;
   rating: number;
   status: BarterServiceStatus;
   created_at: Date;
   updated_at: Date;
-  fulfilled: number;
+  pending_count: number;
+  completed_count: number;
   barter_provider?: User | null;
   barter_category?: BarterCategory | null;
   pivot?: BarterServicePivot | null;
 };
 
-export type BarterTransactionStatus = "pending" | "success" | "failed";
+export type BarterTransactionStatus = "pending" | "accepted" | "rejected" | "completed" | "cancelled";
 
 export type BarterTransaction = {
   id: number;
@@ -94,22 +90,23 @@ export type BarterTransaction = {
   created_at: Date;
   updated_at: Date;
   barter_acquirer?: User | null;
-  barter_provider?: User | null;
   barter_service?: BarterService | null;
+  barter_invoice?: BarterInvoice | null;
 };
 
-export type BarterInvoiceStatus = "pending" | "success" | "failed";
+export type BarterInvoiceStatus = "pending" | "accepted" | "rejected" | "success" | "failed";
 
 export type BarterInvoice = {
   id: number;
   barter_acquirer_id: number;
   barter_transaction_id: number;
-  amount?: number | null;
+  amount?: number;
   status: BarterInvoiceStatus;
   created_at: Date;
   updated_at: Date;
+  exchanged_services: string[];
   barter_transaction?: BarterTransaction | null;
-  barter_services?: BarterService | BarterService[] | null;
+  barter_services?: BarterService[] | null;
 };
 
 export type BarterReview = {
@@ -121,6 +118,7 @@ export type BarterReview = {
   rating: number;
   created_at: Date;
   updated_at: Date;
+  author?: User | null;
   barter_service?: BarterService | null;
   barter_transaction?: BarterTransaction | null;
 };

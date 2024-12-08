@@ -20,7 +20,6 @@ export const ScreenWrapper = ({ children, withScrollView = true, style, contentC
     styles.container,
     {
       backgroundColor: theme.colors.background,
-      paddingBottom: insets.bottom,
       paddingLeft: insets.left,
       paddingRight: insets.left,
     },
@@ -31,7 +30,7 @@ export const ScreenWrapper = ({ children, withScrollView = true, style, contentC
       {withScrollView ? (
         <ScrollView
           {...rest}
-          contentContainerStyle={contentContainerStyle}
+          contentContainerStyle={[styles.container, contentContainerStyle]}
           keyboardShouldPersistTaps="always"
           alwaysBounceVertical={false}
           showsVerticalScrollIndicator={false}
