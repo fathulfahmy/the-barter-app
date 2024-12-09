@@ -7,6 +7,7 @@ import { QueryClient, QueryClientProvider, focusManager } from "@tanstack/react-
 import { Stack } from "expo-router";
 
 import { ConfirmationDialog } from "@/components/ui/dialog";
+import { StatusDialog } from "@/components/ui/dialog/status-dialog";
 import { Notification } from "@/components/ui/notification";
 import { useAppState } from "@/hooks/use-app-state";
 import { useOnlineManager } from "@/hooks/use-online-manager";
@@ -39,6 +40,7 @@ const RootLayout = () => {
               <Stack.Screen name="(auth)" options={{ headerShown: false }} />
               <Stack.Screen name="+not-found" />
             </Stack>
+            <StatusDialog />
             <ConfirmationDialog />
             <Notification />
           </SafeAreaProvider>
