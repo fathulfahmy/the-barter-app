@@ -9,7 +9,7 @@ const AcquireLayout = () => {
     <Stack
       screenOptions={{
         title: "Acquire",
-        headerTitleAlign: "center",
+
         headerStyle: { backgroundColor: colors.primary },
         headerTintColor: colors.onPrimary,
         headerBackButtonDisplayMode: "minimal",
@@ -17,7 +17,6 @@ const AcquireLayout = () => {
     >
       <Stack.Screen name="index" />
       <Stack.Screen name="[barter_service_id]/index" />
-      <Stack.Screen name="[barter_service_id]/chat" />
       <Stack.Screen name="[barter_service_id]/create" />
       <Stack.Screen name="[barter_service_id]/reviews" />
     </Stack>

@@ -8,7 +8,6 @@ const AuthLayout = () => {
   return (
     <Stack
       screenOptions={{
-        headerTitleAlign: "center",
         headerStyle: { backgroundColor: colors.primary },
         headerTintColor: colors.onPrimary,
         headerBackButtonDisplayMode: "minimal",

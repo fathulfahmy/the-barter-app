@@ -9,7 +9,7 @@ const ReviewLayout = () => {
     <Stack
       screenOptions={{
         title: "Review",
-        headerTitleAlign: "center",
+
         headerStyle: { backgroundColor: colors.primary },
         headerTintColor: colors.onPrimary,
         headerBackButtonDisplayMode: "minimal",

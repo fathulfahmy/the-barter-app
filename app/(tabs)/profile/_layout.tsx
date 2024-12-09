@@ -9,7 +9,7 @@ const ProfileLayout = () => {
     <Stack
       screenOptions={{
         title: "Profile",
-        headerTitleAlign: "center",
+
         headerStyle: { backgroundColor: colors.primary },
         headerTintColor: colors.onPrimary,
         headerBackButtonDisplayMode: "minimal",

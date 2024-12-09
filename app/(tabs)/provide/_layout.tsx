@@ -9,7 +9,7 @@ const ProvideLayout = () => {
     <Stack
       screenOptions={{
         title: "Provide",
-        headerTitleAlign: "center",
+
         headerStyle: { backgroundColor: colors.primary },
         headerTintColor: colors.onPrimary,
         headerBackButtonDisplayMode: "minimal",
