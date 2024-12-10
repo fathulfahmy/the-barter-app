@@ -1,21 +1,56 @@
 import { StyleSheet, View } from "react-native";
-import { Card, Text } from "react-native-paper";
+import { Button, Card, Text } from "react-native-paper";
 
 import { FlashList } from "@shopify/flash-list";
+import { Link } from "expo-router";
 
 import { EmptyStateScreen, LoadingStateScreen } from "@/components/screens";
 import { AvatarWithName, Spacer } from "@/components/ui";
+import { useConfirmationDialog } from "@/components/ui/dialog";
+import { useInfiniteProvideList } from "@/features/provide/api/get-provide-list";
 import { useRefreshByUser } from "@/hooks/use-refresh-by-user";
 import { useAppTheme } from "@/lib/react-native-paper";
-import { formatBarterInvoiceItems } from "@/utils/format";
+import { BarterTransactionStatus } from "@/types/api";
+import { formatBarterInvoiceItems, formatSentenceCase, formatStripEdSuffix } from "@/utils/format";
 
 import { useInfiniteBarterRequests } from "../api/get-barter-requests";
+import { useUpdateBarterRequest } from "../api/update-barter-request";
 
 export const BarterRequests = ({ barterServiceId }: { barterServiceId: string }) => {
-  const barterRequestsQuery = useInfiniteBarterRequests({
-    barterServiceId,
-  });
   const { colors } = useAppTheme();
+
+  const barterRequestsQuery = useInfiniteBarterRequests({ barterServiceId });
+  const provideListQuery = useInfiniteProvideList();
+
+  const updateBarterRequestMutation = useUpdateBarterRequest({
+    mutationConfig: {
+      onSuccess: () => {
+        barterRequestsQuery.refetch();
+        provideListQuery.refetch();
+      },
+    },
+  });
+
+  const handleSubmit = ({
+    barterTransactionId,
+    status,
+  }: {
+    barterTransactionId: string;
+    status: BarterTransactionStatus;
+  }) => {
+    useConfirmationDialog.getState().setConfirmationDialog({
+      type: "warning",
+      title: `${formatSentenceCase(formatStripEdSuffix(status))} request?`,
+      confirmButtonFn() {
+        updateBarterRequestMutation.mutate({
+          barterTransactionId,
+          data: {
+            status,
+          },
+        });
+      },
+    });
+  };
 
   const { isRefetchingByUser, refetchByUser } = useRefreshByUser(barterRequestsQuery.refetch);
 
@@ -34,12 +69,42 @@ export const BarterRequests = ({ barterServiceId }: { barterServiceId: string })
             <View style={styles.cardHeader}>
               <AvatarWithName user={item.barter_acquirer} />
             </View>
+
             <View style={styles.cardBody}>
               <Text variant="titleMedium">{formatBarterInvoiceItems(item.barter_invoice)}</Text>
               <Text
                 variant="bodyMedium"
                 style={{ color: colors.secondary }}
               >{`For ${item.barter_service?.title}`}</Text>
+            </View>
+
+            <View style={{ gap: 4 }}>
+              <Link href={`/chat/${item.barter_acquirer_id}`} asChild>
+                <Button mode="contained">Chat</Button>
+              </Link>
+
+              <View style={{ flexDirection: "row", gap: 4 }}>
+                <Button
+                  mode="contained"
+                  textColor={colors.onRed}
+                  style={{ flex: 1, backgroundColor: colors.red }}
+                  onPress={() => handleSubmit({ status: "rejected", barterTransactionId: item.id })}
+                  loading={updateBarterRequestMutation.isPending}
+                  disabled={updateBarterRequestMutation.isPending}
+                >
+                  Reject
+                </Button>
+                <Button
+                  mode="contained"
+                  textColor={colors.onGreen}
+                  style={{ flex: 1, backgroundColor: colors.green }}
+                  onPress={() => handleSubmit({ status: "accepted", barterTransactionId: item.id })}
+                  loading={updateBarterRequestMutation.isPending}
+                  disabled={updateBarterRequestMutation.isPending}
+                >
+                  Accept
+                </Button>
+              </View>
             </View>
           </Card.Content>
         </Card>

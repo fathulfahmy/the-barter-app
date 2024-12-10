@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Control, Controller } from "react-hook-form";
-import { TextInput as PaperInput, TextInputProps } from "react-native-paper";
+import { TextInput, TextInputProps } from "react-native-paper";
 
 import { FieldWrapper, FieldWrapperPassThroughProps } from "./field-wrapper";
 
@@ -17,7 +17,7 @@ export const AppTextInput = ({ label, errors, control, name, ...props }: InputPr
       name={name}
       render={({ field: { onChange, onBlur, value } }) => (
         <FieldWrapper label={label} errors={errors}>
-          <PaperInput onBlur={onBlur} onChangeText={onChange} value={value} {...props} />
+          <TextInput onBlur={onBlur} onChangeText={onChange} value={value} {...props} />
         </FieldWrapper>
       )}
     />

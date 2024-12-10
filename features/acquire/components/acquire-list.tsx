@@ -14,9 +14,11 @@ import { formatBarterServicePrice } from "@/utils/format";
 import { useInfiniteAcquireList } from "../api/get-acquire-list";
 
 export const AcquireList = () => {
-  const acquireListQuery = useInfiniteAcquireList();
-  const { isRefetchingByUser, refetchByUser } = useRefreshByUser(acquireListQuery.refetch);
   const { colors } = useAppTheme();
+
+  const acquireListQuery = useInfiniteAcquireList();
+
+  const { isRefetchingByUser, refetchByUser } = useRefreshByUser(acquireListQuery.refetch);
 
   if (acquireListQuery.isLoading) {
     return <LoadingStateScreen />;

@@ -12,11 +12,11 @@ import { formatBarterInvoiceItems } from "@/utils/format";
 import { useInfiniteBarterRecords } from "../api/get-barter-records";
 
 export const BarterRecords = ({ barterServiceId }: { barterServiceId: string }) => {
-  const barterRecordsQuery = useInfiniteBarterRecords({
-    barterServiceId,
-  });
-  const { isRefetchingByUser, refetchByUser } = useRefreshByUser(barterRecordsQuery.refetch);
   const { colors } = useAppTheme();
+
+  const barterRecordsQuery = useInfiniteBarterRecords({ barterServiceId });
+
+  const { isRefetchingByUser, refetchByUser } = useRefreshByUser(barterRecordsQuery.refetch);
 
   if (barterRecordsQuery.isLoading) {
     return <LoadingStateScreen />;

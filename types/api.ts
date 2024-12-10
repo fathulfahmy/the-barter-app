@@ -1,7 +1,7 @@
 export type ApiResponse<T> = {
   success: boolean;
   message: string;
-  data?: T[];
+  data?: T;
   error?: string[];
 };
 
@@ -34,7 +34,7 @@ export type Paginator<T> = {
 };
 
 export type User = {
-  id: number;
+  id: string;
   name: string;
   email: string;
   email_verified_at: Date | null;
@@ -45,7 +45,7 @@ export type User = {
 };
 
 export type BarterCategory = {
-  id: number;
+  id: string;
   name: string;
   created_at: Date;
   updated_at: Date;
@@ -54,14 +54,14 @@ export type BarterCategory = {
 export type BarterServiceStatus = "enabled" | "disabled";
 
 export type BarterServicePivot = {
-  barter_invoice_id: number;
-  barter_service_id: number;
+  barter_invoice_id: string;
+  barter_service_id: string;
 };
 
 export type BarterService = {
-  id: number;
-  barter_provider_id: number;
-  barter_category_id: number;
+  id: string;
+  barter_provider_id: string;
+  barter_category_id: string;
   title: string;
   description: string;
   min_price: number;
@@ -81,11 +81,10 @@ export type BarterService = {
 export type BarterTransactionStatus = "pending" | "accepted" | "rejected" | "completed" | "cancelled";
 
 export type BarterTransaction = {
-  id: number;
-  barter_acquirer_id: number;
-  barter_provider_id: number;
-  barter_service_id: number;
-  amount: number;
+  id: string;
+  barter_acquirer_id: string;
+  barter_provider_id: string;
+  barter_service_id: string;
   status: BarterTransactionStatus;
   created_at: Date;
   updated_at: Date;
@@ -97,9 +96,9 @@ export type BarterTransaction = {
 export type BarterInvoiceStatus = "pending" | "accepted" | "rejected" | "success" | "failed";
 
 export type BarterInvoice = {
-  id: number;
-  barter_acquirer_id: number;
-  barter_transaction_id: number;
+  id: string;
+  barter_acquirer_id: string;
+  barter_transaction_id: string;
   amount?: number;
   status: BarterInvoiceStatus;
   created_at: Date;
@@ -110,10 +109,10 @@ export type BarterInvoice = {
 };
 
 export type BarterReview = {
-  id: number;
-  author_id: number;
-  barter_service_id: number;
-  barter_transaction_id: number;
+  id: string;
+  author_id: string;
+  barter_service_id: string;
+  barter_transaction_id: string;
   description: string;
   rating: number;
   created_at: Date;

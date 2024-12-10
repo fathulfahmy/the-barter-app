@@ -13,9 +13,7 @@ import { useBarterServiceQuery } from "../api/get-barter-service";
 export const BarterService = ({ barterServiceId }: { barterServiceId: string }) => {
   const { colors } = useAppTheme();
 
-  const barterServiceQuery = useBarterServiceQuery({
-    barterServiceId,
-  });
+  const barterServiceQuery = useBarterServiceQuery({ barterServiceId });
 
   if (barterServiceQuery.isLoading) {
     return <LoadingStateScreen />;
@@ -37,9 +35,7 @@ export const BarterService = ({ barterServiceId }: { barterServiceId: string }) 
 
       {barterService.completed_count > 0 && (
         <View style={styles.review}>
-          <Link href={`/acquire/${barterService.id}/reviews`} asChild>
-            <RatingChip rating={barterService?.rating} />
-          </Link>
+          <RatingChip rating={barterService?.rating} />
           <Link href={`/acquire/${barterService.id}/reviews`} asChild>
             <Text
               variant="bodyMedium"

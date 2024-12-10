@@ -14,9 +14,11 @@ import { formatBarterServicePrice } from "@/utils/format";
 import { useInfiniteProvideList } from "../api/get-provide-list";
 
 export const ProvideList = () => {
-  const provideListQuery = useInfiniteProvideList();
-  const { isRefetchingByUser, refetchByUser } = useRefreshByUser(provideListQuery.refetch);
   const { colors } = useAppTheme();
+
+  const provideListQuery = useInfiniteProvideList();
+
+  const { isRefetchingByUser, refetchByUser } = useRefreshByUser(provideListQuery.refetch);
 
   if (provideListQuery.isLoading) {
     return <LoadingStateScreen />;

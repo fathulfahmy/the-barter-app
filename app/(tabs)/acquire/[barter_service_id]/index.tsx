@@ -16,7 +16,7 @@ const AcquireDetailScreen = () => {
 
       <BottomActionButtons
         buttons={[
-          { label: "Chat", mode: "outlined", onPress: () => router.push(`/acquire/${barter_service_id}/chat`) },
+          { label: "Chat", mode: "outlined", onPress: () => router.push(`/chat/${barter_service_id}`) },
           { label: "Request", mode: "contained", onPress: () => router.push(`/acquire/${barter_service_id}/create`) },
         ]}
       />

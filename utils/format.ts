@@ -2,6 +2,38 @@ import { default as dayjs } from "dayjs";
 
 import { BarterInvoice, BarterService } from "@/types/api";
 
+export const formatTitleCase = (sentence: string): string => {
+  if (!sentence) return "";
+  const words = sentence.trim();
+
+  return words
+    .split(" ")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+    .join(" ");
+};
+
+export const formatSentenceCase = (title: string): string => {
+  if (!title) return "";
+  const words = title.trim();
+
+  return words.charAt(0).toUpperCase() + words.slice(1).toLowerCase();
+};
+
+export const formatStripEdSuffix = (word: string): string => {
+  if (word.endsWith("ed")) {
+    return word.slice(0, -2);
+  }
+  return word;
+};
+
+export const formatTruncate = (sentence: string, maxLength: number): string => {
+  return sentence.length > maxLength ? `${sentence.slice(0, maxLength)}...` : sentence;
+};
+
+export const formatMaskSensitiveData = (sensitiveData: string): string => {
+  return sensitiveData.replace(/.(?=.{4})/g, "*");
+};
+
 export const formatDate = (date: number) => dayjs(date).format("D MMMM, YYYY h:mm A");
 
 export const formatAvatarName = (name: string | null | undefined) => {

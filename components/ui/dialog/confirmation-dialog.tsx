@@ -29,13 +29,7 @@ export const ConfirmationDialog = () => {
   } = confirmationDialog;
 
   const icon =
-    type === "info"
-      ? "information"
-      : type === "warning"
-        ? "alert-octagon"
-        : type === "success"
-          ? "check-circle"
-          : "alert";
+    type === "info" ? "information" : type === "warning" ? "alert" : type === "success" ? "check-circle" : "alert";
 
   const onConfirm = () => {
     confirmButtonFn();
@@ -46,11 +40,13 @@ export const ConfirmationDialog = () => {
     <>
       <Portal>
         <Dialog visible={isOpen} onDismiss={dismissConfirmationDialog}>
-          {type && <Dialog.Icon icon={icon} />}
-          <Dialog.Title style={{ alignSelf: "center" }}>{title}</Dialog.Title>
-          <Dialog.Content style={{ alignSelf: "center" }}>
-            <Text variant="bodyMedium">{body}</Text>
-          </Dialog.Content>
+          {type && <Dialog.Icon icon={icon} size={64} />}
+          {title && <Dialog.Title style={{ alignSelf: "center" }}>{title}</Dialog.Title>}
+          {body && (
+            <Dialog.Content style={{ alignSelf: "center" }}>
+              <Text variant="bodyMedium">{body}</Text>
+            </Dialog.Content>
+          )}
           <Dialog.Actions>
             <Button onPress={dismissConfirmationDialog}>{cancelButtonText}</Button>
             <Button onPress={onConfirm}>{confirmButtonText}</Button>

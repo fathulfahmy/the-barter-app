@@ -12,9 +12,11 @@ import { formatBarterInvoiceItems } from "@/utils/format";
 import { useInfiniteBarterReviews } from "../api/get-barter-reviews";
 
 export const BarterReviews = () => {
-  const barterReviewsQuery = useInfiniteBarterReviews();
-  const { isRefetchingByUser, refetchByUser } = useRefreshByUser(barterReviewsQuery.refetch);
   const { colors } = useAppTheme();
+
+  const barterReviewsQuery = useInfiniteBarterReviews();
+
+  const { isRefetchingByUser, refetchByUser } = useRefreshByUser(barterReviewsQuery.refetch);
 
   if (barterReviewsQuery.isLoading) {
     return <LoadingStateScreen />;

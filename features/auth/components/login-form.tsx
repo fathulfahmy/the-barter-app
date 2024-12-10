@@ -11,6 +11,7 @@ import { loginInputSchema, useLogin } from "@/lib/auth/auth";
 
 export const LoginForm = () => {
   const login = useLogin({ onSuccess: () => router.replace("/(tabs)") });
+
   const { isOpen: passwordVisible, toggle: togglePasswordVisibility } = useDisclosure(false);
 
   const defaultValues = {

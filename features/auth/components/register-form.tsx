@@ -11,6 +11,7 @@ import { registerInputSchema, useRegister } from "@/lib/auth/auth";
 
 export const RegisterForm = () => {
   const register = useRegister({ onSuccess: () => router.replace("/(tabs)") });
+
   const { isOpen: passwordVisible, toggle: togglePasswordVisible } = useDisclosure(false);
   const { isOpen: passwordConfirmVisible, toggle: togglePasswordConfirmVisible } = useDisclosure(false);
 

@@ -20,11 +20,7 @@ export const FieldWrapper = (props: FieldWrapperProps) => {
         {label}
       </Text>
       {children}
-      {Array.isArray(errors) ? (
-        errors.map((error, index) => <Error key={index} errorMessage={error} />)
-      ) : (
-        <Error errorMessage={errors} />
-      )}
+      <Error messages={errors} />
     </View>
   );
 };

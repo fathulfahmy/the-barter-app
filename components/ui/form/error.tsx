@@ -1,15 +1,25 @@
 import { HelperText } from "react-native-paper";
 
 export type ErrorProps = {
-  errorMessage?: string | null;
+  messages?: string | string[] | null;
 };
 
-export const Error = ({ errorMessage }: ErrorProps) => {
-  if (!errorMessage) return null;
+export const Error = ({ messages }: ErrorProps) => {
+  if (!messages) return null;
 
   return (
-    <HelperText type="error" visible={!!errorMessage}>
-      {errorMessage}
-    </HelperText>
+    <>
+      {Array.isArray(messages) ? (
+        messages.map((message, index) => (
+          <HelperText key={index} type="error" visible={!!message}>
+            {message}
+          </HelperText>
+        ))
+      ) : (
+        <HelperText type="error" visible={!!messages}>
+          {messages}
+        </HelperText>
+      )}
+    </>
   );
 };
