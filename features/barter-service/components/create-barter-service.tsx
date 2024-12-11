@@ -1,14 +1,14 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { StyleSheet, View } from "react-native";
+import { Keyboard, StyleSheet, View } from "react-native";
 import { HelperText, RadioButton } from "react-native-paper";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { FlashList } from "@shopify/flash-list";
 import { router } from "expo-router";
 
+import { AppFlashList } from "@/components/ui";
 import { BottomActionButtons } from "@/components/ui/button";
-import { AppDialog, useStatusDialog } from "@/components/ui/dialog";
+import { AppDialog } from "@/components/ui/dialog";
 import { AppTextInput, FieldWrapper } from "@/components/ui/form";
 import { useBarterCategories } from "@/features/barter-category/api/get-barter-categories";
 import { BarterCategory } from "@/types/api";
@@ -27,10 +27,6 @@ export const CreateBarterService = () => {
     mutationConfig: {
       onSuccess: () => {
         router.dismissAll();
-        useStatusDialog.getState().setStatusDialog({
-          type: "success",
-          title: "Service created",
-        });
       },
     },
   });
@@ -75,18 +71,23 @@ export const CreateBarterService = () => {
         <AppTextInput control={control} label="Description" name="description" errors={errors.description?.message} />
 
         <AppDialog
-          triggerButton={
+          renderTriggerButton={(open) => (
             <AppTextInput
               control={control}
               label="Category"
               name="barter_category_id"
               errors={errors.barter_category_id?.message}
               value={checked.name}
+              editable={false}
+              onPress={() => {
+                Keyboard.dismiss();
+                open();
+              }}
             />
-          }
+          )}
           title="Select category"
           body={
-            <FlashList
+            <AppFlashList
               data={barterCategories}
               extraData={checked}
               keyExtractor={(item) => item.id}
@@ -98,6 +99,7 @@ export const CreateBarterService = () => {
                   onPress={() => handleCategorySelect(item)}
                 />
               )}
+              estimatedItemSize={15}
             />
           }
         />
@@ -107,7 +109,13 @@ export const CreateBarterService = () => {
           errors={[errors.min_price?.message ?? "", errors.max_price?.message ?? "", errors.price_unit?.message ?? ""]}
         >
           <View style={styles.priceInputContainer}>
-            <AppTextInput control={control} label="Min (RM)" name="min_price" style={styles.priceInput} />
+            <AppTextInput
+              control={control}
+              label="Min (RM)"
+              name="min_price"
+              inputMode="decimal"
+              style={styles.priceInput}
+            />
 
             <AppTextInput
               control={control}
@@ -141,7 +149,6 @@ const styles = StyleSheet.create({
   priceInputContainer: {
     flexDirection: "row",
     gap: 8,
-    marginBottom: 8,
   },
 
   priceInput: {

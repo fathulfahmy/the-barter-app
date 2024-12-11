@@ -1,10 +1,8 @@
 import { StyleSheet, View } from "react-native";
 import { Card, Text } from "react-native-paper";
 
-import { FlashList } from "@shopify/flash-list";
-
 import { EmptyStateScreen, LoadingStateScreen } from "@/components/screens";
-import { AvatarWithName, RatingStars, Spacer } from "@/components/ui";
+import { AppFlashList, AvatarWithName, RatingStars, Spacer } from "@/components/ui";
 import { useRefreshByUser } from "@/hooks/use-refresh-by-user";
 import { useAppTheme } from "@/lib/react-native-paper";
 import { formatBarterInvoiceItems } from "@/utils/format";
@@ -25,7 +23,7 @@ export const BarterReviews = () => {
   const barterReviews = barterReviewsQuery.data?.pages.flatMap((page) => page.data.data);
 
   return (
-    <FlashList
+    <AppFlashList
       data={barterReviews}
       renderItem={({ item }) => (
         <Card>

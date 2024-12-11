@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { z } from "zod";
 
+import { useStatusDialog } from "@/components/ui/dialog";
 import { getInfiniteProvideListQueryOptions } from "@/features/provide/api/get-provide-list";
 import { api } from "@/lib/axios";
 import { MutationConfig } from "@/lib/react-query";
@@ -34,6 +35,11 @@ export const useCreateBarterService = ({ mutationConfig }: UseCreateBarterServic
     onSuccess: (...args) => {
       queryClient.invalidateQueries({
         queryKey: getInfiniteProvideListQueryOptions().queryKey,
+      });
+
+      useStatusDialog.getState().setStatusDialog({
+        type: "success",
+        title: "Service created",
       });
 
       onSuccess?.(...args);

@@ -4,11 +4,10 @@ import { View } from "react-native";
 import { Checkbox, Text } from "react-native-paper";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { FlashList } from "@shopify/flash-list";
 import { router } from "expo-router";
 
+import { AppFlashList } from "@/components/ui";
 import { BottomActionButtons } from "@/components/ui/button";
-import { useStatusDialog } from "@/components/ui/dialog";
 import { AppTextInput, Error } from "@/components/ui/form";
 import { useUser } from "@/lib/auth/auth";
 
@@ -24,10 +23,6 @@ export const CreateBarterRequest = ({ barterServiceId }: { barterServiceId: stri
     mutationConfig: {
       onSuccess: () => {
         router.dismissAll();
-        useStatusDialog.getState().setStatusDialog({
-          type: "success",
-          title: "Request sent",
-        });
       },
     },
   });
@@ -81,20 +76,19 @@ export const CreateBarterRequest = ({ barterServiceId }: { barterServiceId: stri
             control={control}
             name="barter_service_ids"
             render={() => (
-              <View style={{ flex: 1 }}>
-                <FlashList
-                  data={enabledBarterServices}
-                  extraData={checked}
-                  keyExtractor={(item) => item.id}
-                  renderItem={({ item }) => (
-                    <Checkbox.Item
-                      label={item.title}
-                      status={checked.includes(item.id) ? "checked" : "unchecked"}
-                      onPress={() => handleServiceSelect(item.id)}
-                    />
-                  )}
-                />
-              </View>
+              <AppFlashList
+                data={enabledBarterServices}
+                extraData={checked}
+                keyExtractor={(item) => item.id}
+                renderItem={({ item }) => (
+                  <Checkbox.Item
+                    label={item.title}
+                    status={checked.includes(item.id) ? "checked" : "unchecked"}
+                    onPress={() => handleServiceSelect(item.id)}
+                  />
+                )}
+                estimatedItemSize={15}
+              />
             )}
           />
         </View>

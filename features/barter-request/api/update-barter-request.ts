@@ -47,6 +47,7 @@ export const useUpdateBarterRequest = ({ mutationConfig }: UseUpdateBarterReques
         type: "success",
         title: `Request ${data.data.status}`,
       });
+
       onSuccess?.(data, ...args);
     },
     ...restConfig,
