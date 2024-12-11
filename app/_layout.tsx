@@ -1,4 +1,4 @@
-import { AppStateStatus, Platform, useColorScheme } from "react-native";
+import { AppStateStatus, Platform } from "react-native";
 import { PaperProvider } from "react-native-paper";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 
@@ -12,7 +12,7 @@ import { Notification } from "@/components/ui/notification";
 import { useAppState } from "@/hooks/use-app-state";
 import { useOnlineManager } from "@/hooks/use-online-manager";
 import { TokenProvider } from "@/lib/auth/token";
-import { AppDarkTheme, AppLightTheme } from "@/types/react-native-paper";
+import { AppLightTheme } from "@/types/react-native-paper";
 
 function onAppStateChange(status: AppStateStatus) {
   if (Platform.OS !== "web") {
@@ -23,8 +23,7 @@ function onAppStateChange(status: AppStateStatus) {
 const queryClient = new QueryClient();
 
 const RootLayout = () => {
-  const colorScheme = useColorScheme();
-  const theme = colorScheme === "dark" ? AppDarkTheme : AppLightTheme;
+  const theme = AppLightTheme;
 
   useOnlineManager();
   useAppState(onAppStateChange);

@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { Button, Dialog, Portal, Text } from "react-native-paper";
 
 import { useDisclosure } from "@/hooks/use-disclosure";
+import { formatSentenceCase } from "@/utils/format";
 
 import { useConfirmationDialog } from "./confirmation-dialog-store";
 
@@ -41,10 +42,10 @@ export const ConfirmationDialog = () => {
       <Portal>
         <Dialog visible={isOpen} onDismiss={dismissConfirmationDialog}>
           {type && <Dialog.Icon icon={icon} size={64} />}
-          {title && <Dialog.Title style={{ alignSelf: "center" }}>{title}</Dialog.Title>}
+          {title && <Dialog.Title style={{ alignSelf: "center" }}>{formatSentenceCase(title)}</Dialog.Title>}
           {body && (
             <Dialog.Content style={{ alignSelf: "center" }}>
-              <Text variant="bodyMedium">{body}</Text>
+              <Text variant="bodyMedium">{formatSentenceCase(body)}</Text>
             </Dialog.Content>
           )}
           <Dialog.Actions>

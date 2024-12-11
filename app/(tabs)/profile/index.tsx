@@ -24,7 +24,7 @@ const AuthProfileScreen = () => {
         <ProvideList />
 
         <View style={{ paddingVertical: 8, paddingHorizontal: 16 }}>
-          <Button mode="contained" onPress={onSubmit}>
+          <Button mode="contained" onPress={onSubmit} loading={logout.isPending} disabled={logout.isPending}>
             Logout
           </Button>
         </View>

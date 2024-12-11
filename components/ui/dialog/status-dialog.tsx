@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { Button, Dialog, Portal, Text } from "react-native-paper";
 
 import { useDisclosure } from "@/hooks/use-disclosure";
+import { formatSentenceCase } from "@/utils/format";
 
 import { useStatusDialog } from "./status-dialog-store";
 
@@ -29,14 +30,14 @@ export const StatusDialog = () => {
       <Portal>
         <Dialog visible={isOpen} onDismiss={dismissStatusDialog}>
           {type && <Dialog.Icon icon={icon} size={64} />}
-          {title && <Dialog.Title style={{ alignSelf: "center" }}>{title}</Dialog.Title>}
+          {title && <Dialog.Title style={{ alignSelf: "center" }}>{formatSentenceCase(title)}</Dialog.Title>}
           {body && (
             <Dialog.Content style={{ alignSelf: "center" }}>
-              <Text variant="bodyMedium">{body}</Text>
+              <Text variant="bodyMedium">{formatSentenceCase(body)}</Text>
             </Dialog.Content>
           )}
           <Dialog.Actions>
-            <Button onPress={dismissStatusDialog}>Done</Button>
+            <Button onPress={dismissStatusDialog}>Close</Button>
           </Dialog.Actions>
         </Dialog>
       </Portal>

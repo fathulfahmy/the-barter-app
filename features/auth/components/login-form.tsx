@@ -49,7 +49,7 @@ export const LoginForm = () => {
         <Link href="/register" replace asChild>
           <Button>Don't have an account? Register</Button>
         </Link>
-        <Button mode="contained" onPress={onSubmit}>
+        <Button mode="contained" onPress={onSubmit} loading={login.isPending} disabled={login.isPending}>
           Login
         </Button>
       </View>
