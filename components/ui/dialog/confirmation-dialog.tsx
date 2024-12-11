@@ -32,7 +32,7 @@ export const ConfirmationDialog = () => {
   const icon =
     type === "info" ? "information" : type === "warning" ? "alert" : type === "success" ? "check-circle" : "alert";
 
-  const onConfirm = () => {
+  const handleConfirm = () => {
     confirmButtonFn();
     dismissConfirmationDialog();
   };
@@ -50,7 +50,7 @@ export const ConfirmationDialog = () => {
           )}
           <Dialog.Actions>
             <Button onPress={dismissConfirmationDialog}>{cancelButtonText}</Button>
-            <Button onPress={onConfirm}>{confirmButtonText}</Button>
+            <Button onPress={handleConfirm}>{confirmButtonText}</Button>
           </Dialog.Actions>
         </Dialog>
       </Portal>

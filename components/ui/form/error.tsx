@@ -10,11 +10,13 @@ export const Error = ({ messages }: ErrorProps) => {
   return (
     <>
       {Array.isArray(messages) ? (
-        messages.map((message, index) => (
-          <HelperText key={index} type="error" visible={!!message}>
-            {message}
-          </HelperText>
-        ))
+        messages
+          .filter((message) => message && message.trim())
+          .map((message, index) => (
+            <HelperText key={index} type="error" visible={!!message}>
+              {message}
+            </HelperText>
+          ))
       ) : (
         <HelperText type="error" visible={!!messages}>
           {messages}

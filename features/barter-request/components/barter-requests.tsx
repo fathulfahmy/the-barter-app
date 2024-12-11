@@ -1,11 +1,10 @@
 import { StyleSheet, View } from "react-native";
 import { Button, Card, Text } from "react-native-paper";
 
-import { FlashList } from "@shopify/flash-list";
 import { Link } from "expo-router";
 
 import { EmptyStateScreen, LoadingStateScreen } from "@/components/screens";
-import { AvatarWithName, Spacer } from "@/components/ui";
+import { AppFlashList, AvatarWithName, Spacer } from "@/components/ui";
 import { useConfirmationDialog } from "@/components/ui/dialog";
 import { useRefreshByUser } from "@/hooks/use-refresh-by-user";
 import { useAppTheme } from "@/lib/react-native-paper";
@@ -38,7 +37,7 @@ export const BarterRequests = ({ barterServiceId }: { barterServiceId: string })
     useConfirmationDialog.getState().setConfirmationDialog({
       type: "warning",
       title: `${formatStripEdSuffix(status)} request?`,
-      confirmButtonFn() {
+      confirmButtonFn: () => {
         updateBarterRequestMutation.mutate({
           barterTransactionId,
           data: {
@@ -58,7 +57,7 @@ export const BarterRequests = ({ barterServiceId }: { barterServiceId: string })
   const barter_requests = barterRequestsQuery.data?.pages.flatMap((page) => page.data.data);
 
   return (
-    <FlashList
+    <AppFlashList
       data={barter_requests}
       renderItem={({ item }) => (
         <Card>
@@ -113,8 +112,6 @@ export const BarterRequests = ({ barterServiceId }: { barterServiceId: string })
       ItemSeparatorComponent={() => <Spacer y={8} />}
       ListEmptyComponent={<EmptyStateScreen />}
       contentContainerStyle={{ padding: 16 }}
-      showsVerticalScrollIndicator={false}
-      showsHorizontalScrollIndicator={false}
     />
   );
 };

@@ -1,10 +1,8 @@
 import { StyleSheet, View } from "react-native";
 import { Card, Text } from "react-native-paper";
 
-import { FlashList } from "@shopify/flash-list";
-
 import { EmptyStateScreen, LoadingStateScreen } from "@/components/screens";
-import { AvatarWithName, Spacer } from "@/components/ui";
+import { AppFlashList, AvatarWithName, Spacer } from "@/components/ui";
 import { useRefreshByUser } from "@/hooks/use-refresh-by-user";
 import { useAppTheme } from "@/lib/react-native-paper";
 import { formatBarterInvoiceItems } from "@/utils/format";
@@ -25,7 +23,7 @@ export const BarterRecords = ({ barterServiceId }: { barterServiceId: string }) 
   const barterRecords = barterRecordsQuery.data?.pages.flatMap((page) => page.data.data);
 
   return (
-    <FlashList
+    <AppFlashList
       data={barterRecords}
       renderItem={({ item }) => (
         <Card>
@@ -52,8 +50,6 @@ export const BarterRecords = ({ barterServiceId }: { barterServiceId: string }) 
       ItemSeparatorComponent={() => <Spacer y={8} />}
       ListEmptyComponent={<EmptyStateScreen />}
       contentContainerStyle={{ padding: 16 }}
-      showsVerticalScrollIndicator={false}
-      showsHorizontalScrollIndicator={false}
     />
   );
 };

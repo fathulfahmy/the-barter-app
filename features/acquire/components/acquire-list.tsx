@@ -1,11 +1,10 @@
 import { StyleSheet, View } from "react-native";
 import { Card, Text } from "react-native-paper";
 
-import { FlashList } from "@shopify/flash-list";
 import { Link } from "expo-router";
 
 import { EmptyStateScreen, LoadingStateScreen } from "@/components/screens";
-import { AvatarWithName, Spacer } from "@/components/ui";
+import { AppFlashList, AvatarWithName, Spacer } from "@/components/ui";
 import { RatingChip } from "@/components/ui/chip";
 import { useRefreshByUser } from "@/hooks/use-refresh-by-user";
 import { useAppTheme } from "@/lib/react-native-paper";
@@ -27,7 +26,7 @@ export const AcquireList = () => {
   const barterServices = acquireListQuery.data?.pages.flatMap((page) => page.data.data);
 
   return (
-    <FlashList
+    <AppFlashList
       data={barterServices}
       renderItem={({ item }) => (
         <Link href={`/acquire/${item.id}`} asChild>
@@ -61,8 +60,6 @@ export const AcquireList = () => {
       ItemSeparatorComponent={() => <Spacer y={8} />}
       ListEmptyComponent={<EmptyStateScreen />}
       contentContainerStyle={{ padding: 16 }}
-      showsVerticalScrollIndicator={false}
-      showsHorizontalScrollIndicator={false}
     />
   );
 };

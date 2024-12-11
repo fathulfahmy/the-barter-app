@@ -1,4 +1,5 @@
 import React from "react";
+import { Dimensions } from "react-native";
 import { Button, Dialog, Portal } from "react-native-paper";
 
 import { useDisclosure } from "@/hooks/use-disclosure";
@@ -7,22 +8,24 @@ import { formatSentenceCase } from "@/utils/format";
 type AppDialogProps = {
   title?: string;
   body: React.ReactNode;
-  triggerButton: React.ReactElement;
+  renderTriggerButton: (open: () => void) => React.ReactElement;
   cancelButtonText?: string;
   confirmButtonText?: string;
   confirmButtonFn?: () => void;
+  withScrollView?: boolean;
 };
 
 export const AppDialog: React.FC<AppDialogProps> = ({
   title,
   body,
-  triggerButton,
-  confirmButtonText = "Close",
+  renderTriggerButton,
+  confirmButtonText = "Done",
   confirmButtonFn,
+  withScrollView = true,
 }) => {
   const { isOpen, open, close } = useDisclosure();
 
-  const onConfirm = () => {
+  const handleConfirm = () => {
     if (confirmButtonFn) {
       confirmButtonFn();
     }
@@ -31,13 +34,17 @@ export const AppDialog: React.FC<AppDialogProps> = ({
 
   return (
     <>
-      {React.cloneElement(triggerButton, { onFocus: open, onPress: open })}
+      {renderTriggerButton(open)}
       <Portal>
         <Dialog visible={isOpen} onDismiss={close}>
           {title && <Dialog.Title>{formatSentenceCase(title)}</Dialog.Title>}
-          <Dialog.Content style={{ minHeight: 2, maxHeight: 500 }}>{body}</Dialog.Content>
+          {withScrollView ? (
+            <Dialog.ScrollArea style={{ height: 0.5 * Dimensions.get("window").height }}>{body}</Dialog.ScrollArea>
+          ) : (
+            <Dialog.Content>{body}</Dialog.Content>
+          )}
           <Dialog.Actions>
-            <Button onPress={onConfirm}>{confirmButtonText}</Button>
+            <Button onPress={handleConfirm}>{confirmButtonText}</Button>
           </Dialog.Actions>
         </Dialog>
       </Portal>

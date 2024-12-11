@@ -1,11 +1,10 @@
 import { StyleSheet, View } from "react-native";
 import { Card, Text } from "react-native-paper";
 
-import { FlashList } from "@shopify/flash-list";
 import { Link } from "expo-router";
 
 import { EmptyStateScreen, LoadingStateScreen } from "@/components/screens";
-import { Spacer } from "@/components/ui";
+import { AppFlashList, Spacer } from "@/components/ui";
 import { AppChip } from "@/components/ui/chip";
 import { useRefreshByUser } from "@/hooks/use-refresh-by-user";
 import { useAppTheme } from "@/lib/react-native-paper";
@@ -27,7 +26,7 @@ export const ProvideList = () => {
   const barterServices = provideListQuery.data?.pages.flatMap((page) => page.data.data);
 
   return (
-    <FlashList
+    <AppFlashList
       data={barterServices}
       renderItem={({ item }) => (
         <Link href={`/provide/${item.id}/requests`} asChild>
@@ -60,8 +59,6 @@ export const ProvideList = () => {
       ItemSeparatorComponent={() => <Spacer y={8} />}
       ListEmptyComponent={<EmptyStateScreen />}
       contentContainerStyle={{ padding: 16 }}
-      showsVerticalScrollIndicator={false}
-      showsHorizontalScrollIndicator={false}
     />
   );
 };
