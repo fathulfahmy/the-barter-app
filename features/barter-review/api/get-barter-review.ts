@@ -20,7 +20,7 @@ type UseBarterReviewOptions = {
   queryConfig?: QueryConfig<typeof getBarterReviewQueryOptions>;
 };
 
-export const useBarterReviewQuery = ({ barterReviewId, queryConfig }: UseBarterReviewOptions) => {
+export const useBarterReview = ({ barterReviewId, queryConfig }: UseBarterReviewOptions) => {
   return useQuery({
     ...getBarterReviewQueryOptions(barterReviewId),
     ...queryConfig,

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { Pressable, View } from "react-native";
+import { View } from "react-native";
 import { Checkbox, Text } from "react-native-paper";
 
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -16,7 +16,9 @@ import { createBarterRequestInputSchema, useCreateBarterRequest } from "../api/c
 
 export const CreateBarterRequest = ({ barterServiceId }: { barterServiceId: string }) => {
   const { data } = useUser();
-  const [checked, setChecked] = useState<Record<string, boolean>>({});
+  const enabledBarterServices = data?.barter_services?.filter((item) => item.status === "enabled");
+
+  const [checked, setChecked] = useState<string[]>([]);
 
   const createBarterRequestMutation = useCreateBarterRequest({
     mutationConfig: {
@@ -24,7 +26,7 @@ export const CreateBarterRequest = ({ barterServiceId }: { barterServiceId: stri
         router.dismissAll();
         useStatusDialog.getState().setStatusDialog({
           type: "success",
-          title: "Request Sent",
+          title: "Request sent",
         });
       },
     },
@@ -51,16 +53,12 @@ export const CreateBarterRequest = ({ barterServiceId }: { barterServiceId: stri
     createBarterRequestMutation.mutate({ data: values });
   });
 
-  const toggleCheckbox = (id: string) => {
-    setChecked((prevChecked) => {
-      const updatedChecked = { ...prevChecked, [id]: !prevChecked[id] };
-
-      const barterServiceIds = Object.keys(updatedChecked)
-        .filter((key) => updatedChecked[key])
-        .map((key) => key);
+  const handleServiceSelect = (id: string) => {
+    setChecked((prev) => {
+      const barterServiceIds = prev.includes(id) ? prev.filter((ids) => ids !== id) : [...prev, id];
 
       setValue("barter_service_ids", barterServiceIds);
-      return updatedChecked;
+      return barterServiceIds;
     });
   };
 
@@ -85,23 +83,15 @@ export const CreateBarterRequest = ({ barterServiceId }: { barterServiceId: stri
             render={() => (
               <View style={{ flex: 1 }}>
                 <FlashList
-                  data={data?.barter_services?.filter((item) => item.status === "enabled")}
+                  data={enabledBarterServices}
                   extraData={checked}
-                  keyExtractor={(item) => item.id.toString()}
+                  keyExtractor={(item) => item.id}
                   renderItem={({ item }) => (
-                    <Pressable onPress={() => toggleCheckbox(item.id)}>
-                      <View
-                        style={{
-                          flexDirection: "row",
-                          alignItems: "center",
-                          gap: 4,
-                          paddingVertical: 8,
-                        }}
-                      >
-                        <Checkbox.Android status={checked[item.id] ? "checked" : "unchecked"} />
-                        <Text variant="bodyLarge">{item.title}</Text>
-                      </View>
-                    </Pressable>
+                    <Checkbox.Item
+                      label={item.title}
+                      status={checked.includes(item.id) ? "checked" : "unchecked"}
+                      onPress={() => handleServiceSelect(item.id)}
+                    />
                   )}
                 />
               </View>
@@ -117,7 +107,6 @@ export const CreateBarterRequest = ({ barterServiceId }: { barterServiceId: stri
             label: "Request",
             mode: "contained",
             onPress: onSubmit,
-            loading: createBarterRequestMutation.isPending,
             disabled: createBarterRequestMutation.isPending,
           },
         ]}

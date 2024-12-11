@@ -24,7 +24,7 @@ type UseBarterServiceOptions = {
   queryConfig?: QueryConfig<typeof getBarterServiceQueryOptions>;
 };
 
-export const useBarterServiceQuery = ({ barterServiceId, queryConfig }: UseBarterServiceOptions) => {
+export const useBarterService = ({ barterServiceId, queryConfig }: UseBarterServiceOptions) => {
   return useQuery({
     ...getBarterServiceQueryOptions(barterServiceId),
     ...queryConfig,

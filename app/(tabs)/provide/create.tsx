@@ -1,11 +1,10 @@
-import { Text } from "react-native-paper";
-
 import { ScreenWrapper } from "@/components/screens";
+import { CreateBarterService } from "@/features/barter-service/components/create-barter-service";
 
 const ProvideCreateScreen = () => {
   return (
     <ScreenWrapper>
-      <Text variant="bodyMedium">ProvideCreateScreen</Text>
+      <CreateBarterService />
     </ScreenWrapper>
   );
 };

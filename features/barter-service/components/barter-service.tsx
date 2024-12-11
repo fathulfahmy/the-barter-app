@@ -8,18 +8,18 @@ import { AppChip, RatingChip } from "@/components/ui/chip";
 import { useAppTheme } from "@/lib/react-native-paper";
 import { formatBarterServicePrice } from "@/utils/format";
 
-import { useBarterServiceQuery } from "../api/get-barter-service";
+import { useBarterService } from "../api/get-barter-service";
 
 export const BarterService = ({ barterServiceId }: { barterServiceId: string }) => {
   const { colors } = useAppTheme();
 
-  const barterServiceQuery = useBarterServiceQuery({ barterServiceId });
+  const barterServiceQuery = useBarterService({ barterServiceId });
 
   if (barterServiceQuery.isLoading) {
     return <LoadingStateScreen />;
   }
 
-  const barterService = barterServiceQuery?.data?.data;
+  const barterService = barterServiceQuery.data?.data;
 
   if (!barterService) return null;
 

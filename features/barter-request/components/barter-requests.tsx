@@ -7,11 +7,10 @@ import { Link } from "expo-router";
 import { EmptyStateScreen, LoadingStateScreen } from "@/components/screens";
 import { AvatarWithName, Spacer } from "@/components/ui";
 import { useConfirmationDialog } from "@/components/ui/dialog";
-import { useInfiniteProvideList } from "@/features/provide/api/get-provide-list";
 import { useRefreshByUser } from "@/hooks/use-refresh-by-user";
 import { useAppTheme } from "@/lib/react-native-paper";
 import { BarterTransactionStatus } from "@/types/api";
-import { formatBarterInvoiceItems, formatSentenceCase, formatStripEdSuffix } from "@/utils/format";
+import { formatBarterInvoiceItems, formatStripEdSuffix } from "@/utils/format";
 
 import { useInfiniteBarterRequests } from "../api/get-barter-requests";
 import { useUpdateBarterRequest } from "../api/update-barter-request";
@@ -20,13 +19,11 @@ export const BarterRequests = ({ barterServiceId }: { barterServiceId: string })
   const { colors } = useAppTheme();
 
   const barterRequestsQuery = useInfiniteBarterRequests({ barterServiceId });
-  const provideListQuery = useInfiniteProvideList();
 
   const updateBarterRequestMutation = useUpdateBarterRequest({
     mutationConfig: {
       onSuccess: () => {
         barterRequestsQuery.refetch();
-        provideListQuery.refetch();
       },
     },
   });
@@ -40,7 +37,7 @@ export const BarterRequests = ({ barterServiceId }: { barterServiceId: string })
   }) => {
     useConfirmationDialog.getState().setConfirmationDialog({
       type: "warning",
-      title: `${formatSentenceCase(formatStripEdSuffix(status))} request?`,
+      title: `${formatStripEdSuffix(status)} request?`,
       confirmButtonFn() {
         updateBarterRequestMutation.mutate({
           barterTransactionId,
@@ -89,7 +86,6 @@ export const BarterRequests = ({ barterServiceId }: { barterServiceId: string })
                   textColor={colors.onRed}
                   style={{ flex: 1, backgroundColor: colors.red }}
                   onPress={() => handleSubmit({ status: "rejected", barterTransactionId: item.id })}
-                  loading={updateBarterRequestMutation.isPending}
                   disabled={updateBarterRequestMutation.isPending}
                 >
                   Reject
@@ -99,7 +95,6 @@ export const BarterRequests = ({ barterServiceId }: { barterServiceId: string })
                   textColor={colors.onGreen}
                   style={{ flex: 1, backgroundColor: colors.green }}
                   onPress={() => handleSubmit({ status: "accepted", barterTransactionId: item.id })}
-                  loading={updateBarterRequestMutation.isPending}
                   disabled={updateBarterRequestMutation.isPending}
                 >
                   Accept
