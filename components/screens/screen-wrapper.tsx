@@ -1,5 +1,16 @@
 import * as React from "react";
-import { ScrollView, ScrollViewProps, StyleProp, StyleSheet, View, ViewStyle } from "react-native";
+import {
+  Keyboard,
+  KeyboardAvoidingView,
+  ScrollView,
+  ScrollViewProps,
+  StyleProp,
+  StyleSheet,
+  TouchableWithoutFeedback,
+  View,
+  ViewStyle,
+} from "react-native";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { useAppTheme } from "@/lib/react-native-paper";
@@ -7,11 +18,19 @@ import { useAppTheme } from "@/lib/react-native-paper";
 type Props = ScrollViewProps & {
   children: React.ReactNode;
   withScrollView?: boolean;
+  isKeyboardAware?: boolean;
   style?: StyleProp<ViewStyle>;
   contentContainerStyle?: StyleProp<ViewStyle>;
 };
 
-export const ScreenWrapper = ({ children, withScrollView = true, style, contentContainerStyle, ...rest }: Props) => {
+export const ScreenWrapper = ({
+  children,
+  withScrollView = true,
+  isKeyboardAware = true,
+  style,
+  contentContainerStyle,
+  ...rest
+}: Props) => {
   const theme = useAppTheme();
 
   const insets = useSafeAreaInsets();
@@ -25,23 +44,48 @@ export const ScreenWrapper = ({ children, withScrollView = true, style, contentC
     },
   ];
 
+  if (withScrollView && isKeyboardAware) {
+    return (
+      <KeyboardAwareScrollView
+        {...rest}
+        contentContainerStyle={[styles.container, contentContainerStyle]}
+        keyboardShouldPersistTaps="handled"
+        alwaysBounceVertical={false}
+        showsVerticalScrollIndicator={false}
+        style={[containerStyle, style]}
+      >
+        {children}
+      </KeyboardAwareScrollView>
+    );
+  }
+
+  if (withScrollView && !isKeyboardAware) {
+    return (
+      <ScrollView
+        {...rest}
+        contentContainerStyle={[styles.container, contentContainerStyle]}
+        keyboardShouldPersistTaps="handled"
+        alwaysBounceVertical={false}
+        showsVerticalScrollIndicator={false}
+        style={[containerStyle, style]}
+      >
+        {children}
+      </ScrollView>
+    );
+  }
+
+  if (!withScrollView && isKeyboardAware) {
+    return (
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+        <KeyboardAvoidingView style={[containerStyle, style]}>{children}</KeyboardAvoidingView>
+      </TouchableWithoutFeedback>
+    );
+  }
+
   return (
-    <>
-      {withScrollView ? (
-        <ScrollView
-          {...rest}
-          contentContainerStyle={[styles.container, contentContainerStyle]}
-          keyboardShouldPersistTaps="always"
-          alwaysBounceVertical={false}
-          showsVerticalScrollIndicator={false}
-          style={[containerStyle, style]}
-        >
-          {children}
-        </ScrollView>
-      ) : (
-        <View style={[containerStyle, style]}>{children}</View>
-      )}
-    </>
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+      <View style={[containerStyle, style]}>{children}</View>
+    </TouchableWithoutFeedback>
   );
 };
 

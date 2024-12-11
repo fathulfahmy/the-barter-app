@@ -13,7 +13,12 @@ const ProvideScreen = () => {
       <Stack.Screen
         options={{
           headerRight: () => (
-            <IconButton icon="plus" iconColor={colors.onPrimary} onPress={() => router.push("/provide/create")} />
+            <IconButton
+              icon="plus"
+              iconColor={colors.onPrimary}
+              onPress={() => router.push("/provide/create")}
+              style={{ margin: 0 }}
+            />
           ),
         }}
       />
