@@ -3,7 +3,7 @@ import { View } from "react-native";
 import { Button, TextInput } from "react-native-paper";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Link, router } from "expo-router";
+import { router } from "expo-router";
 
 import { AppTextInput } from "@/components/ui/form";
 import { useDisclosure } from "@/hooks/use-disclosure";
@@ -46,9 +46,7 @@ export const LoginForm = () => {
       </View>
 
       <View style={{ gap: 8 }}>
-        <Link href="/register" replace asChild>
-          <Button>Don't have an account? Register</Button>
-        </Link>
+        <Button onPress={() => router.replace("/register")}>Don't have an account? Register</Button>
         <Button mode="contained" onPress={onSubmit} loading={login.isPending} disabled={login.isPending}>
           Login
         </Button>

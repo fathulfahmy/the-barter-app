@@ -1,7 +1,7 @@
 import { StyleSheet, View } from "react-native";
 import { Card, Text } from "react-native-paper";
 
-import { Link } from "expo-router";
+import { router } from "expo-router";
 
 import { EmptyStateScreen, LoadingStateScreen } from "@/components/screens";
 import { AppFlashList, AvatarWithName, Spacer } from "@/components/ui";
@@ -29,27 +29,25 @@ export const AcquireList = () => {
     <AppFlashList
       data={barterServices}
       renderItem={({ item }) => (
-        <Link href={`/acquire/${item.id}`} asChild>
-          <Card>
-            <Card.Content style={styles.card}>
-              <View style={styles.cardHeader}>
-                <AvatarWithName user={item.barter_provider} />
-                <RatingChip rating={item.rating}></RatingChip>
-              </View>
+        <Card onPress={() => router.push(`/acquire/${item.id}`)}>
+          <Card.Content style={styles.card}>
+            <View style={styles.cardHeader}>
+              <AvatarWithName user={item.barter_provider} />
+              <RatingChip rating={item.rating}></RatingChip>
+            </View>
 
-              <View style={styles.cardBody}>
-                <Text variant="titleMedium">{item.title}</Text>
-                <Text variant="bodyMedium" style={{ color: colors.secondary }}>
-                  {formatBarterServicePrice(item)}
-                </Text>
-              </View>
-
-              <Text variant="bodyMedium" style={{ color: colors.primary }}>
-                {item.completed_count} barters fulfilled
+            <View style={styles.cardBody}>
+              <Text variant="titleMedium">{item.title}</Text>
+              <Text variant="bodyMedium" style={{ color: colors.secondary }}>
+                {formatBarterServicePrice(item)}
               </Text>
-            </Card.Content>
-          </Card>
-        </Link>
+            </View>
+
+            <Text variant="bodyMedium" style={{ color: colors.primary }}>
+              {item.completed_count} barters fulfilled
+            </Text>
+          </Card.Content>
+        </Card>
       )}
       estimatedItemSize={15}
       onEndReached={() => {

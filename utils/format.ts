@@ -19,9 +19,9 @@ export const formatSentenceCase = (title: string): string => {
   return words.charAt(0).toUpperCase() + words.slice(1).toLowerCase();
 };
 
-export const formatStripEdSuffix = (word: string): string => {
-  if (word.endsWith("ed")) {
-    return word.slice(0, -2);
+export const formatStripSuffix = (word: string, suffix: string): string => {
+  if (word.endsWith(suffix)) {
+    return word.slice(0, -suffix.length);
   }
   return word;
 };

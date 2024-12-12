@@ -1,7 +1,7 @@
 import { StyleSheet, View } from "react-native";
 import { Button, Card, Text } from "react-native-paper";
 
-import { Link } from "expo-router";
+import { router } from "expo-router";
 
 import { EmptyStateScreen, LoadingStateScreen } from "@/components/screens";
 import { AppFlashList, AvatarWithName, Spacer } from "@/components/ui";
@@ -9,7 +9,7 @@ import { useConfirmationDialog } from "@/components/ui/dialog";
 import { useRefreshByUser } from "@/hooks/use-refresh-by-user";
 import { useAppTheme } from "@/lib/react-native-paper";
 import { BarterTransactionStatus } from "@/types/api";
-import { formatBarterInvoiceItems, formatStripEdSuffix } from "@/utils/format";
+import { formatBarterInvoiceItems, formatStripSuffix } from "@/utils/format";
 
 import { useInfiniteBarterRequests } from "../api/get-barter-requests";
 import { useUpdateBarterRequest } from "../api/update-barter-request";
@@ -36,7 +36,7 @@ export const BarterRequests = ({ barterServiceId }: { barterServiceId: string })
   }) => {
     useConfirmationDialog.getState().setConfirmationDialog({
       type: "warning",
-      title: `${formatStripEdSuffix(status)} request?`,
+      title: `${formatStripSuffix(status, "ed")} request?`,
       confirmButtonFn: () => {
         updateBarterRequestMutation.mutate({
           barterTransactionId,
@@ -75,9 +75,9 @@ export const BarterRequests = ({ barterServiceId }: { barterServiceId: string })
             </View>
 
             <View style={{ gap: 4 }}>
-              <Link href={`/chat/${item.barter_acquirer_id}`} asChild>
-                <Button mode="contained">Chat</Button>
-              </Link>
+              <Button mode="contained" onPress={() => router.push(`/chat/${item.barter_acquirer_id}`)}>
+                Chat
+              </Button>
 
               <View style={{ flexDirection: "row", gap: 4 }}>
                 <Button

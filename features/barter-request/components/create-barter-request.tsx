@@ -62,7 +62,7 @@ export const CreateBarterRequest = ({ barterServiceId }: { barterServiceId: stri
       <View style={{ flex: 1, gap: 32, padding: 16 }}>
         <AppTextInput
           control={control}
-          label="Amount"
+          label="Amount (RM)"
           name="amount"
           errors={errors.amount?.message}
           inputMode="decimal"
