@@ -1,10 +1,10 @@
 import { ScreenWrapper } from "@/components/screens";
-import { CreateBarterService } from "@/features/barter-service/components/create-barter-service";
+import { CreateService } from "@/features/service/components/create-service";
 
 const ProvideCreateScreen = () => {
   return (
     <ScreenWrapper>
-      <CreateBarterService />
+      <CreateService />
     </ScreenWrapper>
   );
 };

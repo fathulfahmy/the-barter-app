@@ -2,13 +2,13 @@ import { Stack } from "expo-router";
 
 import { useAppTheme } from "@/lib/react-native-paper";
 
-const AcquireLayout = () => {
+const MyBartersLayout = () => {
   const { colors } = useAppTheme();
 
   return (
     <Stack
       screenOptions={{
-        title: "Acquire",
+        title: "My Barters",
 
         headerStyle: { backgroundColor: colors.primary },
         headerTintColor: colors.onPrimary,
@@ -16,11 +16,9 @@ const AcquireLayout = () => {
       }}
     >
       <Stack.Screen name="index" />
-      <Stack.Screen name="[barter_service_id]/index" />
-      <Stack.Screen name="[barter_service_id]/request" />
-      <Stack.Screen name="[barter_service_id]/reviews" />
+      <Stack.Screen name="(tabs)" />
     </Stack>
   );
 };
 
-export default AcquireLayout;
+export default MyBartersLayout;

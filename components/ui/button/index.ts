@@ -1,1 +1,1 @@
-export * from "./bottom-action-buttons";
+export * from "./grouped-buttons";

@@ -42,7 +42,7 @@ export const ConfirmationDialog = () => {
       <Portal>
         <Dialog visible={isOpen} onDismiss={dismissConfirmationDialog}>
           {type && <Dialog.Icon icon={icon} size={64} />}
-          {title && <Dialog.Title style={{ alignSelf: "center" }}>{formatSentenceCase(title)}</Dialog.Title>}
+          {title && <Dialog.Title style={{ textAlign: "center" }}>{formatSentenceCase(title)}</Dialog.Title>}
           {body && (
             <Dialog.Content style={{ alignSelf: "center" }}>
               <Text variant="bodyMedium">{formatSentenceCase(body)}</Text>

@@ -44,17 +44,15 @@ const TabsLayout = () => {
         options={{
           tabBarLabel: "Provide",
           tabBarIcon: ({ color, focused, size }) => (
-            <Icon source={focused ? "briefcase" : "briefcase-outline"} color={color} size={size} />
+            <Icon source={focused ? "hand-extended" : "hand-extended-outline"} color={color} size={size} />
           ),
         }}
       />
       <Tabs.Screen
-        name="review"
+        name="my_barters"
         options={{
-          tabBarLabel: "Review",
-          tabBarIcon: ({ color, focused, size }) => (
-            <Icon source={focused ? "star" : "star-outline"} color={color} size={size} />
-          ),
+          tabBarLabel: "My Barters",
+          tabBarIcon: ({ color, focused, size }) => <Icon source={"swap-vertical-circle"} color={color} size={size} />,
         }}
       />
       <Tabs.Screen

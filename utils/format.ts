@@ -1,6 +1,6 @@
 import { default as dayjs } from "dayjs";
 
-import { BarterInvoice, BarterService } from "@/types/api";
+import { Invoice, Service } from "@/types/api";
 
 export const formatTitleCase = (sentence: string): string => {
   if (!sentence) return "";
@@ -26,15 +26,11 @@ export const formatStripSuffix = (word: string, suffix: string): string => {
   return word;
 };
 
-export const formatTruncate = (sentence: string, maxLength: number): string => {
-  return sentence.length > maxLength ? `${sentence.slice(0, maxLength)}...` : sentence;
-};
-
 export const formatMaskSensitiveData = (sensitiveData: string): string => {
   return sensitiveData.replace(/.(?=.{4})/g, "*");
 };
 
-export const formatDate = (date: number) => dayjs(date).format("D MMMM, YYYY h:mm A");
+export const formatDateTime = (date: number) => dayjs(date).format("D MMMM, YYYY h:mm A");
 
 export const formatAvatarName = (name: string | null | undefined) => {
   if (!name) {
@@ -50,9 +46,9 @@ export const formatAvatarName = (name: string | null | undefined) => {
   return (parts[0].charAt(0) + parts[1].charAt(0)).toUpperCase();
 };
 
-export const formatBarterInvoiceItems = (barterInvoice: BarterInvoice | null | undefined) => {
-  const amount = barterInvoice?.amount?.toFixed(2);
-  const services = barterInvoice?.exchanged_services?.join(", ");
+export const formatInvoiceItems = (invoice: Invoice | null | undefined) => {
+  const amount = invoice?.amount?.toFixed(2);
+  const services = invoice?.exchanged_services?.join(", ");
 
   if (amount && services) {
     return `RM${amount} and ${services}`;
@@ -65,10 +61,10 @@ export const formatBarterInvoiceItems = (barterInvoice: BarterInvoice | null | u
   }
 };
 
-export const formatBarterServicePrice = (barterService: BarterService | null | undefined) => {
-  const minPrice = barterService?.min_price?.toFixed(2) ?? "0.00";
-  const maxPrice = barterService?.max_price?.toFixed(2) ?? "0.00";
-  const priceUnit = barterService?.price_unit ?? "unit";
+export const formatServicePrice = (service: Service | null | undefined) => {
+  const minPrice = service?.min_price?.toFixed(2) ?? "0.00";
+  const maxPrice = service?.max_price?.toFixed(2) ?? "0.00";
+  const priceUnit = service?.price_unit ?? "unit";
   return `RM${minPrice} - RM${maxPrice} per ${priceUnit}`;
 };
 

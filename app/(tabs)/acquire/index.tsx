@@ -1,10 +1,10 @@
 import { ScreenWrapper } from "@/components/screens";
-import { AcquireList } from "@/features/acquire/components/acquire-list";
+import { Acquire } from "@/features/service/components/acquire";
 
 const AcquireScreen = () => {
   return (
     <ScreenWrapper>
-      <AcquireList />
+      <Acquire />
     </ScreenWrapper>
   );
 };

@@ -3,7 +3,7 @@ import { IconButton } from "react-native-paper";
 import { Stack, router } from "expo-router";
 
 import { ScreenWrapper } from "@/components/screens";
-import { ProvideList } from "@/features/provide/components/provide-list";
+import { Provide } from "@/features/service/components/provide";
 import { useAppTheme } from "@/lib/react-native-paper";
 
 const ProvideScreen = () => {
@@ -23,7 +23,7 @@ const ProvideScreen = () => {
         }}
       />
       <ScreenWrapper>
-        <ProvideList />
+        <Provide />
       </ScreenWrapper>
     </>
   );

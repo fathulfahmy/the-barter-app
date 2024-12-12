@@ -4,7 +4,7 @@ import {
   createMaterialTopTabNavigator,
 } from "@react-navigation/material-top-tabs";
 import { ParamListBase, TabNavigationState } from "@react-navigation/native";
-import { useLocalSearchParams, withLayoutContext } from "expo-router";
+import { withLayoutContext } from "expo-router";
 
 import { useAppTheme } from "@/lib/react-native-paper";
 
@@ -17,9 +17,8 @@ export const MaterialTopTabs = withLayoutContext<
   MaterialTopTabNavigationEventMap
 >(Navigator);
 
-const ProvideDetailTabsLayout = () => {
+const MyBartersTabsLayout = () => {
   const { colors } = useAppTheme();
-  const { barter_service_id } = useLocalSearchParams<{ barter_service_id: string }>();
 
   return (
     <MaterialTopTabs
@@ -34,23 +33,12 @@ const ProvideDetailTabsLayout = () => {
         },
       }}
     >
-      <MaterialTopTabs.Screen
-        name="incoming"
-        options={{ title: "Incoming" }}
-        initialParams={{ barter_service_id: barter_service_id }}
-      />
-      <MaterialTopTabs.Screen
-        name="ongoing"
-        options={{ title: "Ongoing" }}
-        initialParams={{ barter_service_id: barter_service_id }}
-      />
-      <MaterialTopTabs.Screen
-        name="history"
-        options={{ title: "History" }}
-        initialParams={{ barter_service_id: barter_service_id }}
-      />
+      <MaterialTopTabs.Screen name="incoming" options={{ title: "Incoming" }} />
+      <MaterialTopTabs.Screen name="outgoing" options={{ title: "Outgoing" }} />
+      <MaterialTopTabs.Screen name="ongoing" options={{ title: "Ongoing" }} />
+      <MaterialTopTabs.Screen name="history" options={{ title: "History" }} />
     </MaterialTopTabs>
   );
 };
 
-export default ProvideDetailTabsLayout;
+export default MyBartersTabsLayout;

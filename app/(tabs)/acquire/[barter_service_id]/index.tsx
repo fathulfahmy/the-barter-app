@@ -3,21 +3,21 @@ import { View } from "react-native";
 import { router, useLocalSearchParams } from "expo-router";
 
 import { ScreenWrapper } from "@/components/screens";
-import { BottomActionButtons } from "@/components/ui/button";
-import { BarterService } from "@/features/barter-service/components/barter-service";
+import { GroupedButtons } from "@/components/ui/button";
+import { Service } from "@/features/service/components/barter-service";
 
 const AcquireDetailScreen = () => {
   const { barter_service_id } = useLocalSearchParams<{ barter_service_id: string }>();
   return (
     <ScreenWrapper>
       <View style={{ flex: 1 }}>
-        <BarterService barterServiceId={barter_service_id} />
+        <Service barter_service_id={barter_service_id} />
       </View>
 
-      <BottomActionButtons
+      <GroupedButtons
         buttons={[
           { label: "Chat", mode: "outlined", onPress: () => router.push(`/chat/${barter_service_id}`) },
-          { label: "Request", mode: "contained", onPress: () => router.push(`/acquire/${barter_service_id}/create`) },
+          { label: "Request", mode: "contained", onPress: () => router.push(`/acquire/${barter_service_id}/request`) },
         ]}
       />
     </ScreenWrapper>
