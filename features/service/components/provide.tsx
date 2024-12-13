@@ -1,3 +1,4 @@
+import React from "react";
 import { StyleSheet, View } from "react-native";
 import { Card, IconButton, Menu, Text } from "react-native-paper";
 

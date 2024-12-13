@@ -1,3 +1,5 @@
+import React from "react";
+
 import { useLocalSearchParams } from "expo-router";
 
 import { ScreenWrapper } from "@/components/screens";

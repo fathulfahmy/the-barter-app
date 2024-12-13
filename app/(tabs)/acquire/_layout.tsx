@@ -1,3 +1,5 @@
+import React from "react";
+
 import { Stack } from "expo-router";
 
 import { useAppTheme } from "@/lib/react-native-paper";

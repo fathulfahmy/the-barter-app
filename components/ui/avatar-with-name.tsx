@@ -1,3 +1,4 @@
+import React from "react";
 import { View, ViewProps } from "react-native";
 import { Avatar, Text } from "react-native-paper";
 import { VariantProp } from "react-native-paper/lib/typescript/components/Typography/types";

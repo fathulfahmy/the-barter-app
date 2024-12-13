@@ -1,3 +1,4 @@
+import React from "react";
 import { Button, Text } from "react-native-paper";
 
 import { Link } from "expo-router";

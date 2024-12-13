@@ -1,3 +1,5 @@
+import React from "react";
+
 import { ScreenWrapper } from "@/components/screens";
 import { Acquire } from "@/features/service/components/acquire";
 

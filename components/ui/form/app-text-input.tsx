@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { Control, Controller } from "react-hook-form";
 import { Pressable, StyleProp, TextStyle } from "react-native";
 import { TextInput, TextInputProps } from "react-native-paper";

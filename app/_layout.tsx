@@ -1,3 +1,4 @@
+import React from "react";
 import { AppStateStatus, Platform } from "react-native";
 import { PaperProvider } from "react-native-paper";
 import { SafeAreaProvider } from "react-native-safe-area-context";

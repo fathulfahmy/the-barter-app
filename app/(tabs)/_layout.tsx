@@ -1,3 +1,4 @@
+import React from "react";
 import { Icon } from "react-native-paper";
 
 import { Redirect, Tabs } from "expo-router";

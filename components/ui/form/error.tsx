@@ -1,3 +1,4 @@
+import React from "react";
 import { HelperText } from "react-native-paper";
 
 export type ErrorProps = {
