@@ -64,6 +64,7 @@ export type Service = {
   status: ServiceStatus;
   created_at: Date;
   updated_at: Date;
+  deleted_at: Date | null;
   pending_count: number;
   completed_count: number;
   barter_provider?: User | null;
@@ -81,6 +82,7 @@ export type Transaction = {
   status: TransactionStatus;
   created_at: Date;
   updated_at: Date;
+  deleted_at: Date | null;
   barter_acquirer?: User | null;
   barter_provider?: User | null;
   barter_service?: Service | null;
@@ -98,6 +100,7 @@ export type Invoice = {
   status: InvoiceStatus;
   created_at: Date;
   updated_at: Date;
+  deleted_at: Date | null;
   exchanged_services: string[];
   barter_transaction?: Transaction | null;
   barter_services?: Service[] | null;
@@ -112,6 +115,7 @@ export type Review = {
   rating: number;
   created_at: Date;
   updated_at: Date;
+  deleted_at: Date | null;
   author?: User | null;
   barter_service?: Service | null;
   barter_transaction?: Transaction | null;
