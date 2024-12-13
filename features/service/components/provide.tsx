@@ -3,7 +3,7 @@ import { Card, IconButton, Menu, Text } from "react-native-paper";
 
 import { router } from "expo-router";
 
-import { EmptyStateScreen, LoadingStateScreen } from "@/components/screens";
+import { LoadingStateScreen } from "@/components/screens";
 import { AppFlashList, Spacer } from "@/components/ui";
 import { AppMenu } from "@/components/ui/app-menu";
 import { AppChip } from "@/components/ui/chip";
@@ -103,7 +103,6 @@ export const Provide = () => {
       onRefresh={refetchByUser}
       refreshing={isRefetchingByUser}
       ItemSeparatorComponent={() => <Spacer y={8} />}
-      ListEmptyComponent={<EmptyStateScreen />}
       contentContainerStyle={{ padding: 16 }}
     />
   );

@@ -36,8 +36,8 @@ export const getInfiniteTransactionsQueryOptions = ({
     queryFn: ({ pageParam = 1 }) => {
       return getTransactions({
         mode,
-        page: pageParam as number,
         barter_service_id,
+        page: pageParam as number,
       });
     },
     getNextPageParam: (lastPage) => {

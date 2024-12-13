@@ -1,7 +1,7 @@
 import { StyleSheet, View } from "react-native";
 import { Button, Card, Text } from "react-native-paper";
 
-import { EmptyStateScreen, LoadingStateScreen } from "@/components/screens";
+import { LoadingStateScreen } from "@/components/screens";
 import { AppFlashList, AvatarWithName, RatingStars, Spacer } from "@/components/ui";
 import { useRefreshByUser } from "@/hooks/use-refresh-by-user";
 import { useUser } from "@/lib/auth/auth";
@@ -82,7 +82,6 @@ export const TransactionsHistory = ({ barter_service_id }: { barter_service_id?:
       onRefresh={refetchByUser}
       refreshing={isRefetchingByUser}
       ItemSeparatorComponent={() => <Spacer y={8} />}
-      ListEmptyComponent={<EmptyStateScreen />}
       contentContainerStyle={{ padding: 16 }}
     />
   );

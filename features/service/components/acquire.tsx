@@ -3,7 +3,7 @@ import { Card, Text } from "react-native-paper";
 
 import { router } from "expo-router";
 
-import { EmptyStateScreen, LoadingStateScreen } from "@/components/screens";
+import { LoadingStateScreen } from "@/components/screens";
 import { AppFlashList, AvatarWithName, Spacer } from "@/components/ui";
 import { RatingChip } from "@/components/ui/chip";
 import { useRefreshByUser } from "@/hooks/use-refresh-by-user";
@@ -56,7 +56,6 @@ export const Acquire = () => {
       onRefresh={refetchByUser}
       refreshing={isRefetchingByUser}
       ItemSeparatorComponent={() => <Spacer y={8} />}
-      ListEmptyComponent={<EmptyStateScreen />}
       contentContainerStyle={{ padding: 16 }}
     />
   );
