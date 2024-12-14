@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { Keyboard, StyleSheet, View } from "react-native";
-import { HelperText, RadioButton } from "react-native-paper";
+import { Image, Keyboard, ScrollView, StyleSheet, View } from "react-native";
+import { HelperText, IconButton, RadioButton } from "react-native-paper";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { router } from "expo-router";
@@ -13,12 +13,16 @@ import { GroupedButtons } from "@/components/ui/button";
 import { AppDialog } from "@/components/ui/dialog";
 import { AppTextInput, FieldWrapper } from "@/components/ui/form";
 import { useCategories } from "@/features/category/api/get-categories";
+import { useAppTheme } from "@/lib/react-native-paper";
 import { Category } from "@/types/api";
+import { formatImagePickerBase64 } from "@/utils/format";
+import { pickImage } from "@/utils/pick-image";
 
 import { useService } from "../api/get-service";
 import { updateServiceInputSchema, useUpdateService } from "../api/update-service";
 
 export const UpdateService = ({ barter_service_id }: { barter_service_id: string }) => {
+  const { colors } = useAppTheme();
   const serviceQuery = useService({ barter_service_id });
   const categoriesQuery = useCategories();
   const service = serviceQuery.data?.data;
@@ -28,6 +32,7 @@ export const UpdateService = ({ barter_service_id }: { barter_service_id: string
     id: service?.barter_category?.id ?? "",
     name: service?.barter_category?.name ?? "",
   });
+  const [images, setImages] = useState<string[]>(service?.images ?? []);
 
   const updateServiceMutation = useUpdateService({
     mutationConfig: {
@@ -44,6 +49,7 @@ export const UpdateService = ({ barter_service_id }: { barter_service_id: string
     min_price: 0,
     max_price: 0,
     price_unit: "unit",
+    images: [] as string[],
   };
 
   const values = {
@@ -53,6 +59,7 @@ export const UpdateService = ({ barter_service_id }: { barter_service_id: string
     min_price: service?.min_price ?? 0,
     max_price: service?.max_price ?? 0,
     price_unit: service?.price_unit ?? "unit",
+    images: service?.images ?? [],
   };
 
   const {
@@ -77,7 +84,37 @@ export const UpdateService = ({ barter_service_id }: { barter_service_id: string
         name: service.barter_category.name,
       });
     }
+
+    if (service?.images) {
+      setImages(service.images);
+    }
   }, [service]);
+
+  const handlePickImages = async ({ useCamera = false }: { useCamera?: boolean } = {}) => {
+    const result = await pickImage({
+      useCamera,
+      options: {
+        mediaTypes: ["images"],
+        allowsMultipleSelection: true,
+        aspect: [1, 1],
+      },
+    });
+
+    if (!result.canceled && result.assets?.length) {
+      const assets = result.assets.map((asset) => formatImagePickerBase64(asset));
+
+      const updated = [...assets].slice(0, 5);
+
+      setImages(updated);
+      setValue("images", updated);
+    }
+  };
+
+  const handleRemoveImages = (index: number) => {
+    const updated = images.filter((_, i) => i !== index);
+    setImages(updated);
+    setValue("images", updated);
+  };
 
   const handleCategorySelect = (item: Category) => {
     setCategory({ id: item.id, name: item.name });
@@ -155,6 +192,39 @@ export const UpdateService = ({ barter_service_id }: { barter_service_id: string
           </View>
           <HelperText type="info">{`RM${min_price} - RM${max_price} per ${price_unit}`}</HelperText>
         </FieldWrapper>
+
+        {images.length < 5 && (
+          <GroupedButtons
+            buttons={[
+              {
+                label: "Take Photos",
+                mode: "contained-tonal",
+                onPress: () => handlePickImages({ useCamera: true }),
+              },
+              {
+                label: "Choose Photos",
+                mode: "contained-tonal",
+                onPress: () => handlePickImages(),
+              },
+            ]}
+          />
+        )}
+
+        <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.imageScrollView}>
+          {images.map((image, index) => (
+            <View key={index}>
+              <Image source={{ uri: image }} style={styles.image} />
+              <IconButton
+                icon="minus"
+                size={16}
+                style={[styles.removeImageButton]}
+                containerColor={colors.error}
+                iconColor={colors.onError}
+                onPress={() => handleRemoveImages(index)}
+              />
+            </View>
+          ))}
+        </ScrollView>
       </View>
 
       <GroupedButtons
@@ -178,9 +248,21 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     gap: 8,
   },
-
   priceInput: {
     flex: 1,
     minWidth: 0,
+  },
+
+  image: {
+    width: 100,
+    height: 100,
+  },
+  imageScrollView: {
+    gap: 4,
+  },
+  removeImageButton: {
+    position: "absolute",
+    top: 0,
+    right: 0,
   },
 });

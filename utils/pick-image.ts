@@ -10,7 +10,6 @@ export const pickImage = async ({
   let result = null;
 
   const imagePickerOptions: ImagePicker.ImagePickerOptions = {
-    allowsEditing: true,
     quality: 1,
     base64: true,
     ...options,

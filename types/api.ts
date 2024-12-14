@@ -68,6 +68,7 @@ export type Service = {
   deleted_at: Date | null;
   pending_count: number;
   completed_count: number;
+  images: string[] | null;
   barter_provider?: User | null;
   barter_category?: Category | null;
   pivot?: ServicePivot | null;

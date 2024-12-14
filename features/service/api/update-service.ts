@@ -6,6 +6,7 @@ import { api } from "@/lib/axios";
 import { MutationConfig } from "@/lib/react-query";
 import { Service } from "@/types/api";
 
+import { getServiceQueryOptions } from "./get-service";
 import { getInfiniteServicesQueryOptions } from "./get-services";
 
 export const updateServiceInputSchema = z.object({
@@ -16,6 +17,7 @@ export const updateServiceInputSchema = z.object({
   max_price: z.coerce.number().min(1).max(99999999.99).optional(),
   price_unit: z.string().min(1, "Price unit is required").max(255).optional(),
   status: z.string().min(1, "Status is required").optional(),
+  images: z.string().array().optional().nullable(),
 });
 
 export type UpdateServiceInput = z.infer<typeof updateServiceInputSchema>;
@@ -43,6 +45,9 @@ export const useUpdateService = ({ mutationConfig }: UseUpdateServiceOptions = {
     onSuccess: (data, ...args) => {
       queryClient.invalidateQueries({
         queryKey: getInfiniteServicesQueryOptions({ mode: "provide" }).queryKey,
+      });
+      queryClient.invalidateQueries({
+        queryKey: getServiceQueryOptions(data.data.id).queryKey,
       });
 
       useStatusDialog.getState().setStatusDialog({
