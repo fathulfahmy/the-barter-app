@@ -13,12 +13,15 @@ import { formatInvoiceItems, formatSentenceCase } from "@/utils/format";
 import { useInfiniteTransactions } from "../api/get-transactions";
 
 export const TransactionsHistory = ({ barter_service_id }: { barter_service_id?: string }) => {
-  const { data: user } = useUser();
+  const userQuery = useUser();
 
   const transactionsQuery = useInfiniteTransactions({
     mode: "history",
     ...(barter_service_id && { barter_service_id }),
   });
+
+  const user = userQuery.data;
+  const barter_transactions = transactionsQuery.data?.pages.flatMap((page) => page.data.data);
 
   const { isRefetchingByUser, refetchByUser } = useRefreshByUser(transactionsQuery.refetch);
 
@@ -26,7 +29,9 @@ export const TransactionsHistory = ({ barter_service_id }: { barter_service_id?:
     return <LoadingStateScreen />;
   }
 
-  const barter_transactions = transactionsQuery.data?.pages.flatMap((page) => page.data.data);
+  if (userQuery.isLoading || transactionsQuery.isLoading) {
+    return <LoadingStateScreen />;
+  }
 
   const TransactionCard = ({ item, role }: { item: Transaction; role: "acquirer" | "provider" }) => {
     const { colors } = useAppTheme();

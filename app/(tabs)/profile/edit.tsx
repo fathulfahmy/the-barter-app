@@ -1,13 +1,19 @@
 import React from "react";
 
-import { ScreenWrapper } from "@/components/screens";
+import { LoadingStateScreen, ScreenWrapper } from "@/components/screens";
 import UpdateProfile from "@/features/profile/components/update-profile";
 import { useUser } from "@/lib/auth/auth";
 
 const AuthProfileEditScreen = () => {
-  const { data: user } = useUser();
+  const userQuery = useUser();
 
-  if (user?.id === null || user?.id === undefined) return null;
+  const user = userQuery.data;
+
+  if (user === null || user === undefined) return null;
+
+  if (userQuery.isLoading) {
+    return <LoadingStateScreen />;
+  }
 
   return (
     <ScreenWrapper>

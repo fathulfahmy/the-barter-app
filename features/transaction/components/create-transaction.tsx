@@ -7,6 +7,7 @@ import { Checkbox, Text } from "react-native-paper";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { router } from "expo-router";
 
+import { LoadingStateScreen } from "@/components/screens";
 import { AppFlashList } from "@/components/ui";
 import { GroupedButtons } from "@/components/ui/button";
 import { AppTextInput, Error } from "@/components/ui/form";
@@ -15,8 +16,8 @@ import { useUser } from "@/lib/auth/auth";
 import { createTransactionInputSchema, useCreateTransaction } from "../api/create-transaction";
 
 export const CreateTransaction = ({ barter_service_id }: { barter_service_id: string }) => {
-  const { data } = useUser();
-  const enabledServices = data?.barter_services?.filter((item) => item.status === "enabled");
+  const userQuery = useUser();
+  const enabledServices = userQuery.data?.barter_services?.filter((item) => item.status === "enabled");
 
   const [checked, setChecked] = useState<string[]>([]);
 
@@ -57,6 +58,10 @@ export const CreateTransaction = ({ barter_service_id }: { barter_service_id: st
       return serviceIds;
     });
   };
+
+  if (userQuery.isLoading) {
+    return <LoadingStateScreen />;
+  }
 
   return (
     <>

@@ -61,13 +61,6 @@ export const RegisterForm = () => {
         />
       </View>
 
-      <View style={{ gap: 8 }}>
-        <Button onPress={() => router.replace("/login")}>Already have an account? Login</Button>
-        <Button mode="contained" onPress={onSubmit} loading={register.isPending} disabled={register.isPending}>
-          Register
-        </Button>
-      </View>
-
       <GroupedButtons
         vertical
         buttons={[

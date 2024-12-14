@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Keyboard, StyleSheet, View } from "react-native";
@@ -15,18 +15,21 @@ import { AppTextInput, FieldWrapper } from "@/components/ui/form";
 import { useCategories } from "@/features/category/api/get-categories";
 import { Category } from "@/types/api";
 
-import { createServiceInputSchema, useCreateService } from "../api/create-service";
+import { useService } from "../api/get-service";
+import { updateServiceInputSchema, useUpdateService } from "../api/update-service";
 
-export const CreateService = () => {
+export const UpdateService = ({ barter_service_id }: { barter_service_id: string }) => {
+  const serviceQuery = useService({ barter_service_id });
   const categoriesQuery = useCategories();
+  const service = serviceQuery.data?.data;
   const categories = categoriesQuery.data?.data;
 
   const [category, setCategory] = useState({
-    id: "",
-    name: "",
+    id: service?.barter_category?.id ?? "",
+    name: service?.barter_category?.name ?? "",
   });
 
-  const createServiceMutation = useCreateService({
+  const updateServiceMutation = useUpdateService({
     mutationConfig: {
       onSuccess: () => {
         router.dismissAll();
@@ -43,6 +46,15 @@ export const CreateService = () => {
     price_unit: "unit",
   };
 
+  const values = {
+    title: service?.title ?? "",
+    description: service?.description ?? "",
+    barter_category_id: service?.barter_category?.id ?? "",
+    min_price: service?.min_price ?? 0,
+    max_price: service?.max_price ?? 0,
+    price_unit: service?.price_unit ?? "unit",
+  };
+
   const {
     control,
     watch,
@@ -50,21 +62,31 @@ export const CreateService = () => {
     handleSubmit,
     formState: { errors },
   } = useForm({
-    resolver: zodResolver(createServiceInputSchema),
+    resolver: zodResolver(updateServiceInputSchema),
     defaultValues,
+    values,
     mode: "onChange",
   });
 
   const [min_price, max_price, price_unit] = watch(["min_price", "max_price", "price_unit"]);
+
+  useEffect(() => {
+    if (service?.barter_category) {
+      setCategory({
+        id: service.barter_category.id,
+        name: service.barter_category.name,
+      });
+    }
+  }, [service]);
 
   const handleCategorySelect = (item: Category) => {
     setCategory({ id: item.id, name: item.name });
     setValue("barter_category_id", item.id);
   };
 
-  const onSubmit = handleSubmit((values) => createServiceMutation.mutate({ data: values }));
+  const onSubmit = handleSubmit((values) => updateServiceMutation.mutate({ barter_service_id, data: values }));
 
-  if (categoriesQuery.isLoading) {
+  if (serviceQuery.isLoading || categoriesQuery.isLoading) {
     return <LoadingStateScreen />;
   }
 
@@ -140,10 +162,10 @@ export const CreateService = () => {
         buttons={[
           { label: "Cancel", mode: "outlined", onPress: () => router.back() },
           {
-            label: "Add",
+            label: "Save",
             mode: "contained",
             onPress: onSubmit,
-            disabled: createServiceMutation.isPending,
+            disabled: updateServiceMutation.isPending,
           },
         ]}
       />

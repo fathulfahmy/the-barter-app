@@ -6,9 +6,9 @@ import { router } from "expo-router";
 
 import { LoadingStateScreen } from "@/components/screens";
 import { AppFlashList, Spacer } from "@/components/ui";
-import { AppMenu } from "@/components/ui/app-menu";
 import { AppChip } from "@/components/ui/chip";
 import { useUpdateService } from "@/features/service/api/update-service";
+import { useDisclosure } from "@/hooks/use-disclosure";
 import { useRefreshByUser } from "@/hooks/use-refresh-by-user";
 import { useAppTheme } from "@/lib/react-native-paper";
 import { ServiceStatus } from "@/types/api";
@@ -46,6 +46,35 @@ export const Provide = () => {
 
   const services = servicesQuery.data?.pages.flatMap((page) => page.data.data);
 
+  const MenuWrapper = ({ item }: { item: any }) => {
+    const { isOpen, open, close } = useDisclosure();
+
+    return (
+      <Menu
+        visible={isOpen}
+        onDismiss={close}
+        anchor={<IconButton icon="dots-horizontal" onPress={open} style={{ margin: 0 }} />}
+      >
+        <Menu.Item
+          title="Edit"
+          onPress={() => {
+            router.push(`/provide/${item.id}/edit`);
+            close();
+          }}
+        />
+        <Menu.Item
+          title={item.status === "enabled" ? "Disable" : "Enable"}
+          onPress={() =>
+            handleSubmit({
+              status: item.status === "enabled" ? "disabled" : "enabled",
+              barter_service_id: item.id,
+            })
+          }
+        />
+      </Menu>
+    );
+  };
+
   return (
     <AppFlashList
       data={services}
@@ -63,20 +92,7 @@ export const Provide = () => {
               >
                 {item.barter_category?.name}
               </AppChip>
-              <AppMenu
-                renderAnchor={(open) => <IconButton icon="dots-horizontal" onPress={open} style={{ margin: 0 }} />}
-              >
-                <Menu.Item title="Edit" onPress={() => {}} />
-                <Menu.Item
-                  title={item.status === "enabled" ? "Disable" : "Enable"}
-                  onPress={() =>
-                    handleSubmit({
-                      status: item.status === "enabled" ? "disabled" : "enabled",
-                      barter_service_id: item.id,
-                    })
-                  }
-                />
-              </AppMenu>
+              <MenuWrapper item={item} />
             </View>
 
             <View style={styles.cardBody}>

@@ -6,6 +6,7 @@ import { Avatar, TextInput } from "react-native-paper";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { router } from "expo-router";
 
+import { LoadingStateScreen } from "@/components/screens";
 import { GroupedButtons } from "@/components/ui/button";
 import { AppTextInput } from "@/components/ui/form";
 import { useDisclosure } from "@/hooks/use-disclosure";
@@ -17,12 +18,30 @@ import { pickImage } from "@/utils/pick-image";
 import { updateProfileInputSchema, useUpdateProfile } from "../api/update-profile";
 
 const UpdateProfile = ({ user_id }: { user_id: string }) => {
-  const { data: user } = useUser();
+  const userQuery = useUser();
+  const user = userQuery.data;
+
   const { isOpen: passwordVisible, toggle: togglePasswordVisible } = useDisclosure(false);
   const { isOpen: passwordConfirmVisible, toggle: togglePasswordConfirmVisible } = useDisclosure(false);
   const [image, setImage] = useState<string | null>(user?.avatar ?? null);
 
+  const updateProfileMutation = useUpdateProfile({
+    mutationConfig: {
+      onSuccess: () => {
+        router.dismissAll();
+      },
+    },
+  });
+
   const defaultValues = {
+    name: "",
+    avatar: "",
+    email: "",
+    password: "",
+    password_confirmation: "",
+  };
+
+  const values = {
     name: user?.name ?? "",
     avatar: "",
     email: user?.email ?? "",
@@ -38,38 +57,27 @@ const UpdateProfile = ({ user_id }: { user_id: string }) => {
   } = useForm({
     resolver: zodResolver(updateProfileInputSchema),
     defaultValues,
+    values,
     mode: "onChange",
   });
 
   const handlePickImage = async ({ useCamera = false }: { useCamera?: boolean } = {}) => {
-    try {
-      const result = await pickImage({
-        useCamera,
-        options: {
-          mediaTypes: ["images"],
-          aspect: [1, 1],
-        },
-      });
+    const result = await pickImage({
+      useCamera,
+      options: {
+        mediaTypes: ["images"],
+        aspect: [1, 1],
+      },
+    });
 
-      if (!result.canceled && result.assets?.[0]) {
-        const asset = result.assets[0];
-        const base64 = formatImagePickerBase64(asset);
+    if (!result.canceled && result.assets?.[0]) {
+      const asset = result.assets[0];
+      const base64 = formatImagePickerBase64(asset);
 
-        setImage(base64);
-        setValue("avatar", base64);
-      }
-    } catch (error) {
-      console.error(error);
+      setImage(base64);
+      setValue("avatar", base64);
     }
   };
-
-  const updateProfileMutation = useUpdateProfile({
-    mutationConfig: {
-      onSuccess: () => {
-        router.dismissAll();
-      },
-    },
-  });
 
   const onSubmit = handleSubmit((values) => {
     updateProfileMutation.mutate({
@@ -77,6 +85,10 @@ const UpdateProfile = ({ user_id }: { user_id: string }) => {
       data: filterEmptyValues(values),
     });
   });
+
+  if (userQuery.isLoading) {
+    return <LoadingStateScreen />;
+  }
 
   return (
     <>

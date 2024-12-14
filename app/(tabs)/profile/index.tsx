@@ -4,7 +4,7 @@ import { Button, IconButton } from "react-native-paper";
 
 import { Stack, router } from "expo-router";
 
-import { ScreenWrapper } from "@/components/screens";
+import { LoadingStateScreen, ScreenWrapper } from "@/components/screens";
 import { AuthProfile } from "@/features/profile/components/auth-profile";
 import { Provide } from "@/features/service/components/provide";
 import { useLogout, useUser } from "@/lib/auth/auth";
@@ -12,11 +12,17 @@ import { useAppTheme } from "@/lib/react-native-paper";
 
 const AuthProfileScreen = () => {
   const { colors } = useAppTheme();
-  const { data } = useUser();
+  const userQuery = useUser();
+
+  const user = userQuery.data;
 
   const logout = useLogout({ onSuccess: () => router.replace("/(tabs)") });
 
   const onSubmit = () => logout.mutate(undefined);
+
+  if (userQuery.isLoading) {
+    return <LoadingStateScreen />;
+  }
 
   return (
     <>
@@ -34,7 +40,7 @@ const AuthProfileScreen = () => {
       />
 
       <ScreenWrapper>
-        <AuthProfile user={data} />
+        <AuthProfile user={user} />
 
         <Provide />
 
