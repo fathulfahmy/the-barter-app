@@ -1,0 +1,132 @@
+import React, { useState } from "react";
+import { useForm } from "react-hook-form";
+import { View } from "react-native";
+import { Avatar, TextInput } from "react-native-paper";
+
+import { zodResolver } from "@hookform/resolvers/zod";
+import { router } from "expo-router";
+
+import { GroupedButtons } from "@/components/ui/button";
+import { AppTextInput } from "@/components/ui/form";
+import { useDisclosure } from "@/hooks/use-disclosure";
+import { useUser } from "@/lib/auth/auth";
+import { filterEmptyValues } from "@/utils/form";
+import { formatImagePickerBase64 } from "@/utils/format";
+import { pickImage } from "@/utils/pick-image";
+
+import { updateProfileInputSchema, useUpdateProfile } from "../api/update-profile";
+
+const UpdateProfile = ({ user_id }: { user_id: string }) => {
+  const { data: user } = useUser();
+  const { isOpen: passwordVisible, toggle: togglePasswordVisible } = useDisclosure(false);
+  const { isOpen: passwordConfirmVisible, toggle: togglePasswordConfirmVisible } = useDisclosure(false);
+  const [image, setImage] = useState<string | null>(user?.avatar ?? null);
+
+  const defaultValues = {
+    name: user?.name ?? "",
+    avatar: "",
+    email: user?.email ?? "",
+    password: "",
+    password_confirmation: "",
+  };
+
+  const {
+    control,
+    handleSubmit,
+    setValue,
+    formState: { errors },
+  } = useForm({
+    resolver: zodResolver(updateProfileInputSchema),
+    defaultValues,
+    mode: "onChange",
+  });
+
+  const handlePickImage = async ({ useCamera = false }: { useCamera?: boolean } = {}) => {
+    try {
+      const result = await pickImage({
+        useCamera,
+        options: {
+          mediaTypes: ["images"],
+          aspect: [1, 1],
+        },
+      });
+
+      if (!result.canceled && result.assets?.[0]) {
+        const asset = result.assets[0];
+        const base64 = formatImagePickerBase64(asset);
+
+        setImage(base64);
+        setValue("avatar", base64);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const updateProfileMutation = useUpdateProfile({
+    mutationConfig: {
+      onSuccess: () => {
+        router.dismissAll();
+      },
+    },
+  });
+
+  const onSubmit = handleSubmit((values) => {
+    updateProfileMutation.mutate({
+      user_id,
+      data: filterEmptyValues(values),
+    });
+  });
+
+  return (
+    <>
+      <View style={{ flex: 1, gap: 16, padding: 16 }}>
+        <View style={{ alignItems: "center", gap: 8 }}>
+          {image && <Avatar.Image source={{ uri: image }} size={96} />}
+          <GroupedButtons
+            buttons={[
+              { label: "Take a photo", mode: "contained-tonal", onPress: () => handlePickImage() },
+              { label: "Choose a photo", mode: "contained-tonal", onPress: () => handlePickImage({ useCamera: true }) },
+            ]}
+          />
+        </View>
+
+        <AppTextInput control={control} label="Name" name="name" errors={errors.name?.message} inputMode="text" />
+        <AppTextInput control={control} label="Email" name="email" errors={errors.email?.message} inputMode="email" />
+        <AppTextInput
+          control={control}
+          label="Password"
+          name="password"
+          errors={errors.password?.message}
+          secureTextEntry={!passwordVisible}
+          right={<TextInput.Icon icon={passwordVisible ? "eye" : "eye-off"} onPress={togglePasswordVisible} />}
+        />
+        <AppTextInput
+          control={control}
+          label="Confirm Password"
+          name="password_confirmation"
+          errors={errors.password_confirmation?.message}
+          secureTextEntry={!passwordConfirmVisible}
+          right={
+            <TextInput.Icon icon={passwordConfirmVisible ? "eye" : "eye-off"} onPress={togglePasswordConfirmVisible} />
+          }
+        />
+      </View>
+
+      <GroupedButtons
+        variant="bottom"
+        buttons={[
+          { label: "Cancel", mode: "outlined", onPress: () => router.back() },
+          {
+            label: "Save",
+            mode: "contained",
+            onPress: onSubmit,
+            disabled: updateProfileMutation.isPending,
+          },
+        ]}
+      />
+    </>
+  );
+};
+
+export default UpdateProfile;

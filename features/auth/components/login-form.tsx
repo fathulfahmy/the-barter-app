@@ -1,11 +1,12 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import { View } from "react-native";
-import { Button, TextInput } from "react-native-paper";
+import { TextInput } from "react-native-paper";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { router } from "expo-router";
 
+import { GroupedButtons } from "@/components/ui/button";
 import { AppTextInput } from "@/components/ui/form";
 import { useDisclosure } from "@/hooks/use-disclosure";
 import { loginInputSchema, useLogin } from "@/lib/auth/auth";
@@ -46,12 +47,13 @@ export const LoginForm = () => {
         />
       </View>
 
-      <View style={{ gap: 8 }}>
-        <Button onPress={() => router.replace("/register")}>Don't have an account? Register</Button>
-        <Button mode="contained" onPress={onSubmit} loading={login.isPending} disabled={login.isPending}>
-          Login
-        </Button>
-      </View>
+      <GroupedButtons
+        vertical
+        buttons={[
+          { label: "Don't have an account? Register", onPress: () => router.replace("/register") },
+          { label: "Login", mode: "contained", onPress: onSubmit, loading: login.isPending, disabled: login.isPending },
+        ]}
+      />
     </>
   );
 };

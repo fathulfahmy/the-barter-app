@@ -1,12 +1,17 @@
 import React from "react";
-import { Text } from "react-native-paper";
 
 import { ScreenWrapper } from "@/components/screens";
+import UpdateProfile from "@/features/profile/components/update-profile";
+import { useUser } from "@/lib/auth/auth";
 
 const AuthProfileEditScreen = () => {
+  const { data: user } = useUser();
+
+  if (user?.id === null || user?.id === undefined) return null;
+
   return (
     <ScreenWrapper>
-      <Text variant="bodyMedium">ProfileEditScreen</Text>
+      <UpdateProfile user_id={user.id} />
     </ScreenWrapper>
   );
 };

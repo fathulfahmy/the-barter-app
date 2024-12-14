@@ -1,15 +1,17 @@
 import React from "react";
 import { View } from "react-native";
-import { Button } from "react-native-paper";
+import { Button, IconButton } from "react-native-paper";
 
-import { router } from "expo-router";
+import { Stack, router } from "expo-router";
 
 import { ScreenWrapper } from "@/components/screens";
 import { AuthProfile } from "@/features/profile/components/auth-profile";
 import { Provide } from "@/features/service/components/provide";
 import { useLogout, useUser } from "@/lib/auth/auth";
+import { useAppTheme } from "@/lib/react-native-paper";
 
 const AuthProfileScreen = () => {
+  const { colors } = useAppTheme();
   const { data } = useUser();
 
   const logout = useLogout({ onSuccess: () => router.replace("/(tabs)") });
@@ -17,17 +19,32 @@ const AuthProfileScreen = () => {
   const onSubmit = () => logout.mutate(undefined);
 
   return (
-    <ScreenWrapper>
-      <AuthProfile user={data} />
+    <>
+      <Stack.Screen
+        options={{
+          headerRight: () => (
+            <IconButton
+              icon="pencil"
+              iconColor={colors.onPrimary}
+              onPress={() => router.push("/profile/edit")}
+              style={{ margin: 0 }}
+            />
+          ),
+        }}
+      />
 
-      <Provide />
+      <ScreenWrapper>
+        <AuthProfile user={data} />
 
-      <View style={{ paddingVertical: 8, paddingHorizontal: 16 }}>
-        <Button mode="contained" onPress={onSubmit} loading={logout.isPending} disabled={logout.isPending}>
-          Logout
-        </Button>
-      </View>
-    </ScreenWrapper>
+        <Provide />
+
+        <View style={{ paddingVertical: 8, paddingHorizontal: 16 }}>
+          <Button mode="contained" onPress={onSubmit} loading={logout.isPending} disabled={logout.isPending}>
+            Logout
+          </Button>
+        </View>
+      </ScreenWrapper>
+    </>
   );
 };
 

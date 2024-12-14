@@ -34,6 +34,7 @@ export type User = {
   created_at: Date;
   updated_at: Date;
   deleted_at: Date | null;
+  avatar: string | null;
   barter_services?: Service[];
 };
 

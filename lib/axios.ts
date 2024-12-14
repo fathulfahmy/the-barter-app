@@ -8,7 +8,6 @@ function authRequestInterceptor(config: InternalAxiosRequestConfig) {
     config.headers.Accept = "application/json";
   }
 
-  config.headers["Content-Type"] = "application/json";
   return config;
 }
 

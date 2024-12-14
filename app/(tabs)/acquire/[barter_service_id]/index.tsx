@@ -16,6 +16,7 @@ const AcquireDetailScreen = () => {
       </View>
 
       <GroupedButtons
+        variant="bottom"
         buttons={[
           { label: "Chat", mode: "outlined", onPress: () => router.push(`/chat/${barter_service_id}`) },
           { label: "Request", mode: "contained", onPress: () => router.push(`/acquire/${barter_service_id}/request`) },

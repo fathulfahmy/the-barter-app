@@ -6,6 +6,7 @@ import { Button, TextInput } from "react-native-paper";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { router } from "expo-router";
 
+import { GroupedButtons } from "@/components/ui/button";
 import { AppTextInput } from "@/components/ui/form";
 import { useDisclosure } from "@/hooks/use-disclosure";
 import { registerInputSchema, useRegister } from "@/lib/auth/auth";
@@ -66,6 +67,20 @@ export const RegisterForm = () => {
           Register
         </Button>
       </View>
+
+      <GroupedButtons
+        vertical
+        buttons={[
+          { label: "Already have an account? Login", onPress: () => router.replace("/login") },
+          {
+            label: "Register",
+            mode: "contained",
+            onPress: onSubmit,
+            loading: register.isPending,
+            disabled: register.isPending,
+          },
+        ]}
+      />
     </>
   );
 };

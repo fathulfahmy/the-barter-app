@@ -8,7 +8,11 @@ import { formatAvatarName } from "@/utils/format";
 export const AuthProfile = ({ user }: { user: User | null | undefined }) => {
   return (
     <View style={{ alignItems: "center", gap: 8, padding: 16 }}>
-      <Avatar.Text label={formatAvatarName(user?.name)} size={96} />
+      {user?.avatar ? (
+        <Avatar.Image source={{ uri: user.avatar }} size={96} />
+      ) : (
+        <Avatar.Text label={formatAvatarName(user?.name)} size={96} />
+      )}
       <Text variant="titleMedium">{user?.name}</Text>
     </View>
   );

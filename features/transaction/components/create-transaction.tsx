@@ -96,6 +96,7 @@ export const CreateTransaction = ({ barter_service_id }: { barter_service_id: st
       </View>
 
       <GroupedButtons
+        variant="bottom"
         buttons={[
           { label: "Cancel", mode: "outlined", onPress: () => router.back() },
           {

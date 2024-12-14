@@ -132,6 +132,7 @@ export const CreateService = () => {
       </View>
 
       <GroupedButtons
+        variant="bottom"
         buttons={[
           { label: "Cancel", mode: "outlined", onPress: () => router.back() },
           {
