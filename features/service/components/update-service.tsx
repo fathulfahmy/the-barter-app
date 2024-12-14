@@ -15,8 +15,7 @@ import { AppTextInput, FieldWrapper } from "@/components/ui/form";
 import { useCategories } from "@/features/category/api/get-categories";
 import { useAppTheme } from "@/lib/react-native-paper";
 import { Category } from "@/types/api";
-import { formatImagePickerBase64 } from "@/utils/format";
-import { pickImage } from "@/utils/pick-image";
+import { getImagePickerBase64Image, getImagePickerResult } from "@/utils/image-picker";
 
 import { useService } from "../api/get-service";
 import { updateServiceInputSchema, useUpdateService } from "../api/update-service";
@@ -91,7 +90,7 @@ export const UpdateService = ({ barter_service_id }: { barter_service_id: string
   }, [service]);
 
   const handlePickImages = async ({ useCamera = false }: { useCamera?: boolean } = {}) => {
-    const result = await pickImage({
+    const result = await getImagePickerResult({
       useCamera,
       options: {
         mediaTypes: ["images"],
@@ -101,7 +100,7 @@ export const UpdateService = ({ barter_service_id }: { barter_service_id: string
     });
 
     if (!result.canceled && result.assets?.length) {
-      const assets = result.assets.map((asset) => formatImagePickerBase64(asset));
+      const assets = result.assets.map((asset) => getImagePickerBase64Image(asset));
 
       const updated = [...assets].slice(0, 5);
 

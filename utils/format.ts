@@ -1,5 +1,4 @@
 import { default as dayjs } from "dayjs";
-import { ImagePickerAsset } from "expo-image-picker";
 
 import { Invoice, Service } from "@/types/api";
 
@@ -71,8 +70,4 @@ export const formatServicePrice = (service: Service | null | undefined) => {
 
 export const formatRating = (rating: number | null | undefined) => {
   return rating?.toFixed(1) ?? 0.0;
-};
-
-export const formatImagePickerBase64 = (asset: ImagePickerAsset) => {
-  return `data:image/${asset.mimeType};base64,${asset.base64}`;
 };

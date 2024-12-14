@@ -1,6 +1,6 @@
 import * as ImagePicker from "expo-image-picker";
 
-export const pickImage = async ({
+export const getImagePickerResult = async ({
   useCamera = false,
   options,
 }: {
@@ -23,4 +23,8 @@ export const pickImage = async ({
   }
 
   return result;
+};
+
+export const getImagePickerBase64Image = (asset: ImagePicker.ImagePickerAsset) => {
+  return `data:image/jpeg;base64,${asset.base64}`;
 };

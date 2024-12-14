@@ -12,8 +12,7 @@ import { AppTextInput } from "@/components/ui/form";
 import { useDisclosure } from "@/hooks/use-disclosure";
 import { useUser } from "@/lib/auth/auth";
 import { filterEmptyValues } from "@/utils/form";
-import { formatImagePickerBase64 } from "@/utils/format";
-import { pickImage } from "@/utils/pick-image";
+import { getImagePickerBase64Image, getImagePickerResult } from "@/utils/image-picker";
 
 import { updateProfileInputSchema, useUpdateProfile } from "../api/update-profile";
 
@@ -62,7 +61,7 @@ const UpdateProfile = ({ user_id }: { user_id: string }) => {
   });
 
   const handlePickImage = async ({ useCamera = false }: { useCamera?: boolean } = {}) => {
-    const result = await pickImage({
+    const result = await getImagePickerResult({
       useCamera,
       options: {
         mediaTypes: ["images"],
@@ -72,7 +71,7 @@ const UpdateProfile = ({ user_id }: { user_id: string }) => {
 
     if (!result.canceled && result.assets?.[0]) {
       const asset = result.assets[0];
-      const base64 = formatImagePickerBase64(asset);
+      const base64 = getImagePickerBase64Image(asset);
 
       setImage(base64);
       setValue("avatar", base64);
