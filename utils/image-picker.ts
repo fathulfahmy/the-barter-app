@@ -11,7 +11,6 @@ export const getImagePickerResult = async ({
 
   const imagePickerOptions: ImagePicker.ImagePickerOptions = {
     quality: 1,
-    base64: true,
     ...options,
   };
 
@@ -23,8 +22,4 @@ export const getImagePickerResult = async ({
   }
 
   return result;
-};
-
-export const getImagePickerBase64Image = (asset: ImagePicker.ImagePickerAsset) => {
-  return `data:image/jpeg;base64,${asset.base64}`;
 };

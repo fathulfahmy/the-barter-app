@@ -4,6 +4,7 @@ import { View } from "react-native";
 import { Avatar, TextInput } from "react-native-paper";
 
 import { zodResolver } from "@hookform/resolvers/zod";
+import * as ImagePicker from "expo-image-picker";
 import { router } from "expo-router";
 
 import { LoadingStateScreen } from "@/components/screens";
@@ -11,8 +12,9 @@ import { GroupedButtons } from "@/components/ui/button";
 import { AppTextInput } from "@/components/ui/form";
 import { useDisclosure } from "@/hooks/use-disclosure";
 import { useUser } from "@/lib/auth/auth";
+import { Media } from "@/types/api";
 import { filterEmptyValues } from "@/utils/form";
-import { getImagePickerBase64Image, getImagePickerResult } from "@/utils/image-picker";
+import { getImagePickerResult } from "@/utils/image-picker";
 
 import { updateProfileInputSchema, useUpdateProfile } from "../api/update-profile";
 
@@ -22,7 +24,8 @@ const UpdateProfile = ({ user_id }: { user_id: string }) => {
 
   const { isOpen: passwordVisible, toggle: togglePasswordVisible } = useDisclosure(false);
   const { isOpen: passwordConfirmVisible, toggle: togglePasswordConfirmVisible } = useDisclosure(false);
-  const [image, setImage] = useState<string | null>(user?.avatar ?? null);
+
+  const [image, setImage] = useState<string>(user?.avatar?.uri ?? "");
 
   const updateProfileMutation = useUpdateProfile({
     mutationConfig: {
@@ -34,7 +37,7 @@ const UpdateProfile = ({ user_id }: { user_id: string }) => {
 
   const defaultValues = {
     name: "",
-    avatar: "",
+    avatar: {} as Media,
     email: "",
     password: "",
     password_confirmation: "",
@@ -42,7 +45,7 @@ const UpdateProfile = ({ user_id }: { user_id: string }) => {
 
   const values = {
     name: user?.name ?? "",
-    avatar: "",
+    avatar: user?.avatar ?? {},
     email: user?.email ?? "",
     password: "",
     password_confirmation: "",
@@ -61,6 +64,15 @@ const UpdateProfile = ({ user_id }: { user_id: string }) => {
   });
 
   const handlePickImage = async ({ useCamera = false }: { useCamera?: boolean } = {}) => {
+    const permission = useCamera
+      ? await ImagePicker.requestCameraPermissionsAsync()
+      : await ImagePicker.requestMediaLibraryPermissionsAsync();
+
+    if (!permission.granted) {
+      alert(`${useCamera ? "Camera permission is required" : "Library permission is required"}`);
+      return;
+    }
+
     const result = await getImagePickerResult({
       useCamera,
       options: {
@@ -70,11 +82,16 @@ const UpdateProfile = ({ user_id }: { user_id: string }) => {
     });
 
     if (!result.canceled && result.assets?.[0]) {
-      const asset = result.assets[0];
-      const base64 = getImagePickerBase64Image(asset);
+      const updatedFile: Media = {
+        uri: result.assets[0].uri,
+        name: result.assets[0].fileName || `image_${Date.now()}.jpg`,
+        type: result.assets[0].type || "image/jpeg",
+      };
 
-      setImage(base64);
-      setValue("avatar", base64);
+      setValue("avatar", updatedFile);
+
+      const updatedImage = result.assets[0].uri;
+      setImage(updatedImage);
     }
   };
 
@@ -96,8 +113,8 @@ const UpdateProfile = ({ user_id }: { user_id: string }) => {
           {image && <Avatar.Image source={{ uri: image }} size={96} />}
           <GroupedButtons
             buttons={[
-              { label: "Take a photo", mode: "contained-tonal", onPress: () => handlePickImage() },
-              { label: "Choose a photo", mode: "contained-tonal", onPress: () => handlePickImage({ useCamera: true }) },
+              { label: "Take a photo", mode: "contained-tonal", onPress: () => handlePickImage({ useCamera: true }) },
+              { label: "Choose a photo", mode: "contained-tonal", onPress: () => handlePickImage() },
             ]}
           />
         </View>

@@ -26,6 +26,12 @@ export type Paginator<T> = {
   total: number;
 };
 
+export type Media = {
+  uri: string;
+  name: string | null;
+  type: string | null;
+};
+
 export type User = {
   id: string;
   name: string;
@@ -34,7 +40,7 @@ export type User = {
   created_at: Date;
   updated_at: Date;
   deleted_at: Date | null;
-  avatar: string | null;
+  avatar: Media | null;
   barter_services?: Service[];
 };
 
@@ -68,7 +74,7 @@ export type Service = {
   deleted_at: Date | null;
   pending_count: number;
   completed_count: number;
-  images: string[] | null;
+  images: Media[];
   barter_provider?: User | null;
   barter_category?: Category | null;
   pivot?: ServicePivot | null;

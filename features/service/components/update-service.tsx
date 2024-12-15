@@ -5,6 +5,7 @@ import { Image, Keyboard, ScrollView, StyleSheet, View } from "react-native";
 import { HelperText, IconButton, RadioButton } from "react-native-paper";
 
 import { zodResolver } from "@hookform/resolvers/zod";
+import * as ImagePicker from "expo-image-picker";
 import { router } from "expo-router";
 
 import { LoadingStateScreen } from "@/components/screens";
@@ -14,8 +15,8 @@ import { AppDialog } from "@/components/ui/dialog";
 import { AppTextInput, FieldWrapper } from "@/components/ui/form";
 import { useCategories } from "@/features/category/api/get-categories";
 import { useAppTheme } from "@/lib/react-native-paper";
-import { Category } from "@/types/api";
-import { getImagePickerBase64Image, getImagePickerResult } from "@/utils/image-picker";
+import { Category, Media } from "@/types/api";
+import { getImagePickerResult } from "@/utils/image-picker";
 
 import { useService } from "../api/get-service";
 import { updateServiceInputSchema, useUpdateService } from "../api/update-service";
@@ -31,7 +32,8 @@ export const UpdateService = ({ barter_service_id }: { barter_service_id: string
     id: service?.barter_category?.id ?? "",
     name: service?.barter_category?.name ?? "",
   });
-  const [images, setImages] = useState<string[]>(service?.images ?? []);
+  const [images, setImages] = useState<string[]>(service?.images.map((img) => img.uri) ?? []);
+  const [files, setFiles] = useState<Media[]>(service?.images ?? []);
 
   const updateServiceMutation = useUpdateService({
     mutationConfig: {
@@ -48,7 +50,7 @@ export const UpdateService = ({ barter_service_id }: { barter_service_id: string
     min_price: 0,
     max_price: 0,
     price_unit: "unit",
-    images: [] as string[],
+    images: [] as Media[],
   };
 
   const values = {
@@ -85,11 +87,20 @@ export const UpdateService = ({ barter_service_id }: { barter_service_id: string
     }
 
     if (service?.images) {
-      setImages(service.images);
+      setImages(service.images.map((img) => img.uri));
     }
   }, [service]);
 
   const handlePickImages = async ({ useCamera = false }: { useCamera?: boolean } = {}) => {
+    const permission = useCamera
+      ? await ImagePicker.requestCameraPermissionsAsync()
+      : await ImagePicker.requestMediaLibraryPermissionsAsync();
+
+    if (!permission.granted) {
+      alert(`${useCamera ? "Camera permission is required" : "Library permission is required"}`);
+      return;
+    }
+
     const result = await getImagePickerResult({
       useCamera,
       options: {
@@ -99,20 +110,30 @@ export const UpdateService = ({ barter_service_id }: { barter_service_id: string
       },
     });
 
-    if (!result.canceled && result.assets?.length) {
-      const assets = result.assets.map((asset) => getImagePickerBase64Image(asset));
+    if (!result.canceled) {
+      const newFiles: Media[] = result.assets.map((asset) => ({
+        uri: asset.uri,
+        name: asset.fileName || `image_${Date.now()}.jpg`,
+        type: asset.type || "image/jpeg",
+      }));
+      const updatedFiles = [...files, ...newFiles].slice(0, 5);
+      setFiles(updatedFiles);
+      setValue("images", updatedFiles);
 
-      const updated = [...assets].slice(0, 5);
+      const newImages = result.assets.map((asset) => asset.uri);
+      const updatedImages = [...images, ...newImages].slice(0, 5);
 
-      setImages(updated);
-      setValue("images", updated);
+      setImages(updatedImages);
     }
   };
 
   const handleRemoveImages = (index: number) => {
-    const updated = images.filter((_, i) => i !== index);
-    setImages(updated);
-    setValue("images", updated);
+    const updatedFiles = files.filter((_, i) => i !== index);
+    setFiles(updatedFiles);
+    setValue("images", updatedFiles);
+
+    const updatedImages = images.filter((_, i) => i !== index);
+    setImages(updatedImages);
   };
 
   const handleCategorySelect = (item: Category) => {

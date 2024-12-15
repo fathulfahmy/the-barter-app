@@ -19,7 +19,7 @@ export const AvatarWithName: React.FC<AvatarWithNameProps> = ({ user, size, vari
   return (
     <View style={{ flexDirection: "row", alignItems: "center", gap: 8 }} {...props}>
       {user?.avatar ? (
-        <Avatar.Image source={{ uri: user.avatar }} size={size ?? fonts.bodyMedium.fontSize} />
+        <Avatar.Image source={{ uri: user.avatar.uri }} size={size ?? fonts.bodyMedium.fontSize} />
       ) : (
         <Avatar.Text label={formatAvatarName(user?.name)} size={(size ?? fonts.bodyMedium.fontSize) * 2} />
       )}

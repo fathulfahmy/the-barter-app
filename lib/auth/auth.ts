@@ -1,6 +1,7 @@
 import { z } from "zod";
 
 import { AuthResponse, User } from "@/types/api";
+import { zodPassword } from "@/utils/form";
 
 import { api } from "../axios";
 import { configureAuth } from "./react-query-auth";
@@ -32,13 +33,7 @@ export const registerInputSchema = z
   .object({
     name: z.string().min(1, "Name is required"),
     email: z.string().min(1, "Email is required").email("Please enter a valid email address."),
-    password: z
-      .string()
-      .min(8, "Password must be at least 8 characters long")
-      .regex(/[A-Z]/, "Password must contain at least one uppercase letter")
-      .regex(/[a-z]/, "Password must contain at least one lowercase letter")
-      .regex(/[0-9]/, "Password must contain at least one digit")
-      .regex(/[^a-zA-Z0-9]/, "Password must contain at least one special character"),
+    password: zodPassword(),
     password_confirmation: z.string().min(1, "Password confirmation is required"),
   })
   .refine((data) => data.password === data.password_confirmation, {

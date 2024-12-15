@@ -5,6 +5,7 @@ import { useStatusDialog } from "@/components/ui/dialog";
 import { api } from "@/lib/axios";
 import { MutationConfig } from "@/lib/react-query";
 import { Service } from "@/types/api";
+import { appendMultipleMediaFormData, getFormData, zodMedia } from "@/utils/form";
 
 import { getServiceQueryOptions } from "./get-service";
 import { getInfiniteServicesQueryOptions } from "./get-services";
@@ -17,7 +18,7 @@ export const updateServiceInputSchema = z.object({
   max_price: z.coerce.number().min(1).max(99999999.99).optional(),
   price_unit: z.string().min(1, "Price unit is required").max(255).optional(),
   status: z.string().min(1, "Status is required").optional(),
-  images: z.string().array().optional().nullable(),
+  images: z.array(zodMedia()).optional().nullable(),
 });
 
 export type UpdateServiceInput = z.infer<typeof updateServiceInputSchema>;
@@ -29,7 +30,17 @@ export const updateService = ({
   barter_service_id: string;
   data: UpdateServiceInput;
 }): Promise<{ data: Service }> => {
-  return api.patch(`/barter_services/${barter_service_id}`, data);
+  const formData = getFormData({ data });
+
+  appendMultipleMediaFormData({ formData, data, name: "images" });
+
+  formData.append("_method", "patch");
+
+  return api.post(`/barter_services/${barter_service_id}`, formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
 };
 
 type UseUpdateServiceOptions = {
