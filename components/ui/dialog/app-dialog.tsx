@@ -7,7 +7,7 @@ import { formatSentenceCase } from "@/utils/format";
 
 type AppDialogProps = {
   title?: string;
-  body: React.ReactNode;
+  body: React.ReactElement;
   renderTriggerButton: (open: () => void) => React.ReactElement;
   cancelButtonText?: string;
   confirmButtonText?: string;

@@ -13,7 +13,7 @@ import { Notification } from "@/components/ui/notification";
 import { useAppState } from "@/hooks/use-app-state";
 import { useOnlineManager } from "@/hooks/use-online-manager";
 import { TokenProvider } from "@/lib/auth/token";
-import { AppLightTheme } from "@/types/react-native-paper";
+import { AppLightTheme } from "@/lib/react-native-paper";
 
 function onAppStateChange(status: AppStateStatus) {
   if (Platform.OS !== "web") {

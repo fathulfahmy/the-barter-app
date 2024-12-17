@@ -8,13 +8,12 @@ import { LoginForm } from "@/features/auth/components/login-form";
 const LoginScreen = () => {
   const insets = useSafeAreaInsets();
 
-  const contentContainerStyle = {
-    padding: 16,
+  const containerStyle = {
     paddingBottom: Platform.OS === "web" ? 16 : insets.bottom,
   };
 
   return (
-    <ScreenWrapper contentContainerStyle={contentContainerStyle}>
+    <ScreenWrapper style={containerStyle}>
       <LoginForm />
     </ScreenWrapper>
   );

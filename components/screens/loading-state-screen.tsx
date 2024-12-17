@@ -5,7 +5,7 @@ import { ScreenWrapper } from "./screen-wrapper";
 
 export const LoadingStateScreen = () => {
   return (
-    <ScreenWrapper contentContainerStyle={{ alignItems: "center", justifyContent: "center" }}>
+    <ScreenWrapper style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
       <ActivityIndicator size={"large"} />
     </ScreenWrapper>
   );

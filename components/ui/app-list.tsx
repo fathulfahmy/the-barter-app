@@ -5,11 +5,11 @@ import { FlashList, FlashListProps } from "@shopify/flash-list";
 
 import { EmptyStateScreen } from "../screens";
 
-type AppFlashListProps<T> = FlashListProps<T> & {
+type AppListProps<T> = FlashListProps<T> & {
   containerStyle?: StyleProp<ViewStyle>;
 };
 
-export const AppFlashList = <T,>({ containerStyle, ...props }: AppFlashListProps<T>) => {
+export const AppList = <T,>({ containerStyle, ...props }: AppListProps<T>) => {
   return (
     <View style={[styles.container, containerStyle]}>
       <FlashList

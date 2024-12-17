@@ -1,9 +1,9 @@
 import { z } from "zod";
 
 import { AuthResponse, User } from "@/types/api";
-import { zodPassword } from "@/utils/form";
 
 import { api } from "../axios";
+import { zodPassword } from "../zod";
 import { configureAuth } from "./react-query-auth";
 
 // api call definitions for auth (types, schemas, requests):

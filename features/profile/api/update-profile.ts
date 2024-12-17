@@ -4,12 +4,13 @@ import { z } from "zod";
 import { useStatusDialog } from "@/components/ui/dialog";
 import { api } from "@/lib/axios";
 import { MutationConfig } from "@/lib/react-query";
+import { zodMedia, zodPassword } from "@/lib/zod";
 import { User } from "@/types/api";
-import { appendMediaFormData, getFormData, zodMedia, zodPassword } from "@/utils/form";
+import { createFormData } from "@/utils/form";
 
 export const updateProfileInputSchema = z
   .object({
-    avatar: zodMedia().optional().nullable(),
+    avatar: zodMedia().or(z.instanceof(File)).optional().nullable(),
     name: z.string().min(1, "Name is required").optional(),
     email: z.string().min(1, "Email is required").email("Please enter a valid email address.").optional(),
     password: zodPassword().optional(),
@@ -23,9 +24,7 @@ export const updateProfileInputSchema = z
 export type UpdateProfileInput = z.infer<typeof updateProfileInputSchema>;
 
 export const updateProfile = ({ user_id, data }: { user_id: string; data: UpdateProfileInput }): Promise<User> => {
-  const formData = getFormData({ data });
-
-  appendMediaFormData({ formData, data, name: "avatar" });
+  const formData = createFormData(data);
 
   formData.append("_method", "patch");
 

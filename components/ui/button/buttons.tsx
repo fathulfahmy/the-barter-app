@@ -8,14 +8,14 @@ type ActionButtons = Omit<ButtonProps, "children"> & {
   label: string;
 };
 
-type GroupedButtonsProps = ViewProps & {
+type ButtonsProps = ViewProps & {
   buttons: ActionButtons[];
   vertical?: boolean;
   variant?: "default" | "bottom";
   style?: StyleProp<ViewStyle>;
 };
 
-export const GroupedButtons: React.FC<GroupedButtonsProps> = ({
+export const Buttons: React.FC<ButtonsProps> = ({
   buttons,
   vertical = false,
   variant = "default",

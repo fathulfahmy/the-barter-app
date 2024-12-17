@@ -1,1 +1,1 @@
-export * from "./grouped-buttons";
+export * from "./buttons";

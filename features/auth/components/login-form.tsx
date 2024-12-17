@@ -1,13 +1,14 @@
 import React from "react";
 import { useForm } from "react-hook-form";
-import { View } from "react-native";
+import { StyleSheet } from "react-native";
 import { TextInput } from "react-native-paper";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { router } from "expo-router";
 
-import { GroupedButtons } from "@/components/ui/button";
-import { AppTextInput } from "@/components/ui/form";
+import { KeyboardWrapper } from "@/components/screens";
+import { Buttons } from "@/components/ui/button";
+import { FormInput } from "@/components/ui/form";
 import { useDisclosure } from "@/hooks/use-disclosure";
 import { loginInputSchema, useLogin } from "@/lib/auth/auth";
 
@@ -35,9 +36,9 @@ export const LoginForm = () => {
 
   return (
     <>
-      <View style={{ flex: 1, gap: 16 }}>
-        <AppTextInput control={control} label="Email" name="email" errors={errors.email?.message} inputMode="email" />
-        <AppTextInput
+      <KeyboardWrapper contentContainerStyle={styles.form}>
+        <FormInput control={control} label="Email" name="email" errors={errors.email?.message} inputMode="email" />
+        <FormInput
           control={control}
           label="Password"
           name="password"
@@ -45,15 +46,26 @@ export const LoginForm = () => {
           secureTextEntry={!passwordVisible}
           right={<TextInput.Icon icon={passwordVisible ? "eye" : "eye-off"} onPress={togglePasswordVisibility} />}
         />
-      </View>
+      </KeyboardWrapper>
 
-      <GroupedButtons
+      <Buttons
         vertical
         buttons={[
           { label: "Don't have an account? Register", onPress: () => router.replace("/register") },
-          { label: "Login", mode: "contained", onPress: onSubmit, loading: login.isPending, disabled: login.isPending },
+          { label: "Login", mode: "contained", onPress: onSubmit, disabled: login.isPending, loading: login.isPending },
         ]}
+        style={styles.buttons}
       />
     </>
   );
 };
+
+const styles = StyleSheet.create({
+  form: {
+    gap: 16,
+    padding: 16,
+  },
+  buttons: {
+    paddingHorizontal: 16,
+  },
+});

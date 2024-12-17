@@ -1,10 +1,11 @@
 import React from "react";
-import { StyleSheet, View } from "react-native";
+import { ScrollView, StyleSheet, View } from "react-native";
 import { Text } from "react-native-paper";
 
 import { Link } from "expo-router";
 
 import { LoadingStateScreen } from "@/components/screens";
+import { Gallery } from "@/components/ui";
 import { AppChip, RatingChip } from "@/components/ui/chip";
 import { useAppTheme } from "@/lib/react-native-paper";
 import { formatServicePrice } from "@/utils/format";
@@ -25,7 +26,7 @@ export const Service = ({ barter_service_id }: { barter_service_id: string }) =>
   if (!service) return null;
 
   return (
-    <View style={styles.container}>
+    <ScrollView contentContainerStyle={styles.container}>
       <AppChip>{service.barter_category?.name}</AppChip>
 
       <Text variant="titleLarge">{service.title}</Text>
@@ -45,7 +46,9 @@ export const Service = ({ barter_service_id }: { barter_service_id: string }) =>
           </Link>
         </View>
       )}
-    </View>
+
+      <Gallery imageUris={service.images.map((image) => image.uri)} />
+    </ScrollView>
   );
 };
 

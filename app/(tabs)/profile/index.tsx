@@ -1,5 +1,5 @@
 import React from "react";
-import { View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { Button, IconButton } from "react-native-paper";
 
 import { Stack, router } from "expo-router";
@@ -44,8 +44,8 @@ const AuthProfileScreen = () => {
 
         <Provide />
 
-        <View style={{ paddingVertical: 8, paddingHorizontal: 16 }}>
-          <Button mode="contained" onPress={onSubmit} loading={logout.isPending} disabled={logout.isPending}>
+        <View style={styles.button}>
+          <Button mode="contained" onPress={onSubmit} disabled={logout.isPending} loading={logout.isPending}>
             Logout
           </Button>
         </View>
@@ -55,3 +55,10 @@ const AuthProfileScreen = () => {
 };
 
 export default AuthProfileScreen;
+
+const styles = StyleSheet.create({
+  button: {
+    paddingVertical: 8,
+    paddingHorizontal: 16,
+  },
+});

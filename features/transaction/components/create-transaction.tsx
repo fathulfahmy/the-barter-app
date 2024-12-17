@@ -1,16 +1,15 @@
-import React from "react";
-import { useState } from "react";
+import React, { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { Checkbox, Text } from "react-native-paper";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { router } from "expo-router";
 
-import { LoadingStateScreen } from "@/components/screens";
-import { AppFlashList } from "@/components/ui";
-import { GroupedButtons } from "@/components/ui/button";
-import { AppTextInput, Error } from "@/components/ui/form";
+import { KeyboardWrapper, LoadingStateScreen } from "@/components/screens";
+import { AppList } from "@/components/ui";
+import { Buttons } from "@/components/ui/button";
+import { FormError, FormInput } from "@/components/ui/form";
 import { useUser } from "@/lib/auth/auth";
 
 import { createTransactionInputSchema, useCreateTransaction } from "../api/create-transaction";
@@ -65,8 +64,8 @@ export const CreateTransaction = ({ barter_service_id }: { barter_service_id: st
 
   return (
     <>
-      <View style={{ flex: 1, gap: 32, padding: 16 }}>
-        <AppTextInput
+      <KeyboardWrapper contentContainerStyle={styles.container}>
+        <FormInput
           control={control}
           label="Amount (RM)"
           name="amount"
@@ -74,15 +73,15 @@ export const CreateTransaction = ({ barter_service_id }: { barter_service_id: st
           inputMode="decimal"
         />
 
-        <View style={{ flex: 1, gap: 8 }}>
+        <View style={styles.services}>
           <Text variant="labelLarge">Services</Text>
-          <Error messages={errors.barter_service_ids?.message} />
+          <FormError messages={errors.barter_service_ids?.message} />
 
           <Controller
             control={control}
             name="barter_service_ids"
             render={() => (
-              <AppFlashList
+              <AppList
                 data={enabledServices}
                 extraData={checked}
                 keyExtractor={(item) => item.id}
@@ -98,9 +97,9 @@ export const CreateTransaction = ({ barter_service_id }: { barter_service_id: st
             )}
           />
         </View>
-      </View>
+      </KeyboardWrapper>
 
-      <GroupedButtons
+      <Buttons
         variant="bottom"
         buttons={[
           { label: "Cancel", mode: "outlined", onPress: () => router.back() },
@@ -109,9 +108,21 @@ export const CreateTransaction = ({ barter_service_id }: { barter_service_id: st
             mode: "contained",
             onPress: onSubmit,
             disabled: createTransactionMutation.isPending,
+            loading: createTransactionMutation.isPending,
           },
         ]}
       />
     </>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    gap: 32,
+    padding: 16,
+  },
+  services: {
+    flex: 1,
+    gap: 8,
+  },
+});

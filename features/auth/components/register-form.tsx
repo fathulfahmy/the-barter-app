@@ -1,13 +1,13 @@
 import React from "react";
 import { useForm } from "react-hook-form";
-import { View } from "react-native";
 import { TextInput } from "react-native-paper";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { router } from "expo-router";
 
-import { GroupedButtons } from "@/components/ui/button";
-import { AppTextInput } from "@/components/ui/form";
+import { KeyboardWrapper } from "@/components/screens";
+import { Buttons } from "@/components/ui/button";
+import { FormInput } from "@/components/ui/form";
 import { useDisclosure } from "@/hooks/use-disclosure";
 import { registerInputSchema, useRegister } from "@/lib/auth/auth";
 
@@ -38,10 +38,10 @@ export const RegisterForm = () => {
 
   return (
     <>
-      <View style={{ flex: 1, gap: 16 }}>
-        <AppTextInput control={control} label="Name" name="name" errors={errors.name?.message} inputMode="text" />
-        <AppTextInput control={control} label="Email" name="email" errors={errors.email?.message} inputMode="email" />
-        <AppTextInput
+      <KeyboardWrapper contentContainerStyle={{ gap: 16, padding: 16 }}>
+        <FormInput control={control} label="Name" name="name" errors={errors.name?.message} inputMode="text" />
+        <FormInput control={control} label="Email" name="email" errors={errors.email?.message} inputMode="email" />
+        <FormInput
           control={control}
           label="Password"
           name="password"
@@ -49,7 +49,7 @@ export const RegisterForm = () => {
           secureTextEntry={!passwordVisible}
           right={<TextInput.Icon icon={passwordVisible ? "eye" : "eye-off"} onPress={togglePasswordVisible} />}
         />
-        <AppTextInput
+        <FormInput
           control={control}
           label="Confirm Password"
           name="password_confirmation"
@@ -59,9 +59,9 @@ export const RegisterForm = () => {
             <TextInput.Icon icon={passwordConfirmVisible ? "eye" : "eye-off"} onPress={togglePasswordConfirmVisible} />
           }
         />
-      </View>
+      </KeyboardWrapper>
 
-      <GroupedButtons
+      <Buttons
         vertical
         buttons={[
           { label: "Already have an account? Login", onPress: () => router.replace("/login") },
@@ -69,10 +69,11 @@ export const RegisterForm = () => {
             label: "Register",
             mode: "contained",
             onPress: onSubmit,
-            loading: register.isPending,
             disabled: register.isPending,
+            loading: register.isPending,
           },
         ]}
+        style={{ paddingHorizontal: 16 }}
       />
     </>
   );

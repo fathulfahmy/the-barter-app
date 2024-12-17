@@ -4,8 +4,9 @@ import { z } from "zod";
 import { useStatusDialog } from "@/components/ui/dialog";
 import { api } from "@/lib/axios";
 import { MutationConfig } from "@/lib/react-query";
+import { zodMedia } from "@/lib/zod";
 import { Service } from "@/types/api";
-import { appendMultipleMediaFormData, getFormData, zodMedia } from "@/utils/form";
+import { createFormData } from "@/utils/form";
 
 import { getServiceQueryOptions } from "./get-service";
 import { getInfiniteServicesQueryOptions } from "./get-services";
@@ -18,7 +19,10 @@ export const updateServiceInputSchema = z.object({
   max_price: z.coerce.number().min(1).max(99999999.99).optional(),
   price_unit: z.string().min(1, "Price unit is required").max(255).optional(),
   status: z.string().min(1, "Status is required").optional(),
-  images: z.array(zodMedia()).optional().nullable(),
+  images: z
+    .array(zodMedia().or(z.instanceof(File)))
+    .optional()
+    .nullable(),
 });
 
 export type UpdateServiceInput = z.infer<typeof updateServiceInputSchema>;
@@ -30,9 +34,7 @@ export const updateService = ({
   barter_service_id: string;
   data: UpdateServiceInput;
 }): Promise<{ data: Service }> => {
-  const formData = getFormData({ data });
-
-  appendMultipleMediaFormData({ formData, data, name: "images" });
+  const formData = createFormData(data);
 
   formData.append("_method", "patch");
 

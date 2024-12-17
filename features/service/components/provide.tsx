@@ -5,7 +5,7 @@ import { Card, IconButton, Menu, Text } from "react-native-paper";
 import { router } from "expo-router";
 
 import { LoadingStateScreen } from "@/components/screens";
-import { AppFlashList, Spacer } from "@/components/ui";
+import { AppList, Spacer } from "@/components/ui";
 import { AppChip } from "@/components/ui/chip";
 import { useUpdateService } from "@/features/service/api/update-service";
 import { useDisclosure } from "@/hooks/use-disclosure";
@@ -76,12 +76,12 @@ export const Provide = () => {
   };
 
   return (
-    <AppFlashList
+    <AppList
       data={services}
       renderItem={({ item }) => (
         <Card onPress={() => router.push(`/provide/${item.id}/incoming`)}>
           <Card.Content>
-            <View style={styles.cardHeader}>
+            <View style={styles.header}>
               <AppChip
                 style={
                   item.status === "disabled" && {
@@ -95,7 +95,7 @@ export const Provide = () => {
               <MenuWrapper item={item} />
             </View>
 
-            <View style={styles.cardBody}>
+            <View style={styles.body}>
               <Text variant="titleMedium" style={item.status === "disabled" && { color: colors.secondary }}>
                 {item.title}
               </Text>
@@ -126,13 +126,13 @@ export const Provide = () => {
 };
 
 const styles = StyleSheet.create({
-  cardHeader: {
+  header: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
     marginBottom: 8,
   },
-  cardBody: {
+  body: {
     gap: 2,
     marginBottom: 16,
   },

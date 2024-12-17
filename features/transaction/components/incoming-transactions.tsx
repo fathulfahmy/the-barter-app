@@ -5,7 +5,8 @@ import { Button, Card, Text } from "react-native-paper";
 import { router } from "expo-router";
 
 import { LoadingStateScreen } from "@/components/screens";
-import { AppFlashList, AvatarWithName, Spacer } from "@/components/ui";
+import { AppList, Spacer } from "@/components/ui";
+import { AvatarWithName } from "@/components/ui/avatar";
 import { useConfirmationDialog } from "@/components/ui/dialog";
 import { useRefreshByUser } from "@/hooks/use-refresh-by-user";
 import { useAppTheme } from "@/lib/react-native-paper";
@@ -61,16 +62,16 @@ export const IncomingTransactions = ({ barter_service_id }: { barter_service_id?
   const barter_transactions = transactionsQuery.data?.pages.flatMap((page) => page.data.data);
 
   return (
-    <AppFlashList
+    <AppList
       data={barter_transactions}
       renderItem={({ item }) => (
         <Card>
           <Card.Content style={styles.card}>
-            <View style={styles.cardHeader}>
+            <View style={styles.header}>
               <AvatarWithName user={item.barter_acquirer} />
             </View>
 
-            <View style={styles.cardBody}>
+            <View style={styles.body}>
               <Text variant="titleMedium">{formatInvoiceItems(item.barter_invoice)}</Text>
               <Text
                 variant="bodyMedium"
@@ -123,12 +124,12 @@ const styles = StyleSheet.create({
   card: {
     gap: 16,
   },
-  cardHeader: {
+  header: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
   },
-  cardBody: {
+  body: {
     gap: 2,
   },
 });

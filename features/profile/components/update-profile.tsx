@@ -1,20 +1,20 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import { View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { Avatar, TextInput } from "react-native-paper";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import * as ImagePicker from "expo-image-picker";
+import { CameraType } from "expo-image-picker";
 import { router } from "expo-router";
 
-import { LoadingStateScreen } from "@/components/screens";
-import { GroupedButtons } from "@/components/ui/button";
-import { AppTextInput } from "@/components/ui/form";
+import { KeyboardWrapper, LoadingStateScreen } from "@/components/screens";
+import { Buttons } from "@/components/ui/button";
+import { FormInput } from "@/components/ui/form";
 import { useDisclosure } from "@/hooks/use-disclosure";
 import { useUser } from "@/lib/auth/auth";
+import { getImagePickerFile, getImagePickerPermission, getImagePickerResult } from "@/lib/image-picker";
 import { Media } from "@/types/api";
 import { filterEmptyValues } from "@/utils/form";
-import { getImagePickerResult } from "@/utils/image-picker";
 
 import { updateProfileInputSchema, useUpdateProfile } from "../api/update-profile";
 
@@ -35,17 +35,9 @@ const UpdateProfile = ({ user_id }: { user_id: string }) => {
     },
   });
 
-  const defaultValues = {
-    name: "",
-    avatar: {} as Media,
-    email: "",
-    password: "",
-    password_confirmation: "",
-  };
-
   const values = {
     name: user?.name ?? "",
-    avatar: user?.avatar ?? {},
+    avatar: user?.avatar ?? ({} as File | Media),
     email: user?.email ?? "",
     password: "",
     password_confirmation: "",
@@ -58,40 +50,32 @@ const UpdateProfile = ({ user_id }: { user_id: string }) => {
     formState: { errors },
   } = useForm({
     resolver: zodResolver(updateProfileInputSchema),
-    defaultValues,
     values,
     mode: "onChange",
   });
 
   const handlePickImage = async ({ useCamera = false }: { useCamera?: boolean } = {}) => {
-    const permission = useCamera
-      ? await ImagePicker.requestCameraPermissionsAsync()
-      : await ImagePicker.requestMediaLibraryPermissionsAsync();
-
-    if (!permission.granted) {
-      alert(`${useCamera ? "Camera permission is required" : "Library permission is required"}`);
-      return;
-    }
+    await getImagePickerPermission(useCamera);
 
     const result = await getImagePickerResult({
       useCamera,
       options: {
         mediaTypes: ["images"],
         aspect: [1, 1],
+        allowsEditing: true,
+        cameraType: CameraType.front,
       },
     });
 
-    if (!result.canceled && result.assets?.[0]) {
-      const updatedFile: Media = {
-        uri: result.assets[0].uri,
-        name: result.assets[0].fileName || `image_${Date.now()}.jpg`,
-        type: result.assets[0].type || "image/jpeg",
-      };
+    const asset = result.assets?.[0];
 
-      setValue("avatar", updatedFile);
+    if (!result.canceled && asset) {
+      const pickedFile = getImagePickerFile(result);
 
-      const updatedImage = result.assets[0].uri;
-      setImage(updatedImage);
+      if (pickedFile) {
+        setValue("avatar", pickedFile);
+        setImage(asset.uri);
+      }
     }
   };
 
@@ -108,10 +92,10 @@ const UpdateProfile = ({ user_id }: { user_id: string }) => {
 
   return (
     <>
-      <View style={{ flex: 1, gap: 16, padding: 16 }}>
-        <View style={{ alignItems: "center", gap: 8 }}>
+      <KeyboardWrapper contentContainerStyle={styles.form}>
+        <View style={styles.avatar}>
           {image && <Avatar.Image source={{ uri: image }} size={96} />}
-          <GroupedButtons
+          <Buttons
             buttons={[
               { label: "Take a photo", mode: "contained-tonal", onPress: () => handlePickImage({ useCamera: true }) },
               { label: "Choose a photo", mode: "contained-tonal", onPress: () => handlePickImage() },
@@ -119,9 +103,9 @@ const UpdateProfile = ({ user_id }: { user_id: string }) => {
           />
         </View>
 
-        <AppTextInput control={control} label="Name" name="name" errors={errors.name?.message} inputMode="text" />
-        <AppTextInput control={control} label="Email" name="email" errors={errors.email?.message} inputMode="email" />
-        <AppTextInput
+        <FormInput control={control} label="Name" name="name" errors={errors.name?.message} inputMode="text" />
+        <FormInput control={control} label="Email" name="email" errors={errors.email?.message} inputMode="email" />
+        <FormInput
           control={control}
           label="Password"
           name="password"
@@ -129,7 +113,7 @@ const UpdateProfile = ({ user_id }: { user_id: string }) => {
           secureTextEntry={!passwordVisible}
           right={<TextInput.Icon icon={passwordVisible ? "eye" : "eye-off"} onPress={togglePasswordVisible} />}
         />
-        <AppTextInput
+        <FormInput
           control={control}
           label="Confirm Password"
           name="password_confirmation"
@@ -139,9 +123,9 @@ const UpdateProfile = ({ user_id }: { user_id: string }) => {
             <TextInput.Icon icon={passwordConfirmVisible ? "eye" : "eye-off"} onPress={togglePasswordConfirmVisible} />
           }
         />
-      </View>
+      </KeyboardWrapper>
 
-      <GroupedButtons
+      <Buttons
         variant="bottom"
         buttons={[
           { label: "Cancel", mode: "outlined", onPress: () => router.back() },
@@ -150,6 +134,7 @@ const UpdateProfile = ({ user_id }: { user_id: string }) => {
             mode: "contained",
             onPress: onSubmit,
             disabled: updateProfileMutation.isPending,
+            loading: updateProfileMutation.isPending,
           },
         ]}
       />
@@ -158,3 +143,14 @@ const UpdateProfile = ({ user_id }: { user_id: string }) => {
 };
 
 export default UpdateProfile;
+
+const styles = StyleSheet.create({
+  form: {
+    gap: 16,
+    padding: 16,
+  },
+  avatar: {
+    alignItems: "center",
+    gap: 8,
+  },
+});

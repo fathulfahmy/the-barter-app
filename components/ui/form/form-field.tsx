@@ -2,18 +2,18 @@ import React from "react";
 import { StyleProp, View, ViewStyle } from "react-native";
 import { Text } from "react-native-paper";
 
-import { Error } from "./error";
+import { FormError } from "./form-error";
 
-type FieldWrapperProps = {
+type FormFieldProps = {
   label?: string;
   children: React.ReactNode;
   errors?: string | string[] | null;
   style?: StyleProp<ViewStyle>;
 };
 
-export type FieldWrapperPassThroughProps = Omit<FieldWrapperProps, "children">;
+export type FormFieldPassThroughProps = Omit<FormFieldProps, "children">;
 
-export const FieldWrapper: React.FC<FieldWrapperProps> = ({ label, errors, children, style }) => {
+export const FormField: React.FC<FormFieldProps> = ({ label, errors, children, style }) => {
   return (
     <View style={style}>
       {label && (
@@ -22,7 +22,7 @@ export const FieldWrapper: React.FC<FieldWrapperProps> = ({ label, errors, child
         </Text>
       )}
       {children}
-      <Error messages={errors} />
+      <FormError messages={errors} />
     </View>
   );
 };
