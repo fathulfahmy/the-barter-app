@@ -19,6 +19,7 @@ const MyBartersLayout = () => {
     >
       <Stack.Screen name="index" />
       <Stack.Screen name="(tabs)" />
+      <Stack.Screen name="[barter_transaction_id]/payment" />
     </Stack>
   );
 };

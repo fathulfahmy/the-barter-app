@@ -36,6 +36,7 @@ export type User = {
   id: string;
   name: string;
   email: string;
+  phone?: string;
   email_verified_at: Date | null;
   created_at: Date;
   updated_at: Date;
@@ -127,4 +128,11 @@ export type Review = {
   author?: User | null;
   barter_service?: Service | null;
   barter_transaction?: Transaction | null;
+};
+
+export type PaymentSheetParams = {
+  payment_intent: string;
+  ephemeral_key: string;
+  customer: string;
+  publishable_key: string;
 };

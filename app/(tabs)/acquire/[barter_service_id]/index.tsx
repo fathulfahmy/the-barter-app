@@ -8,6 +8,7 @@ import { Service } from "@/features/service/components/barter-service";
 
 const AcquireDetailScreen = () => {
   const { barter_service_id } = useLocalSearchParams<{ barter_service_id: string }>();
+
   return (
     <ScreenWrapper>
       <Service barter_service_id={barter_service_id} />

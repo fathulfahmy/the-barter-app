@@ -5,7 +5,7 @@
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "myapp",
+    "scheme": "the-barter-app",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
@@ -26,6 +26,8 @@
     },
     "plugins": [
       "expo-router",
+      "expo-secure-store",
+      "expo-image-picker",
       [
         "expo-splash-screen",
         {
@@ -35,13 +37,10 @@
           "backgroundColor": "#ffffff"
         }
       ],
-      "expo-secure-store",
       [
-        "expo-image-picker",
+        "@stripe/stripe-react-native",
         {
-          "photosPermission": "Allow $(PRODUCT_NAME) to access your photos",
-          "cameraPermission": "Allow $(PRODUCT_NAME) to access your camera",
-          "microphonePermission": "Allow $(PRODUCT_NAME) to access your microphone"
+          "publishableKey": "pk_test_51QVQZFKFuhUJebjtso1bd55eXttJJSsW0lMFlmcCADVTnCsq341zH5MgF2uIEXRWIXVip3qI4COAFFj7ruXP3eFL003gYGIU2f"
         }
       ]
     ],

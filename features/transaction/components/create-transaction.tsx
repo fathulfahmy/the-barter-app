@@ -64,7 +64,7 @@ export const CreateTransaction = ({ barter_service_id }: { barter_service_id: st
 
   return (
     <>
-      <KeyboardWrapper contentContainerStyle={styles.container}>
+      <KeyboardWrapper contentContainerStyle={styles.form}>
         <FormInput
           control={control}
           label="Amount (RM)"
@@ -84,7 +84,6 @@ export const CreateTransaction = ({ barter_service_id }: { barter_service_id: st
               <AppList
                 data={enabledServices}
                 extraData={checked}
-                keyExtractor={(item) => item.id}
                 renderItem={({ item }) => (
                   <Checkbox.Item
                     label={item.title}
@@ -117,7 +116,7 @@ export const CreateTransaction = ({ barter_service_id }: { barter_service_id: st
 };
 
 const styles = StyleSheet.create({
-  container: {
+  form: {
     gap: 32,
     padding: 16,
   },

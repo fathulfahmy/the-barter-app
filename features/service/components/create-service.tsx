@@ -136,7 +136,6 @@ export const CreateService = () => {
             <AppList
               data={categories}
               extraData={category}
-              keyExtractor={(item) => item.id}
               renderItem={({ item }) => (
                 <RadioButton.Item
                   label={item.name}

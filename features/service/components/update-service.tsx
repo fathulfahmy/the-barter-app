@@ -153,7 +153,6 @@ export const UpdateService = ({ barter_service_id }: { barter_service_id: string
             <AppList
               data={categories}
               extraData={category}
-              keyExtractor={(item) => item.id}
               renderItem={({ item }) => (
                 <RadioButton.Item
                   label={item.name}

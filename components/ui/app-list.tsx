@@ -14,6 +14,7 @@ export const AppList = <T,>({ containerStyle, ...props }: AppListProps<T>) => {
     <View style={[styles.container, containerStyle]}>
       <FlashList
         {...props}
+        keyExtractor={(item, index) => index.toString()}
         ListEmptyComponent={<EmptyStateScreen />}
         showsVerticalScrollIndicator={false}
         showsHorizontalScrollIndicator={false}

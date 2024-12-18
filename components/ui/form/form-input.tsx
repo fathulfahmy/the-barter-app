@@ -6,14 +6,14 @@ import { TextInput, TextInputProps } from "react-native-paper";
 import { FormField, FormFieldPassThroughProps } from "./form-field";
 
 export type InputProps = {
-  control: Control<any>;
-  name: string;
+  control?: Control<any>;
+  name?: string;
   textInputStyle?: StyleProp<TextStyle>;
 } & Omit<TextInputProps, "style"> &
   FormFieldPassThroughProps;
 
 export const FormInput = ({ label, errors, control, name, style, textInputStyle, onPress, ...props }: InputProps) => {
-  return (
+  return control && name ? (
     <Controller
       control={control}
       name={name}
@@ -34,5 +34,11 @@ export const FormInput = ({ label, errors, control, name, style, textInputStyle,
         </FormField>
       )}
     />
+  ) : (
+    <FormField label={label} errors={errors} style={style}>
+      <Pressable onPress={onPress}>
+        <TextInput error={!!errors} style={textInputStyle} returnKeyType="done" onPress={onPress} {...props} />
+      </Pressable>
+    </FormField>
   );
 };

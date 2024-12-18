@@ -10,8 +10,7 @@ import { AvatarWithName } from "@/components/ui/avatar";
 import { useConfirmationDialog } from "@/components/ui/dialog";
 import { useRefreshByUser } from "@/hooks/use-refresh-by-user";
 import { useAppTheme } from "@/lib/react-native-paper";
-import { TransactionStatus } from "@/types/api";
-import { formatInvoiceItems, formatStripSuffix } from "@/utils/format";
+import { formatInvoiceItems } from "@/utils/format";
 
 import { useInfiniteTransactions } from "../api/get-transactions";
 import { useUpdateTransaction } from "../api/update-transactions";
@@ -32,27 +31,27 @@ export const OngoingTransactions = ({ barter_service_id }: { barter_service_id?:
     },
   });
 
-  const handleSubmit = ({
-    barter_transaction_id,
-    status,
-  }: {
-    barter_transaction_id: string;
-    status: TransactionStatus;
-  }) => {
-    const suffix = status === "completed" ? "d" : status === "cancelled" ? "led" : "ed";
-
+  const handleCancel = (barter_transaction_id: string) => {
     useConfirmationDialog.getState().setConfirmationDialog({
       type: "warning",
-      title: `${formatStripSuffix(status, suffix)} barter?`,
+      title: "Cancel barter?",
       confirmButtonFn: () => {
         updateTransactionMutation.mutate({
           barter_transaction_id,
           data: {
-            status,
+            status: "cancelled",
           },
         });
       },
     });
+  };
+
+  const handleComplete = (barter_transaction_id: string) => {
+    if (barter_service_id) {
+      router.push(`/provide/${barter_transaction_id}/payment`);
+    } else {
+      router.push(`/my_barters/${barter_transaction_id}/payment`);
+    }
   };
 
   const { isRefetchingByUser, refetchByUser } = useRefreshByUser(transactionsQuery.refetch);
@@ -91,7 +90,7 @@ export const OngoingTransactions = ({ barter_service_id }: { barter_service_id?:
                   mode="contained"
                   textColor={colors.onRed}
                   style={{ flex: 1, backgroundColor: colors.red }}
-                  onPress={() => handleSubmit({ status: "cancelled", barter_transaction_id: item.id })}
+                  onPress={() => handleCancel(item.id)}
                   disabled={updateTransactionMutation.isPending}
                 >
                   Cancel
@@ -100,7 +99,7 @@ export const OngoingTransactions = ({ barter_service_id }: { barter_service_id?:
                   mode="contained"
                   textColor={colors.onGreen}
                   style={{ flex: 1, backgroundColor: colors.green }}
-                  onPress={() => handleSubmit({ status: "completed", barter_transaction_id: item.id })}
+                  onPress={() => handleComplete(item.id)}
                   disabled={updateTransactionMutation.isPending}
                 >
                   Complete

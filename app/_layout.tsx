@@ -14,6 +14,7 @@ import { useAppState } from "@/hooks/use-app-state";
 import { useOnlineManager } from "@/hooks/use-online-manager";
 import { TokenProvider } from "@/lib/auth/token";
 import { AppLightTheme } from "@/lib/react-native-paper";
+import { AppStripeProvider } from "@/lib/stripe";
 
 function onAppStateChange(status: AppStateStatus) {
   if (Platform.OS !== "web") {
@@ -35,14 +36,16 @@ const RootLayout = () => {
       <QueryClientProvider client={queryClient}>
         <TokenProvider>
           <SafeAreaProvider>
-            <Stack>
-              <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-              <Stack.Screen name="(auth)" options={{ headerShown: false }} />
-              <Stack.Screen name="+not-found" />
-            </Stack>
-            <StatusDialog />
-            <ConfirmationDialog />
-            <Notification />
+            <AppStripeProvider>
+              <Stack>
+                <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+                <Stack.Screen name="(auth)" options={{ headerShown: false }} />
+                <Stack.Screen name="+not-found" />
+              </Stack>
+              <StatusDialog />
+              <ConfirmationDialog />
+              <Notification />
+            </AppStripeProvider>
           </SafeAreaProvider>
         </TokenProvider>
       </QueryClientProvider>
