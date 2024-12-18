@@ -21,11 +21,18 @@ api.interceptors.response.use(
     return response.data;
   },
   (error) => {
-    const data = error.response?.data || {};
-    const errors = data.errors;
-    const message = data.message;
+    const data = error.response?.data ?? {};
+    const errors = data.errors ?? [];
+    const message = data.message ?? error.message;
+    const isValidErrors = Array.isArray(errors) && errors.length > 0;
 
-    const messages = Array.isArray(errors) && errors.length > 0 ? errors : message || error.message;
+    let messages = "";
+
+    if (error.response?.status === 422) {
+      messages = isValidErrors ? errors : message;
+    } else {
+      messages = message;
+    }
 
     useNotification.getState().setNotification({
       type: "error",
