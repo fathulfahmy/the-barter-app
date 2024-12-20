@@ -28,7 +28,7 @@ export const updateProfile = ({ user_id, data }: { user_id: string; data: Update
 
   formData.append("_method", "patch");
 
-  return api.post(`/profile/${user_id}`, formData, {
+  return api.post(`/users/${user_id}`, formData, {
     headers: {
       "Content-Type": "multipart/form-data",
     },

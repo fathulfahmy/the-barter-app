@@ -13,32 +13,42 @@ export type InputProps = {
   FormFieldPassThroughProps;
 
 export const FormInput = ({ label, errors, control, name, style, textInputStyle, onPress, ...props }: InputProps) => {
-  return control && name ? (
-    <Controller
-      control={control}
-      name={name}
-      render={({ field: { onChange, onBlur, value } }) => (
-        <FormField label={label} errors={errors} style={style}>
-          <Pressable onPress={onPress}>
-            <TextInput
-              onBlur={onBlur}
-              onChangeText={onChange}
-              value={value}
-              error={!!errors}
-              style={textInputStyle}
-              returnKeyType="done"
-              onPress={onPress}
-              {...props}
-            />
-          </Pressable>
-        </FormField>
-      )}
-    />
-  ) : (
-    <FormField label={label} errors={errors} style={style}>
-      <Pressable onPress={onPress}>
+  if (control && name) {
+    return (
+      <Controller
+        control={control}
+        name={name}
+        render={({ field: { onChange, onBlur, value } }) => (
+          <FormField label={label} errors={errors} style={style}>
+            <Pressable onPress={onPress}>
+              <TextInput
+                onBlur={onBlur}
+                onChangeText={onChange}
+                value={value}
+                error={!!errors}
+                style={textInputStyle}
+                returnKeyType="done"
+                onPress={onPress}
+                {...props}
+              />
+            </Pressable>
+          </FormField>
+        )}
+      />
+    );
+  } else if (label) {
+    return (
+      <FormField label={label} errors={errors} style={style}>
+        <Pressable onPress={onPress}>
+          <TextInput error={!!errors} style={textInputStyle} returnKeyType="done" onPress={onPress} {...props} />
+        </Pressable>
+      </FormField>
+    );
+  } else {
+    return (
+      <Pressable onPress={onPress} style={style}>
         <TextInput error={!!errors} style={textInputStyle} returnKeyType="done" onPress={onPress} {...props} />
       </Pressable>
-    </FormField>
-  );
+    );
+  }
 };

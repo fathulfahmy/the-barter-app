@@ -1,40 +1,45 @@
 import * as React from "react";
 import {
-  Keyboard,
   KeyboardAvoidingView,
-  ScrollViewProps,
+  KeyboardAvoidingViewProps,
+  Platform,
   StyleProp,
   StyleSheet,
   TouchableWithoutFeedback,
   ViewStyle,
 } from "react-native";
-import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import { KeyboardAwareScrollView, KeyboardAwareScrollViewProps } from "react-native-keyboard-aware-scroll-view";
 
-type Props = ScrollViewProps & {
-  children: React.ReactNode;
-  withScrollView?: boolean;
-  style?: StyleProp<ViewStyle>;
-  contentContainerStyle?: StyleProp<ViewStyle>;
-};
+type Props = KeyboardAwareScrollViewProps &
+  KeyboardAvoidingViewProps & {
+    children: React.ReactNode;
+    withScrollView?: boolean;
+    style?: StyleProp<ViewStyle>;
+    contentContainerStyle?: StyleProp<ViewStyle>;
+  };
 
-export const KeyboardWrapper = ({ children, withScrollView = true, style, contentContainerStyle, ...rest }: Props) => {
+export const KeyboardWrapper = ({ children, withScrollView = true, style, contentContainerStyle, ...props }: Props) => {
   return (
     <>
       {withScrollView ? (
         <KeyboardAwareScrollView
-          {...rest}
           contentContainerStyle={contentContainerStyle}
           keyboardShouldPersistTaps="always"
-          // alwaysBounceVertical={false}
           showsVerticalScrollIndicator={false}
           style={[styles.container, style]}
+          {...props}
         >
           {children}
         </KeyboardAwareScrollView>
       ) : (
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-          <KeyboardAvoidingView style={[styles.container, style]}>{children}</KeyboardAvoidingView>
-        </TouchableWithoutFeedback>
+        <KeyboardAvoidingView
+          behavior={Platform.OS === "ios" ? "padding" : "height"}
+          style={style}
+          keyboardVerticalOffset={96}
+          {...props}
+        >
+          <TouchableWithoutFeedback>{children}</TouchableWithoutFeedback>
+        </KeyboardAvoidingView>
       )}
     </>
   );

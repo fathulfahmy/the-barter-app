@@ -1,12 +1,12 @@
 import React from "react";
-import { Text } from "react-native-paper";
 
 import { ScreenWrapper } from "@/components/screens";
+import { Chat } from "@/features/chat/components/chat";
 
 const ChatDetailScreen = () => {
   return (
     <ScreenWrapper>
-      <Text variant="bodyMedium">ChatViewScreen</Text>
+      <Chat />
     </ScreenWrapper>
   );
 };

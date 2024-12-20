@@ -1,17 +1,10 @@
-import React from "react";
-import { Button, Text } from "react-native-paper";
-
-import { Link } from "expo-router";
-
 import { ScreenWrapper } from "@/components/screens";
+import { Chats } from "@/features/chat/components/chats";
 
 const ChatScreen = () => {
   return (
     <ScreenWrapper>
-      <Text variant="bodyMedium">Chat</Text>
-      <Link href="/chat/1" asChild>
-        <Button mode="contained">Go to Chat Detail</Button>
-      </Link>
+      <Chats />
     </ScreenWrapper>
   );
 };
