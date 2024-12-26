@@ -47,7 +47,7 @@ export const Service = ({ barter_service_id }: { barter_service_id: string }) =>
         </View>
       )}
 
-      <Gallery imageUris={service.images.map((image) => image.uri)} />
+      <Gallery uris={service.images.map((image) => image.uri)} />
     </ScrollView>
   );
 };

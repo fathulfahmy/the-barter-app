@@ -18,7 +18,8 @@ const ChatLayout = () => {
       }}
     >
       <Stack.Screen name="index" />
-      <Stack.Screen name="[user_id]" />
+      <Stack.Screen name="[channel_id]/index" />
+      <Stack.Screen name="[channel_id]/thread/[thread_id]/index" />
     </Stack>
   );
 };

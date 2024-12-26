@@ -1,11 +1,13 @@
 import React from "react";
 import { AppStateStatus, Platform } from "react-native";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { PaperProvider } from "react-native-paper";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 
 import { useReactQueryDevTools } from "@dev-plugins/react-query";
 import { QueryClient, QueryClientProvider, focusManager } from "@tanstack/react-query";
 import { Stack } from "expo-router";
+import { OverlayProvider } from "stream-chat-expo";
 
 import { ConfirmationDialog } from "@/components/ui/dialog";
 import { StatusDialog } from "@/components/ui/dialog/status-dialog";
@@ -36,16 +38,20 @@ const RootLayout = () => {
       <QueryClientProvider client={queryClient}>
         <TokenProvider>
           <SafeAreaProvider>
-            <AppStripeProvider>
-              <Stack>
-                <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-                <Stack.Screen name="(auth)" options={{ headerShown: false }} />
-                <Stack.Screen name="+not-found" />
-              </Stack>
-              <StatusDialog />
-              <ConfirmationDialog />
-              <Notification />
-            </AppStripeProvider>
+            <GestureHandlerRootView>
+              <OverlayProvider>
+                <AppStripeProvider>
+                  <Stack>
+                    <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+                    <Stack.Screen name="(auth)" options={{ headerShown: false }} />
+                    <Stack.Screen name="+not-found" />
+                  </Stack>
+                  <StatusDialog />
+                  <ConfirmationDialog />
+                  <Notification />
+                </AppStripeProvider>
+              </OverlayProvider>
+            </GestureHandlerRootView>
           </SafeAreaProvider>
         </TokenProvider>
       </QueryClientProvider>

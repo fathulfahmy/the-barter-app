@@ -38,6 +38,26 @@
         }
       ],
       [
+        "expo-av",
+        {
+          "microphonePermission": "$(PRODUCT_NAME) would like to use your microphone for voice recording."
+        }
+      ],
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "$(PRODUCT_NAME) would like to use your device gallery to attach image in a message.",
+          "cameraPermission": "$(PRODUCT_NAME) would like to use your camera to share image in a message."
+        }
+      ],
+      [
+        "expo-media-library",
+        {
+          "photosPermission": "$(PRODUCT_NAME) would like access to your photo gallery to share image in a message.",
+          "savePhotosPermission": "$(PRODUCT_NAME) would like to save photos to your photo gallery after downloading from a message."
+        }
+      ],
+      [
         "@stripe/stripe-react-native",
         {
           "publishableKey": "pk_test_51QVQZFKFuhUJebjtso1bd55eXttJJSsW0lMFlmcCADVTnCsq341zH5MgF2uIEXRWIXVip3qI4COAFFj7ruXP3eFL003gYGIU2f"

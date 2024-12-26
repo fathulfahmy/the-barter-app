@@ -1,5 +1,6 @@
 export type AuthResponse = {
-  token: string;
+  auth_token: string;
+  chat_token: string;
   token_type: string;
   user: User;
 };

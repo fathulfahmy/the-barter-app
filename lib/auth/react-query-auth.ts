@@ -13,6 +13,7 @@ import {
 
 import { User as ApiUser, AuthResponse } from "@/types/api";
 
+import { client } from "../chat/client";
 import { useToken } from "./token";
 
 export interface ReactQueryAuthConfig<User, LoginInput, RegisterInput> {
@@ -43,13 +44,24 @@ export function configureAuth<User, Error, LoginInput, RegisterInput>(
     const queryClient = useQueryClient();
     const { addToken } = useToken();
     const setUser = React.useCallback((data: ApiUser) => queryClient.setQueryData(userKey, data), [queryClient]);
+    const setChatUser = async (data: AuthResponse) => {
+      await client.connectUser(
+        {
+          id: data.user.id,
+          name: data.user.name,
+          image: data.user.avatar,
+        },
+        data.chat_token,
+      );
+    };
 
     return useMutation({
       mutationFn: loginFn,
       ...options,
       onSuccess: (response, ...rest) => {
-        addToken(response.token);
+        addToken(response.auth_token);
         setUser(response.user);
+        setChatUser(response);
         options?.onSuccess?.(response, ...rest);
       },
     });
@@ -59,13 +71,24 @@ export function configureAuth<User, Error, LoginInput, RegisterInput>(
     const queryClient = useQueryClient();
     const { addToken } = useToken();
     const setUser = React.useCallback((data: ApiUser) => queryClient.setQueryData(userKey, data), [queryClient]);
+    const setChatUser = async (data: AuthResponse) => {
+      await client.connectUser(
+        {
+          id: data.user.id,
+          name: data.user.name,
+          image: data.user.avatar,
+        },
+        data.chat_token,
+      );
+    };
 
     return useMutation({
       mutationFn: registerFn,
       ...options,
       onSuccess: (response, ...rest) => {
-        addToken(response.token);
+        addToken(response.auth_token);
         setUser(response.user);
+        setChatUser(response);
         options?.onSuccess?.(response, ...rest);
       },
     });
@@ -75,6 +98,7 @@ export function configureAuth<User, Error, LoginInput, RegisterInput>(
     const queryClient = useQueryClient();
     const { removeToken } = useToken();
     const setUser = React.useCallback((data: ApiUser | null) => queryClient.setQueryData(userKey, data), [queryClient]);
+    const setChatUser = async () => await client.disconnectUser();
 
     return useMutation({
       mutationFn: logoutFn,
@@ -82,6 +106,7 @@ export function configureAuth<User, Error, LoginInput, RegisterInput>(
       onSuccess: (...args) => {
         removeToken();
         setUser(null);
+        setChatUser();
         options?.onSuccess?.(...args);
       },
     });
