@@ -181,13 +181,13 @@ export const CreateService = () => {
         )}
 
         <Gallery
-          imageUris={images}
+          uris={images}
           renderOverlay={(index) => (
             <IconButton
-              icon="minus"
+              icon="close"
               size={16}
               style={styles.removeImage}
-              containerColor={colors.error}
+              containerColor={colors.secondary}
               iconColor={colors.onError}
               onPress={() => handleRemoveImages(index)}
             />

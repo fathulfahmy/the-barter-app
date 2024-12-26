@@ -1,23 +1,20 @@
 import React from "react";
-import { Image, ImageStyle, StyleProp, View, ViewStyle } from "react-native";
-import { ScrollView, StyleSheet } from "react-native";
-import { ScrollViewProps } from "react-native";
+import { Image, ImageStyle, ScrollView, ScrollViewProps, StyleProp, StyleSheet, View, ViewStyle } from "react-native";
 
 type GalleryProps = ScrollViewProps & {
-  containerStyle?: StyleProp<ViewStyle>;
-  imageUris: string[];
+  uris: string[];
+  renderOverlay?: (index: number) => React.ReactNode;
   imageStyle?: StyleProp<ImageStyle>;
   imageContainerStyle?: StyleProp<ViewStyle>;
-  renderOverlay?: (index: number) => React.ReactNode;
   overlayContainerStyle?: StyleProp<ViewStyle>;
 };
 
 export const Gallery: React.FC<GalleryProps> = ({
-  containerStyle,
-  imageUris,
-  imageStyle,
-  imageContainerStyle,
+  uris,
   renderOverlay,
+  imageStyle,
+  contentContainerStyle,
+  imageContainerStyle,
   overlayContainerStyle,
   ...props
 }) => {
@@ -25,10 +22,10 @@ export const Gallery: React.FC<GalleryProps> = ({
     <ScrollView
       horizontal
       showsHorizontalScrollIndicator={false}
-      contentContainerStyle={[styles.container, containerStyle]}
+      contentContainerStyle={[styles.container, contentContainerStyle]}
       {...props}
     >
-      {imageUris.map((uri, index) => (
+      {uris.map((uri, index) => (
         <View key={index} style={styles.imageContainer}>
           <Image source={{ uri }} style={[styles.image, imageStyle]} />
           {renderOverlay && (

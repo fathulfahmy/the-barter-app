@@ -211,7 +211,7 @@ export const UpdateService = ({ barter_service_id }: { barter_service_id: string
         )}
 
         <Gallery
-          imageUris={images}
+          uris={images}
           renderOverlay={(index) => (
             <IconButton
               icon="minus"

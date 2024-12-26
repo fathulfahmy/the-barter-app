@@ -10,7 +10,7 @@ export const AppStripeProvider = (
 ) => {
   return (
     <StripeProvider
-      publishableKey={process.env.EXPO_PUBLIC_STRIPE_PUBLISHABLE_KEY!}
+      publishableKey={process.env.EXPO_PUBLIC_STRIPE_KEY!}
       merchantIdentifier={merchantId}
       urlScheme={Linking.createURL("/")?.split(":")[0]}
       {...props}
