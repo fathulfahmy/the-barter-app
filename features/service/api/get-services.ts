@@ -36,6 +36,7 @@ export const getInfiniteServicesQueryOptions = ({ mode }: { mode: Mode }) => {
       return nextPage;
     },
     initialPageParam: 1,
+    refetchInterval: false,
   });
 };
 

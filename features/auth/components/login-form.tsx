@@ -1,6 +1,6 @@
 import React from "react";
 import { useForm } from "react-hook-form";
-import { StyleSheet } from "react-native";
+import { Platform, StyleSheet } from "react-native";
 import { TextInput } from "react-native-paper";
 
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -17,10 +17,16 @@ export const LoginForm = () => {
 
   const { isOpen: passwordVisible, toggle: togglePasswordVisibility } = useDisclosure(false);
 
-  const defaultValues = {
-    email: "user@demo.com",
-    password: "password",
-  };
+  const defaultValues =
+    Platform.OS === "ios"
+      ? {
+          email: "user1@demo.com",
+          password: "password",
+        }
+      : {
+          email: "user2@demo.com",
+          password: "password",
+        };
 
   const {
     control,

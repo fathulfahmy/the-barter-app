@@ -4,7 +4,7 @@
     "slug": "the-barter-app",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
+    "icon": "./assets/images/tba-icon.png",
     "scheme": "the-barter-app",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
@@ -14,15 +14,15 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
+        "foregroundImage": "./assets/images/tba-adaptive-icon.png",
+        "backgroundColor": "#FFFFFF"
       },
       "package": "com.fathulfahmy.thebarterapp"
     },
     "web": {
       "bundler": "metro",
       "output": "static",
-      "favicon": "./assets/images/favicon.png"
+      "favicon": "./assets/images/tba-icon.png"
     },
     "plugins": [
       "expo-router",
@@ -31,10 +31,10 @@
       [
         "expo-splash-screen",
         {
-          "image": "./assets/images/splash-icon.png",
+          "image": "./assets/images/tba-splash-icon-alt.png",
           "imageWidth": 200,
           "resizeMode": "contain",
-          "backgroundColor": "#ffffff"
+          "backgroundColor": "#005AC2"
         }
       ],
       [
@@ -76,8 +76,6 @@
     "updates": {
       "url": "https://u.expo.dev/e4abf043-5a9c-433e-9ade-5c99ddd8b7f2"
     },
-    "runtimeVersion": {
-      "policy": "appVersion"
-    }
+    "runtimeVersion": "1.0.0"
   }
 }

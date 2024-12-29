@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, View } from "react-native";
+import { Platform, StyleSheet, View } from "react-native";
 import { Button, IconButton } from "react-native-paper";
 
 import { Stack, router } from "expo-router";
@@ -26,20 +26,31 @@ const AuthProfileScreen = () => {
 
   return (
     <>
+      {/* temporary fix headerRight not working on adroid */}
       <Stack.Screen
         options={{
-          headerRight: () => (
-            <IconButton
-              icon="pencil"
-              iconColor={colors.onPrimary}
-              onPress={() => router.push("/profile/edit")}
-              style={{ margin: 0 }}
-            />
-          ),
+          headerRight:
+            Platform.OS === "android"
+              ? undefined
+              : () => (
+                  <IconButton
+                    icon="pencil"
+                    iconColor={colors.onPrimary}
+                    onPress={() => router.push("/profile/edit")}
+                    style={{ margin: 0 }}
+                  />
+                ),
         }}
       />
 
       <ScreenWrapper>
+        {/* temporary fix headerRight not working on adroid */}
+        {Platform.OS === "android" && (
+          <View style={styles.pencil}>
+            <IconButton icon="pencil" iconColor={colors.primary} onPress={() => router.push("/profile/edit")} />
+          </View>
+        )}
+
         <AuthProfile user={user} />
 
         <Provide />
@@ -60,5 +71,8 @@ const styles = StyleSheet.create({
   button: {
     paddingVertical: 8,
     paddingHorizontal: 16,
+  },
+  pencil: {
+    alignItems: "flex-end",
   },
 });

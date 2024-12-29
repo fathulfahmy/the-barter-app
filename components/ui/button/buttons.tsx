@@ -11,7 +11,7 @@ type ActionButtons = Omit<ButtonProps, "children"> & {
 type ButtonsProps = ViewProps & {
   buttons: ActionButtons[];
   vertical?: boolean;
-  variant?: "default" | "bottom";
+  variant?: "default" | "bottom" | "top";
   style?: StyleProp<ViewStyle>;
 };
 
@@ -25,6 +25,7 @@ export const Buttons: React.FC<ButtonsProps> = ({
   const { colors } = useAppTheme();
 
   const containerStyle = [
+    variant === "top" ? styles.top : {},
     variant === "bottom" ? styles.bottom : {},
     vertical ? styles.verticalContainer : styles.horizontalContainer,
     styles.container,
@@ -56,10 +57,17 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     width: "100%",
   },
+  top: {
+    paddingVertical: 8,
+    paddingHorizontal: 16,
+    borderBottomWidth: 0.2,
+    zIndex: 1,
+  },
   bottom: {
     paddingVertical: 8,
     paddingHorizontal: 16,
     borderTopWidth: 0.2,
+    zIndex: 1,
   },
   horizontalButton: {
     flex: 1,

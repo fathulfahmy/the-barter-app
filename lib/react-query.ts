@@ -2,10 +2,9 @@ import { DefaultOptions, UseMutationOptions } from "@tanstack/react-query";
 
 export const queryConfig = {
   queries: {
-    // throwOnError: true,
-    refetchOnWindowFocus: false,
+    refetchInterval: 2000,
+    staleTime: 0,
     retry: false,
-    // staleTime: 1000 * 60,
   },
 } satisfies DefaultOptions;
 

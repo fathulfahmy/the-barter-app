@@ -1,5 +1,5 @@
 import Axios, { InternalAxiosRequestConfig } from "axios";
-import { router } from "expo-router";
+import { router, usePathname } from "expo-router";
 
 import { useNotification } from "@/components/ui/notification";
 
@@ -21,6 +21,16 @@ api.interceptors.response.use(
     return response.data;
   },
   (error) => {
+    if (error.response?.status === 401) {
+      const currentRoute = usePathname();
+      const publicRoutes = ["/login", "/register"];
+      const isPublicRoute = publicRoutes.includes(currentRoute);
+
+      if (!isPublicRoute) {
+        router.replace("/login");
+      }
+    }
+
     const data = error.response?.data ?? {};
     const errors = data.errors ?? [];
     const message = data.message ?? error.message;
@@ -38,13 +48,6 @@ api.interceptors.response.use(
       type: "error",
       messages,
     });
-
-    if (error.response?.status === 401) {
-      const path = window.location.pathname;
-      if (!path.includes("login") && !path.includes("register")) {
-        router.replace("/login");
-      }
-    }
 
     return Promise.reject(error);
   },
