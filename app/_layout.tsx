@@ -16,7 +16,7 @@ import { useAppState } from "@/hooks/use-app-state";
 import { useOnlineManager } from "@/hooks/use-online-manager";
 import { TokenProvider } from "@/lib/auth/token";
 import { AppLightTheme } from "@/lib/react-native-paper";
-import { queryConfig } from "@/lib/react-query";
+import { defaultQueryConfig } from "@/lib/react-query";
 import { AppStripeProvider } from "@/lib/stripe";
 
 function onAppStateChange(status: AppStateStatus) {
@@ -26,7 +26,7 @@ function onAppStateChange(status: AppStateStatus) {
 }
 
 const queryClient = new QueryClient({
-  defaultOptions: queryConfig,
+  defaultOptions: defaultQueryConfig,
 });
 
 const RootLayout = () => {

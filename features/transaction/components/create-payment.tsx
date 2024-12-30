@@ -9,7 +9,7 @@ import { LoadingStateScreen } from "@/components/screens";
 import { Buttons } from "@/components/ui/button";
 import { useConfirmationDialog, useStatusDialog } from "@/components/ui/dialog";
 import { FormInput } from "@/components/ui/form";
-import { paymentSheetParams } from "@/features/stripe/api/get-payment-sheet-params";
+import { getPaymentSheetParams } from "@/features/stripe/api/get-payment-sheet-params";
 import { useUser } from "@/lib/auth/auth";
 import { formatInvoiceItems } from "@/utils/format";
 
@@ -44,7 +44,7 @@ export const CreatePayment = ({ barter_transaction_id }: { barter_transaction_id
   const [loading, setLoading] = useState(false);
 
   const initializePaymentSheet = async () => {
-    const { data } = await paymentSheetParams({ data: { amount } });
+    const { data } = await getPaymentSheetParams({ data: { amount } });
     const { payment_intent, ephemeral_key, customer } = data;
 
     // Use Mock payment data: https://docs.stripe.com/payments/accept-a-payment?platform=react-native&ui=payment-sheet#react-native-test

@@ -43,8 +43,9 @@ type UseInfiniteReviewsOptions = {
   queryConfig?: QueryConfig<typeof getInfiniteReviewsQueryOptions>;
 };
 
-export const useInfiniteReviews = ({ barter_service_id }: UseInfiniteReviewsOptions) => {
+export const useInfiniteReviews = ({ barter_service_id, queryConfig }: UseInfiniteReviewsOptions) => {
   return useInfiniteQuery({
     ...getInfiniteReviewsQueryOptions({ barter_service_id }),
+    ...queryConfig,
   });
 };

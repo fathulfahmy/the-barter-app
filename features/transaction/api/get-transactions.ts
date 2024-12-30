@@ -1,7 +1,7 @@
 import { infiniteQueryOptions, useInfiniteQuery } from "@tanstack/react-query";
 
 import { api } from "@/lib/axios";
-import { QueryConfig } from "@/lib/react-query";
+import { QueryConfig, alwaysRefetchQueryConfig } from "@/lib/react-query";
 import { Paginator, Transaction } from "@/types/api";
 
 type Mode = "incoming" | "outgoing" | "ongoing" | "history";
@@ -56,8 +56,10 @@ type UseInfiniteTransactionsOptions = {
   queryConfig?: QueryConfig<typeof getInfiniteTransactionsQueryOptions>;
 };
 
-export const useInfiniteTransactions = ({ mode, barter_service_id }: UseInfiniteTransactionsOptions) => {
+export const useInfiniteTransactions = ({ mode, barter_service_id, queryConfig }: UseInfiniteTransactionsOptions) => {
   return useInfiniteQuery({
     ...getInfiniteTransactionsQueryOptions({ mode, barter_service_id }),
+    ...alwaysRefetchQueryConfig,
+    ...queryConfig,
   });
 };

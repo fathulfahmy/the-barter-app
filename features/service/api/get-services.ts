@@ -36,7 +36,6 @@ export const getInfiniteServicesQueryOptions = ({ mode }: { mode: Mode }) => {
       return nextPage;
     },
     initialPageParam: 1,
-    refetchInterval: false,
   });
 };
 
@@ -46,8 +45,9 @@ type UseInfiniteServicesOptions = {
   queryConfig?: QueryConfig<typeof getInfiniteServicesQueryOptions>;
 };
 
-export const useInfiniteServices = ({ mode }: UseInfiniteServicesOptions) => {
+export const useInfiniteServices = ({ mode, queryConfig }: UseInfiniteServicesOptions) => {
   return useInfiniteQuery({
     ...getInfiniteServicesQueryOptions({ mode }),
+    ...queryConfig,
   });
 };

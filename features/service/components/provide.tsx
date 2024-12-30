@@ -11,6 +11,7 @@ import { useUpdateService } from "@/features/service/api/update-service";
 import { useDisclosure } from "@/hooks/use-disclosure";
 import { useRefreshByUser } from "@/hooks/use-refresh-by-user";
 import { useAppTheme } from "@/lib/react-native-paper";
+import { alwaysRefetchQueryConfig } from "@/lib/react-query";
 import { ServiceStatus } from "@/types/api";
 import { formatServicePrice } from "@/utils/format";
 
@@ -19,7 +20,12 @@ import { useInfiniteServices } from "../api/get-services";
 export const Provide = () => {
   const { colors } = useAppTheme();
 
-  const servicesQuery = useInfiniteServices({ mode: "provide" });
+  const servicesQuery = useInfiniteServices({
+    mode: "provide",
+    queryConfig: {
+      ...alwaysRefetchQueryConfig,
+    },
+  });
 
   const updateServiceMutation = useUpdateService({
     mutationConfig: {

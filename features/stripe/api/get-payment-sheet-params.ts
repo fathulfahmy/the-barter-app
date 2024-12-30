@@ -9,7 +9,7 @@ export const paymentSheetParamsInputSchema = z.object({
 
 export type PaymentSheetParamsInput = z.infer<typeof paymentSheetParamsInputSchema>;
 
-export const paymentSheetParams = ({
+export const getPaymentSheetParams = ({
   data,
 }: {
   data: PaymentSheetParamsInput;
