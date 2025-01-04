@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { StyleSheet, View } from "react-native";
-import { Avatar, TextInput } from "react-native-paper";
+import { Avatar, Button, TextInput } from "react-native-paper";
 
+import { useActionSheet } from "@expo/react-native-action-sheet";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { CameraType } from "expo-image-picker";
 import { router } from "expo-router";
@@ -22,6 +23,9 @@ const UpdateProfile = () => {
   /* ======================================== STATES */
   const { isOpen: passwordVisible, toggle: togglePasswordVisible } = useDisclosure(false);
   const { isOpen: passwordConfirmVisible, toggle: togglePasswordConfirmVisible } = useDisclosure(false);
+
+  /* ======================================== HOOKS */
+  const { showActionSheetWithOptions } = useActionSheet();
 
   /* ======================================== QUERIES */
   const userQuery = useUser();
@@ -102,11 +106,33 @@ const UpdateProfile = () => {
       <KeyboardWrapper contentContainerStyle={styles.form}>
         <View style={styles.avatar}>
           {image && <Avatar.Image source={{ uri: image }} size={96} />}
-          {/* prettier-ignore */}
           <Buttons
             buttons={[
-              { label: "Take a photo", mode: "contained-tonal", icon: "camera", onPress: () => handlePickImage({ useCamera: true })},
-              { label: "Choose a photo", mode: "contained-tonal", icon: "image", onPress: () => handlePickImage() },
+              {
+                label: "Upload a photo",
+                mode: "contained-tonal",
+                icon: "upload",
+                onPress: () =>
+                  showActionSheetWithOptions(
+                    {
+                      cancelButtonIndex: 2,
+                      destructiveButtonIndex: 2,
+                      options: ["Photo Library", "Camera", "Cancel"],
+                    },
+                    (buttonIndex) => {
+                      switch (buttonIndex) {
+                        case 0:
+                          handlePickImage();
+                          break;
+                        case 1:
+                          handlePickImage({ useCamera: true });
+                          break;
+                        default:
+                          break;
+                      }
+                    },
+                  ),
+              },
             ]}
           />
         </View>

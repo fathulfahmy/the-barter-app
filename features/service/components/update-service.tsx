@@ -213,17 +213,14 @@ export const UpdateService = ({ barter_service_id }: { barter_service_id: string
             <HelperText type="info">{`RM${min_price} - RM${max_price} per ${price_unit}`}</HelperText>
           </FormField>
 
-          {images.length < 5 && (
-            <Button mode="contained-tonal" icon="upload-multiple" onPress={() => handlePickImages()}>
-              {`Upload photos (${images.length}/5)`}
-            </Button>
-          )}
-
-          {images.length >= 5 && (
-            <Button mode="contained-tonal" icon="upload-multiple" onPress={() => handlePickImages()} disabled>
-              {`Upload photos (${images.length}/5)`}
-            </Button>
-          )}
+          <Button
+            mode="contained-tonal"
+            icon="upload-multiple"
+            onPress={() => handlePickImages()}
+            disabled={images.length >= 5}
+          >
+            {`Upload photos (${images.length}/5)`}
+          </Button>
         </View>
 
         <Gallery
