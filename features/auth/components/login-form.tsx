@@ -13,10 +13,13 @@ import { useDisclosure } from "@/hooks/use-disclosure";
 import { loginInputSchema, useLogin } from "@/lib/auth/auth";
 
 export const LoginForm = () => {
-  const login = useLogin({ onSuccess: () => router.replace("/(tabs)") });
-
+  /* ======================================== STATES */
   const { isOpen: passwordVisible, toggle: togglePasswordVisibility } = useDisclosure(false);
 
+  /* ======================================== MUTATIONS */
+  const login = useLogin({ onSuccess: () => router.replace("/(tabs)") });
+
+  /* ======================================== FORM */
   const defaultValues =
     Platform.OS === "ios"
       ? {
@@ -38,8 +41,10 @@ export const LoginForm = () => {
     mode: "onChange",
   });
 
+  /* ======================================== FUNCTIONS */
   const onSubmit = handleSubmit((values) => login.mutate(values));
 
+  /* ======================================== RETURNS */
   return (
     <>
       <KeyboardWrapper contentContainerStyle={styles.form}>
@@ -72,6 +77,7 @@ const styles = StyleSheet.create({
     padding: 16,
   },
   buttons: {
+    paddingVertical: 8,
     paddingHorizontal: 16,
   },
 });

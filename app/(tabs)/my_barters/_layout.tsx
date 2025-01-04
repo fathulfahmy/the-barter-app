@@ -11,7 +11,6 @@ const MyBartersLayout = () => {
     <Stack
       screenOptions={{
         title: "My Barters",
-
         headerStyle: { backgroundColor: colors.primary },
         headerTintColor: colors.onPrimary,
         headerBackButtonDisplayMode: "minimal",
@@ -19,7 +18,9 @@ const MyBartersLayout = () => {
     >
       <Stack.Screen name="index" />
       <Stack.Screen name="(tabs)" />
-      <Stack.Screen name="[barter_transaction_id]/payment" />
+      <Stack.Screen name="transaction/[barter_transaction_id]/payment" />
+      <Stack.Screen name="transaction/[barter_transaction_id]/review" />
+      <Stack.Screen name="transaction/[barter_transaction_id]/invoice" />
     </Stack>
   );
 };

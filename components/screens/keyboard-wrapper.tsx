@@ -1,5 +1,6 @@
-import * as React from "react";
+import React from "react";
 import {
+  Keyboard,
   KeyboardAvoidingView,
   KeyboardAvoidingViewProps,
   Platform,
@@ -24,7 +25,7 @@ export const KeyboardWrapper = ({ children, withScrollView = true, style, conten
       {withScrollView ? (
         <KeyboardAwareScrollView
           contentContainerStyle={contentContainerStyle}
-          keyboardShouldPersistTaps="always"
+          keyboardShouldPersistTaps="handled"
           showsVerticalScrollIndicator={false}
           style={[styles.container, style]}
           {...props}
@@ -33,12 +34,14 @@ export const KeyboardWrapper = ({ children, withScrollView = true, style, conten
         </KeyboardAwareScrollView>
       ) : (
         <KeyboardAvoidingView
-          behavior={Platform.OS === "ios" ? "padding" : "height"}
+          behavior={Platform.OS === "ios" ? "padding" : undefined}
           style={style}
           keyboardVerticalOffset={96}
           {...props}
         >
-          <TouchableWithoutFeedback>{children}</TouchableWithoutFeedback>
+          <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+            <>{children}</>
+          </TouchableWithoutFeedback>
         </KeyboardAvoidingView>
       )}
     </>

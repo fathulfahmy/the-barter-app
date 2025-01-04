@@ -2,7 +2,7 @@ import React from "react";
 import { Image, ImageStyle, ScrollView, ScrollViewProps, StyleProp, StyleSheet, View, ViewStyle } from "react-native";
 
 type GalleryProps = ScrollViewProps & {
-  uris: string[];
+  uris: string[] | null | undefined;
   renderOverlay?: (index: number) => React.ReactNode;
   imageStyle?: StyleProp<ImageStyle>;
   imageContainerStyle?: StyleProp<ViewStyle>;
@@ -18,6 +18,8 @@ export const Gallery: React.FC<GalleryProps> = ({
   overlayContainerStyle,
   ...props
 }) => {
+  if (!uris) return null;
+
   return (
     <ScrollView
       horizontal
@@ -50,7 +52,5 @@ const styles = StyleSheet.create({
   },
   overlayContainer: {
     position: "absolute",
-    top: 0,
-    right: 0,
   },
 });

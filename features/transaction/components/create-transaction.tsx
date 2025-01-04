@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { StyleSheet, View } from "react-native";
-import { Checkbox, Text } from "react-native-paper";
+import { Checkbox, Divider, Text, TextInput } from "react-native-paper";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { router } from "expo-router";
@@ -10,16 +10,23 @@ import { KeyboardWrapper, LoadingStateScreen } from "@/components/screens";
 import { AppList } from "@/components/ui";
 import { Buttons } from "@/components/ui/button";
 import { FormError, FormInput } from "@/components/ui/form";
+import { useService } from "@/features/service/api/get-service";
 import { useUser } from "@/lib/auth/auth";
 
 import { createTransactionInputSchema, useCreateTransaction } from "../api/create-transaction";
 
 export const CreateTransaction = ({ barter_service_id }: { barter_service_id: string }) => {
+  /* ======================================== STATES */
+  const [mode, setMode] = useState<string | null>("");
+
+  /* ======================================== QUERIES */
   const userQuery = useUser();
-  const enabledServices = userQuery.data?.barter_services?.filter((item) => item.status === "enabled");
+  const user = userQuery.data;
 
-  const [checked, setChecked] = useState<string[]>([]);
+  const serviceQuery = useService({ barter_service_id });
+  const service = serviceQuery.data?.data;
 
+  /* ======================================== MUTATIONS */
   const createTransactionMutation = useCreateTransaction({
     mutationConfig: {
       onSuccess: () => {
@@ -28,6 +35,7 @@ export const CreateTransaction = ({ barter_service_id }: { barter_service_id: st
     },
   });
 
+  /* ======================================== FORM */
   const defaultValues = {
     barter_service_id,
     amount: 0,
@@ -36,8 +44,10 @@ export const CreateTransaction = ({ barter_service_id }: { barter_service_id: st
 
   const {
     control,
-    handleSubmit,
+    watch,
     setValue,
+    handleSubmit,
+    reset,
     formState: { errors },
   } = useForm({
     resolver: zodResolver(createTransactionInputSchema),
@@ -45,68 +55,121 @@ export const CreateTransaction = ({ barter_service_id }: { barter_service_id: st
     mode: "onChange",
   });
 
+  const checked = watch("barter_service_ids", []);
+
+  /* ======================================== FUNCTIONS */
+  const toggleCheck = (id: string, checked: string[]) => {
+    const updated = checked.includes(id) ? checked.filter((checkedIds) => checkedIds !== id) : [...checked, id];
+    setValue("barter_service_ids", updated);
+  };
+
   const onSubmit = handleSubmit((values) => {
     createTransactionMutation.mutate({ data: values });
   });
 
-  const handleServiceSelect = (id: string) => {
-    setChecked((prev) => {
-      const serviceIds = prev.includes(id) ? prev.filter((ids) => ids !== id) : [...prev, id];
-
-      setValue("barter_service_ids", serviceIds);
-      return serviceIds;
-    });
-  };
-
-  if (userQuery.isLoading) {
+  /* ======================================== RETURNS */
+  if (userQuery.isLoading || serviceQuery.isLoading) {
     return <LoadingStateScreen />;
   }
 
   return (
     <>
-      <KeyboardWrapper contentContainerStyle={styles.form}>
-        <FormInput
-          control={control}
-          label="Amount (RM)"
-          name="amount"
-          errors={errors.amount?.message}
-          inputMode="decimal"
-        />
+      <KeyboardWrapper>
+        <View style={styles.container}>
+          <FormInput label="Service provider" value={service?.barter_provider?.name} editable={false} multiline />
+          <FormInput label="Service" value={service?.title} editable={false} multiline />
+        </View>
 
-        <View style={styles.services}>
-          <Text variant="labelLarge">Services</Text>
-          <FormError messages={errors.barter_service_ids?.message} />
+        <Divider />
 
-          <Controller
-            control={control}
-            name="barter_service_ids"
-            render={() => (
-              <AppList
-                data={enabledServices}
-                extraData={checked}
-                renderItem={({ item }) => (
-                  <Checkbox.Item
-                    label={item.title}
-                    status={checked.includes(item.id) ? "checked" : "unchecked"}
-                    onPress={() => handleServiceSelect(item.id)}
+        {!mode && (
+          <Buttons
+            vertical
+            buttons={[
+              {
+                label: "Pay with service",
+                mode: mode == "service" ? "contained" : "contained-tonal",
+                onPress: () => setMode("service"),
+              },
+              {
+                label: "Pay with cash",
+                mode: mode == "cash" ? "contained" : "contained-tonal",
+                onPress: () => setMode("cash"),
+              },
+              {
+                label: "Pay with service and cash",
+                mode: mode == "mixed" ? "contained" : "contained-tonal",
+                onPress: () => setMode("mixed"),
+              },
+              {
+                label: "Get it for free",
+                mode: mode == "free" ? "contained" : "contained-tonal",
+                onPress: () => setMode("free"),
+              },
+            ]}
+            style={{ padding: 16 }}
+          />
+        )}
+
+        {(mode === "cash" || mode === "mixed") && (
+          <View style={styles.container}>
+            <FormInput
+              control={control}
+              label="Enter amount to barter"
+              name="amount"
+              errors={errors.amount?.message}
+              inputMode="decimal"
+              left={<TextInput.Affix text="RM " />}
+            />
+          </View>
+        )}
+
+        {(mode === "service" || mode === "mixed") && (
+          <View style={styles.container}>
+            <View style={styles.services}>
+              <Text variant="labelLarge">Select service(s) to barter</Text>
+              <FormError messages={errors.barter_service_ids?.message} />
+
+              <Controller
+                control={control}
+                name="barter_service_ids"
+                render={() => (
+                  <AppList
+                    data={user?.barter_services?.filter((service) => service.status === "enabled")}
+                    renderItem={({ item }) => (
+                      <Checkbox.Item
+                        label={item.title}
+                        status={checked.includes(item.id) ? "checked" : "unchecked"}
+                        onPress={() => toggleCheck(item.id, checked)}
+                      />
+                    )}
                   />
                 )}
-                estimatedItemSize={15}
               />
-            )}
-          />
-        </View>
+            </View>
+          </View>
+        )}
       </KeyboardWrapper>
 
       <Buttons
         variant="bottom"
         buttons={[
-          { label: "Cancel", mode: "outlined", onPress: () => router.back() },
+          {
+            label: !mode ? "Cancel" : "Back",
+            mode: "outlined",
+            onPress: () => {
+              if (!mode) {
+                router.back();
+              }
+              setMode(null);
+              reset();
+            },
+          },
           {
             label: "Request",
             mode: "contained",
             onPress: onSubmit,
-            disabled: createTransactionMutation.isPending,
+            disabled: !mode || createTransactionMutation.isPending,
             loading: createTransactionMutation.isPending,
           },
         ]}
@@ -116,12 +179,11 @@ export const CreateTransaction = ({ barter_service_id }: { barter_service_id: st
 };
 
 const styles = StyleSheet.create({
-  form: {
-    gap: 32,
+  container: {
+    gap: 16,
     padding: 16,
   },
   services: {
-    flex: 1,
-    gap: 8,
+    gap: 4,
   },
 });

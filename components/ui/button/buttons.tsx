@@ -8,7 +8,7 @@ type ActionButtons = Omit<ButtonProps, "children"> & {
   label: string;
 };
 
-type ButtonsProps = ViewProps & {
+type ButtonsProps = Omit<ViewProps, "style"> & {
   buttons: ActionButtons[];
   vertical?: boolean;
   variant?: "default" | "bottom" | "top";
@@ -36,9 +36,9 @@ export const Buttons: React.FC<ButtonsProps> = ({
   ];
 
   return (
-    <View style={containerStyle} {...props}>
+    <View {...props} style={containerStyle}>
       {buttons.map((button, index) => (
-        <Button key={index} style={[vertical ? {} : styles.horizontalButton, button.style]} {...button}>
+        <Button {...button} key={index} style={[vertical ? {} : styles.horizontalButton, button.style]}>
           {button.label}
         </Button>
       ))}
@@ -48,7 +48,7 @@ export const Buttons: React.FC<ButtonsProps> = ({
 
 const styles = StyleSheet.create({
   container: {
-    gap: 8,
+    gap: 4,
   },
   verticalContainer: {
     flexDirection: "column",

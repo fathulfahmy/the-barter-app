@@ -11,7 +11,6 @@ const AcquireLayout = () => {
     <Stack
       screenOptions={{
         title: "Acquire",
-
         headerStyle: { backgroundColor: colors.primary },
         headerTintColor: colors.onPrimary,
         headerBackButtonDisplayMode: "minimal",

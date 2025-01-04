@@ -1,48 +1,49 @@
 import React, { useState } from "react";
-import { ScrollView } from "react-native";
-import { StyleSheet } from "react-native";
+import { ScrollView, StyleSheet, View } from "react-native";
+import { Divider } from "react-native-paper";
 
 import { useStripe } from "@stripe/stripe-react-native";
 import { router } from "expo-router";
 
-import { LoadingStateScreen } from "@/components/screens";
 import { Buttons } from "@/components/ui/button";
 import { useConfirmationDialog, useStatusDialog } from "@/components/ui/dialog";
 import { FormInput } from "@/components/ui/form";
+import { Invoice } from "@/features/invoice/components/invoice";
 import { getPaymentSheetParams } from "@/features/stripe/api/get-payment-sheet-params";
 import { useUser } from "@/lib/auth/auth";
-import { formatInvoiceItems } from "@/utils/format";
+import { formatEllipses, formatInvoiceItems } from "@/utils/format";
 
 import { useTransaction } from "../api/get-transaction";
 import { useUpdateTransaction } from "../api/update-transactions";
 
 export const CreatePayment = ({ barter_transaction_id }: { barter_transaction_id: string }) => {
+  /* ======================================== STATES */
+  const [loading, setLoading] = useState(false);
+
+  /* ======================================== HOOKS */
+  const { initPaymentSheet, presentPaymentSheet } = useStripe();
+
+  /* ======================================== QUERIES */
   const userQuery = useUser();
   const user = userQuery.data;
 
   const transactionQuery = useTransaction({ barter_transaction_id });
   const transaction = transactionQuery.data?.data;
 
-  const role: "acquirer" | "provider" = user?.id === transaction?.barter_acquirer?.id ? "acquirer" : "provider";
+  const isUserAcquirer = user?.id == transaction?.barter_acquirer?.id;
+  const payWith = isUserAcquirer ? formatInvoiceItems(transaction?.barter_invoice) : transaction?.barter_service?.title;
+  const amount = isUserAcquirer ? (transaction?.barter_invoice?.amount ?? 0) : 0;
 
-  const amount = role === "acquirer" ? (transaction?.barter_invoice?.amount ?? 0) : 0;
-  const receiver = role === "acquirer" ? transaction?.barter_provider?.name : user?.name;
-  const acquired =
-    role === "acquirer" ? formatInvoiceItems(transaction?.barter_invoice) : transaction?.barter_service?.title;
-  const bartered =
-    role === "acquirer" ? transaction?.barter_service?.title : formatInvoiceItems(transaction?.barter_invoice);
-
+  /* ======================================== MUTATIONS */
   const updateTransactionMutation = useUpdateTransaction({
     mutationConfig: {
       onSuccess: () => {
-        router.replace("/my_barters/history");
+        router.dismissAll();
       },
     },
   });
 
-  const { initPaymentSheet, presentPaymentSheet } = useStripe();
-  const [loading, setLoading] = useState(false);
-
+  /* ======================================== FUNCTIONS */
   const initializePaymentSheet = async () => {
     const { data } = await getPaymentSheetParams({ data: { amount } });
     const { payment_intent, ephemeral_key, customer } = data;
@@ -53,6 +54,15 @@ export const CreatePayment = ({ barter_transaction_id }: { barter_transaction_id
       customerId: customer,
       customerEphemeralKeySecret: ephemeral_key,
       paymentIntentClientSecret: payment_intent,
+      primaryButtonLabel: formatEllipses(payWith, 30),
+      defaultBillingDetails: {
+        name: user?.name,
+        email: user?.email,
+        address: {
+          country: "MY",
+        },
+      },
+      returnURL: "thebarterapp://acquire",
     });
 
     if (error) {
@@ -71,7 +81,7 @@ export const CreatePayment = ({ barter_transaction_id }: { barter_transaction_id
       type: "warning",
       title: "Complete barter?",
       confirmButtonFn: async () => {
-        if (role === "acquirer" && amount > 0) {
+        if (isUserAcquirer && amount > 0) {
           setLoading(true);
 
           const initialized = await initializePaymentSheet();
@@ -104,22 +114,23 @@ export const CreatePayment = ({ barter_transaction_id }: { barter_transaction_id
     });
   };
 
-  if (userQuery.isLoading || transactionQuery.isLoading) {
-    return <LoadingStateScreen />;
-  }
-
+  /* ======================================== RETURNS */
   return (
     <>
-      <ScrollView contentContainerStyle={styles.form}>
-        <FormInput label="To" value={receiver} editable={false} />
-        <FormInput label="Acquired" value={acquired} editable={false} />
-        <FormInput label="Bartered for" value={bartered} editable={false} />
+      <ScrollView>
+        <View style={styles.container}>
+          <FormInput label="Pay with" value={payWith} editable={false} multiline />
+        </View>
+
+        <Divider />
+
+        <Invoice barter_transaction_id={barter_transaction_id} />
       </ScrollView>
       <Buttons
         variant="bottom"
         buttons={[
           { label: "Cancel", mode: "outlined", onPress: () => router.back() },
-          { label: "Confirm", mode: "contained", onPress: handleSubmit, disabled: loading, loading: loading },
+          { label: "Pay", mode: "contained", onPress: handleSubmit, disabled: loading, loading: loading },
         ]}
       />
     </>
@@ -127,12 +138,8 @@ export const CreatePayment = ({ barter_transaction_id }: { barter_transaction_id
 };
 
 const styles = StyleSheet.create({
-  form: {
-    gap: 16,
+  container: {
     padding: 16,
-  },
-  services: {
-    flex: 1,
-    gap: 8,
+    gap: 16,
   },
 });

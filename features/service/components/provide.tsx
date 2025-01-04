@@ -2,31 +2,37 @@ import React from "react";
 import { StyleSheet, View } from "react-native";
 import { Card, IconButton, Menu, Text } from "react-native-paper";
 
+import { useIsFocused } from "@react-navigation/native";
 import { router } from "expo-router";
 
-import { LoadingStateScreen } from "@/components/screens";
 import { AppList, Spacer } from "@/components/ui";
 import { AppChip } from "@/components/ui/chip";
 import { useUpdateService } from "@/features/service/api/update-service";
 import { useDisclosure } from "@/hooks/use-disclosure";
 import { useRefreshByUser } from "@/hooks/use-refresh-by-user";
 import { useAppTheme } from "@/lib/react-native-paper";
-import { alwaysRefetchQueryConfig } from "@/lib/react-query";
 import { ServiceStatus } from "@/types/api";
 import { formatServicePrice } from "@/utils/format";
 
 import { useInfiniteServices } from "../api/get-services";
+import { ProvideSkeleton } from "../skeleton/provide";
 
 export const Provide = () => {
   const { colors } = useAppTheme();
+  const isFocused = useIsFocused();
 
+  /* ======================================== QUERIES */
   const servicesQuery = useInfiniteServices({
     mode: "provide",
+    // FIXME: pusher not working on expo go (pusher-websocket-react-native)
     queryConfig: {
-      ...alwaysRefetchQueryConfig,
+      refetchInterval: isFocused ? 2000 : false,
     },
   });
+  const { isRefetchingByUser, refetchByUser } = useRefreshByUser(servicesQuery.refetch);
+  const services = servicesQuery.data?.pages.flatMap((page) => page.data.data);
 
+  /* ======================================== MUTATIONS */
   const updateServiceMutation = useUpdateService({
     mutationConfig: {
       onSuccess: () => {
@@ -35,6 +41,7 @@ export const Provide = () => {
     },
   });
 
+  /* ======================================== FUNCTIONS */
   const handleSubmit = ({ barter_service_id, status }: { barter_service_id: string; status: ServiceStatus }) => {
     updateServiceMutation.mutate({
       barter_service_id,
@@ -44,14 +51,7 @@ export const Provide = () => {
     });
   };
 
-  const { isRefetchingByUser, refetchByUser } = useRefreshByUser(servicesQuery.refetch);
-
-  if (servicesQuery.isLoading) {
-    return <LoadingStateScreen />;
-  }
-
-  const services = servicesQuery.data?.pages.flatMap((page) => page.data.data);
-
+  /* ======================================== COMPONENTS */
   const MenuWrapper = ({ item }: { item: any }) => {
     const { isOpen, open, close } = useDisclosure();
 
@@ -77,9 +77,15 @@ export const Provide = () => {
             })
           }
         />
+        {/* TODO: MENU ITEM - delete service */}
       </Menu>
     );
   };
+
+  /* ======================================== RETURNS */
+  if (servicesQuery.isLoading) {
+    return <ProvideSkeleton />;
+  }
 
   return (
     <AppList
@@ -94,7 +100,7 @@ export const Provide = () => {
                     backgroundColor: colors.surfaceDisabled,
                   }
                 }
-                textStyle={item.status === "disabled" && { color: colors.secondary }}
+                textStyle={item.status === "disabled" && { color: colors.onSurfaceDisabled }}
               >
                 {item.barter_category?.name}
               </AppChip>
@@ -119,13 +125,13 @@ export const Provide = () => {
           </Card.Content>
         </Card>
       )}
-      estimatedItemSize={15}
       onEndReached={() => {
         servicesQuery.hasNextPage && servicesQuery.fetchNextPage();
       }}
       onRefresh={refetchByUser}
       refreshing={isRefetchingByUser}
       ItemSeparatorComponent={() => <Spacer y={8} />}
+      containerStyle={{ flex: 1 }}
       contentContainerStyle={{ padding: 16 }}
     />
   );

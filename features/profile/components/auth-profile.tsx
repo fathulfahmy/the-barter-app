@@ -3,12 +3,19 @@ import { StyleSheet, View } from "react-native";
 import { Text } from "react-native-paper";
 
 import { AppAvatar } from "@/components/ui/avatar";
-import { User } from "@/types/api";
+import { useUser } from "@/lib/auth/auth";
 
-export const AuthProfile = ({ user }: { user: User | null | undefined }) => {
+export const AuthProfile = () => {
+  /* ======================================== QUERIES */
+  const userQuery = useUser();
+  const user = userQuery.data;
+
+  /* ======================================== RETURNS */
+  if (userQuery.isLoading) return null;
+
   return (
     <View style={styles.container}>
-      <AppAvatar user={user} size={96} />
+      <AppAvatar uri={user?.avatar?.uri} name={user?.name} size={96} />
       <Text variant="titleMedium">{user?.name}</Text>
     </View>
   );

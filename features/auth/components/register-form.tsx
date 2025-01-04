@@ -1,5 +1,6 @@
 import React from "react";
 import { useForm } from "react-hook-form";
+import { StyleSheet } from "react-native";
 import { TextInput } from "react-native-paper";
 
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -12,11 +13,14 @@ import { useDisclosure } from "@/hooks/use-disclosure";
 import { registerInputSchema, useRegister } from "@/lib/auth/auth";
 
 export const RegisterForm = () => {
-  const register = useRegister({ onSuccess: () => router.replace("/(tabs)") });
-
+  /* ======================================== STATES */
   const { isOpen: passwordVisible, toggle: togglePasswordVisible } = useDisclosure(false);
   const { isOpen: passwordConfirmVisible, toggle: togglePasswordConfirmVisible } = useDisclosure(false);
 
+  /* ======================================== MUTATIONS */
+  const register = useRegister({ onSuccess: () => router.replace("/(tabs)") });
+
+  /* ======================================== FORM */
   const defaultValues = {
     name: "",
     email: "",
@@ -34,11 +38,13 @@ export const RegisterForm = () => {
     mode: "onChange",
   });
 
+  /* ======================================== FUNCTIONS */
   const onSubmit = handleSubmit((values) => register.mutate(values));
 
+  /* ======================================== RETURNS */
   return (
     <>
-      <KeyboardWrapper contentContainerStyle={{ gap: 16, padding: 16 }}>
+      <KeyboardWrapper contentContainerStyle={styles.form}>
         <FormInput control={control} label="Name" name="name" errors={errors.name?.message} inputMode="text" />
         <FormInput control={control} label="Email" name="email" errors={errors.email?.message} inputMode="email" />
         <FormInput
@@ -73,8 +79,19 @@ export const RegisterForm = () => {
             loading: register.isPending,
           },
         ]}
-        style={{ paddingHorizontal: 16 }}
+        style={styles.buttons}
       />
     </>
   );
 };
+
+const styles = StyleSheet.create({
+  form: {
+    gap: 16,
+    padding: 16,
+  },
+  buttons: {
+    paddingVertical: 8,
+    paddingHorizontal: 16,
+  },
+});

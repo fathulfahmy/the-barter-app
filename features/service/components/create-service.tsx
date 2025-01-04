@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Keyboard, StyleSheet, View } from "react-native";
-import { HelperText, IconButton, RadioButton } from "react-native-paper";
+import { Button, HelperText, IconButton, RadioButton, TextInput } from "react-native-paper";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { router } from "expo-router";
@@ -19,14 +19,19 @@ import { Category, Media } from "@/types/api";
 import { createServiceInputSchema, useCreateService } from "../api/create-service";
 
 export const CreateService = () => {
-  const { colors } = useAppTheme();
-  const categoriesQuery = useCategories();
-  const categories = categoriesQuery.data?.data;
-
+  /* ======================================== STATES */
   const [category, setCategory] = useState({ id: "", name: "" });
   const [images, setImages] = useState<string[]>([]);
   const [files, setFiles] = useState<(File | Media)[]>([]);
 
+  /* ======================================== HOOKS */
+  const { colors } = useAppTheme();
+
+  /* ======================================== QUERIES */
+  const categoriesQuery = useCategories();
+  const categories = categoriesQuery.data?.data;
+
+  /* ======================================== MUTATIONS */
   const createServiceMutation = useCreateService({
     mutationConfig: {
       onSuccess: () => {
@@ -35,6 +40,7 @@ export const CreateService = () => {
     },
   });
 
+  /* ======================================== FORM */
   const defaultValues = {
     title: "",
     description: "",
@@ -56,9 +62,9 @@ export const CreateService = () => {
     defaultValues,
     mode: "onChange",
   });
-
   const [min_price, max_price, price_unit] = watch(["min_price", "max_price", "price_unit"]);
 
+  /* ======================================== FUNCTIONS */
   const handlePickImages = async ({ useCamera = false }: { useCamera?: boolean } = {}) => {
     await getImagePickerPermission(useCamera);
 
@@ -67,6 +73,7 @@ export const CreateService = () => {
       options: {
         mediaTypes: ["images"],
         allowsMultipleSelection: true,
+        selectionLimit: 5 - images.length,
         aspect: [1, 1],
       },
     });
@@ -99,96 +106,112 @@ export const CreateService = () => {
 
   const onSubmit = handleSubmit((values) => createServiceMutation.mutate({ data: values }));
 
+  /* ======================================== RETURNS */
   if (categoriesQuery.isLoading) {
     return <LoadingStateScreen />;
   }
 
   return (
     <>
-      <KeyboardWrapper contentContainerStyle={styles.form}>
-        <FormInput control={control} label="Title" name="title" errors={errors.title?.message} />
+      <KeyboardWrapper>
+        <View style={styles.form}>
+          <FormInput control={control} label="Title" name="title" errors={errors.title?.message} />
 
-        <FormInput
-          control={control}
-          label="Description"
-          name="description"
-          errors={errors.description?.message}
-          multiline
-        />
-
-        <AppDialog
-          renderTriggerButton={(open) => (
-            <FormInput
-              control={control}
-              label="Category"
-              name="barter_category_id"
-              errors={errors.barter_category_id?.message}
-              value={category.name}
-              editable={false}
-              onPress={() => {
-                Keyboard.dismiss();
-                open();
-              }}
-            />
-          )}
-          title="Select category"
-          body={
-            <AppList
-              data={categories}
-              extraData={category}
-              renderItem={({ item }) => (
-                <RadioButton.Item
-                  label={item.name}
-                  value={item.id}
-                  status={category.id === item.id ? "checked" : "unchecked"}
-                  onPress={() => handleCategorySelect(item)}
-                />
-              )}
-              estimatedItemSize={15}
-            />
-          }
-        />
-
-        <FormField
-          label="Price Range"
-          errors={[errors.min_price?.message ?? "", errors.max_price?.message ?? "", errors.price_unit?.message ?? ""]}
-        >
-          <View style={styles.priceContainer}>
-            <FormInput control={control} label="Min (RM)" name="min_price" inputMode="decimal" style={styles.price} />
-
-            <FormInput control={control} label="Max (RM)" name="max_price" inputMode="decimal" style={styles.price} />
-
-            <FormInput control={control} label="Price Unit" name="price_unit" style={styles.price} />
-          </View>
-          <HelperText type="info">{`RM${min_price} - RM${max_price} per ${price_unit}`}</HelperText>
-        </FormField>
-
-        {images.length < 5 && (
-          <Buttons
-            buttons={[
-              {
-                label: "Take Photos",
-                mode: "contained-tonal",
-                onPress: () => handlePickImages({ useCamera: true }),
-              },
-              {
-                label: "Choose Photos",
-                mode: "contained-tonal",
-                onPress: () => handlePickImages(),
-              },
-            ]}
+          <FormInput
+            control={control}
+            label="Description"
+            name="description"
+            errors={errors.description?.message}
+            multiline
           />
-        )}
+
+          <AppDialog
+            renderTriggerButton={(open) => (
+              <FormInput
+                control={control}
+                label="Category"
+                name="barter_category_id"
+                errors={errors.barter_category_id?.message}
+                value={category.name}
+                editable={false}
+                onPress={() => {
+                  Keyboard.dismiss();
+                  open();
+                }}
+              />
+            )}
+            title="Select category"
+            body={
+              <AppList
+                data={categories}
+                extraData={category}
+                renderItem={({ item }) => (
+                  <RadioButton.Item
+                    label={item.name}
+                    value={item.id}
+                    status={category.id == item.id ? "checked" : "unchecked"}
+                    onPress={() => handleCategorySelect(item)}
+                  />
+                )}
+              />
+            }
+          />
+
+          <FormField
+            label="Price Range"
+            errors={[
+              errors.min_price?.message ?? "",
+              errors.max_price?.message ?? "",
+              errors.price_unit?.message ?? "",
+            ]}
+          >
+            <View style={styles.priceContainer}>
+              <FormInput
+                control={control}
+                label="Min (RM)"
+                name="min_price"
+                inputMode="decimal"
+                left={<TextInput.Affix text="RM " />}
+                style={styles.price}
+              />
+
+              <FormInput
+                control={control}
+                label="Max (RM)"
+                name="max_price"
+                inputMode="decimal"
+                left={<TextInput.Affix text="RM " />}
+                style={styles.price}
+              />
+
+              <FormInput control={control} label="Price Unit" name="price_unit" style={styles.price} />
+            </View>
+            <HelperText type="info">{`RM${min_price} - RM${max_price} per ${price_unit}`}</HelperText>
+          </FormField>
+
+          {images.length < 5 && (
+            <Button mode="contained-tonal" icon="upload-multiple" onPress={() => handlePickImages()}>
+              {`Upload photos (${images.length}/5)`}
+            </Button>
+          )}
+
+          {images.length >= 5 && (
+            <Button mode="contained-tonal" icon="upload-multiple" onPress={() => handlePickImages()} disabled>
+              {`Upload photos (${images.length}/5)`}
+            </Button>
+          )}
+        </View>
 
         <Gallery
           uris={images}
+          contentContainerStyle={styles.gallery}
+          overlayContainerStyle={styles.removeImage}
           renderOverlay={(index) => (
             <IconButton
               icon="close"
               size={16}
-              style={styles.removeImage}
               containerColor={colors.secondary}
-              iconColor={colors.onError}
+              iconColor={colors.onSecondary}
               onPress={() => handleRemoveImages(index)}
             />
           )}
@@ -227,8 +250,11 @@ const styles = StyleSheet.create({
   },
 
   removeImage: {
-    position: "absolute",
     top: 0,
     right: 0,
+  },
+  gallery: {
+    padding: 16,
+    paddingTop: 0,
   },
 });

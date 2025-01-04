@@ -1,12 +1,12 @@
 import React from "react";
-import { View } from "react-native";
+import { StyleProp, View, ViewProps, ViewStyle } from "react-native";
 
-type Props = {
+type Props = ViewProps & {
   x?: number;
   y?: number;
-  flex?: number;
+  style?: StyleProp<ViewStyle>;
 };
 
-export const Spacer: React.FC<Props> = ({ x, y, flex }) => {
-  return <View style={{ width: x, height: y, flex: flex }}></View>;
+export const Spacer: React.FC<Props> = ({ x, y, style, ...props }) => {
+  return <View {...props} style={[{ width: x, height: y }, style]}></View>;
 };

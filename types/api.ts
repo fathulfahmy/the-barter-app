@@ -82,12 +82,13 @@ export type Service = {
   pivot?: ServicePivot | null;
 };
 
-export type TransactionStatus = "pending" | "accepted" | "rejected" | "completed" | "cancelled";
+export type TransactionStatus = "pending" | "accepted" | "rejected" | "awaiting_completed" | "completed" | "cancelled";
 
 export type Transaction = {
   id: string;
   barter_acquirer_id: string;
   barter_provider_id: string;
+  awaiting_completed_user_id: string;
   barter_service_id: string;
   status: TransactionStatus;
   created_at: Date;
@@ -100,18 +101,14 @@ export type Transaction = {
   barter_reviews?: Review[] | null;
 };
 
-export type InvoiceStatus = "pending" | "accepted" | "rejected" | "success" | "failed";
-
 export type Invoice = {
   id: string;
   barter_acquirer_id: string;
   barter_transaction_id: string;
   amount?: number;
-  status: InvoiceStatus;
   created_at: Date;
   updated_at: Date;
   deleted_at: Date | null;
-  exchanged_services: string[];
   barter_transaction?: Transaction | null;
   barter_services?: Service[] | null;
 };

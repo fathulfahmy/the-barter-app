@@ -18,15 +18,17 @@ import { filterEmptyValues } from "@/utils/form";
 
 import { updateProfileInputSchema, useUpdateProfile } from "../api/update-profile";
 
-const UpdateProfile = ({ user_id }: { user_id: string }) => {
-  const userQuery = useUser();
-  const user = userQuery.data;
-
+const UpdateProfile = () => {
+  /* ======================================== STATES */
   const { isOpen: passwordVisible, toggle: togglePasswordVisible } = useDisclosure(false);
   const { isOpen: passwordConfirmVisible, toggle: togglePasswordConfirmVisible } = useDisclosure(false);
 
+  /* ======================================== QUERIES */
+  const userQuery = useUser();
+  const user = userQuery.data;
   const [image, setImage] = useState<string>(user?.avatar?.uri ?? "");
 
+  /* ======================================== MUTATIONS */
   const updateProfileMutation = useUpdateProfile({
     mutationConfig: {
       onSuccess: () => {
@@ -35,6 +37,7 @@ const UpdateProfile = ({ user_id }: { user_id: string }) => {
     },
   });
 
+  /* ======================================== FORM */
   const values = {
     name: user?.name ?? "",
     avatar: user?.avatar ?? ({} as File | Media),
@@ -54,6 +57,7 @@ const UpdateProfile = ({ user_id }: { user_id: string }) => {
     mode: "onChange",
   });
 
+  /* ======================================== FUNCTIONS */
   const handlePickImage = async ({ useCamera = false }: { useCamera?: boolean } = {}) => {
     await getImagePickerPermission(useCamera);
 
@@ -80,12 +84,15 @@ const UpdateProfile = ({ user_id }: { user_id: string }) => {
   };
 
   const onSubmit = handleSubmit((values) => {
+    if (!user) return;
+
     updateProfileMutation.mutate({
-      user_id,
+      user_id: user.id,
       data: filterEmptyValues(values),
     });
   });
 
+  /* ======================================== RETURNS */
   if (userQuery.isLoading) {
     return <LoadingStateScreen />;
   }
@@ -95,10 +102,11 @@ const UpdateProfile = ({ user_id }: { user_id: string }) => {
       <KeyboardWrapper contentContainerStyle={styles.form}>
         <View style={styles.avatar}>
           {image && <Avatar.Image source={{ uri: image }} size={96} />}
+          {/* prettier-ignore */}
           <Buttons
             buttons={[
-              { label: "Take a photo", mode: "contained-tonal", onPress: () => handlePickImage({ useCamera: true }) },
-              { label: "Choose a photo", mode: "contained-tonal", onPress: () => handlePickImage() },
+              { label: "Take a photo", mode: "contained-tonal", icon: "camera", onPress: () => handlePickImage({ useCamera: true })},
+              { label: "Choose a photo", mode: "contained-tonal", icon: "image", onPress: () => handlePickImage() },
             ]}
           />
         </View>

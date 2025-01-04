@@ -12,19 +12,20 @@ import { formatInvoiceItems } from "@/utils/format";
 import { useInfiniteReviews } from "../api/get-reviews";
 
 export const Reviews = ({ barter_service_id }: { barter_service_id?: string }) => {
+  /* ======================================== HOOKS */
   const { colors } = useAppTheme();
 
+  /* ======================================== QUERIES */
   const reviewsQuery = useInfiniteReviews({
     ...(barter_service_id && { barter_service_id }),
   });
-
   const { isRefetchingByUser, refetchByUser } = useRefreshByUser(reviewsQuery.refetch);
+  const reviews = reviewsQuery.data?.pages.flatMap((page) => page.data.data);
 
+  /* ======================================== RETURNS */
   if (reviewsQuery.isLoading) {
     return <LoadingStateScreen />;
   }
-
-  const reviews = reviewsQuery.data?.pages.flatMap((page) => page.data.data);
 
   return (
     <AppList
@@ -32,26 +33,23 @@ export const Reviews = ({ barter_service_id }: { barter_service_id?: string }) =
       renderItem={({ item }) => (
         <Card>
           <Card.Content style={styles.card}>
-            <View style={styles.header}>
-              <AvatarWithName user={item.author} />
-            </View>
+            <AvatarWithName user={item.author} />
 
-            <View style={styles.invoice}>
+            <View style={styles.body}>
               <Text variant="titleMedium">{formatInvoiceItems(item.barter_transaction?.barter_invoice)}</Text>
               <Text
                 variant="bodyMedium"
                 style={{ color: colors.secondary }}
-              >{`For ${item.barter_service?.title}`}</Text>
+              >{`For ${item.barter_transaction?.barter_service?.title}`}</Text>
             </View>
 
-            <View style={styles.review}>
+            <View style={styles.body}>
               <RatingStars rating={item.rating} />
               <Text variant="bodyMedium">{item.description}</Text>
             </View>
           </Card.Content>
         </Card>
       )}
-      estimatedItemSize={15}
       onEndReached={() => {
         reviewsQuery.hasNextPage && reviewsQuery.fetchNextPage();
       }}
@@ -67,15 +65,7 @@ const styles = StyleSheet.create({
   card: {
     gap: 16,
   },
-  header: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-  },
-  invoice: {
-    gap: 2,
-  },
-  review: {
+  body: {
     gap: 2,
   },
 });

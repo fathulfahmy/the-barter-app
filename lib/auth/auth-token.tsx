@@ -1,5 +1,4 @@
-import React from "react";
-import { type PropsWithChildren, createContext, useContext, useEffect } from "react";
+import React, { type PropsWithChildren, createContext, useContext, useEffect } from "react";
 
 import { useStorageState } from "@/hooks/use-storage-state";
 
@@ -7,7 +6,8 @@ import { api } from "../axios";
 
 type Token = string | null;
 
-const TokenContext = createContext<{
+/* ======================================== CONTEXT */
+const AuthTokenContext = createContext<{
   addToken: (token: Token) => void;
   removeToken: () => void;
   token?: Token;
@@ -19,19 +19,21 @@ const TokenContext = createContext<{
   isLoading: false,
 });
 
+/* ======================================== HOOK */
 // This hook can be used to access the user info.
-export function useToken() {
-  const value = useContext(TokenContext);
+export function useAuthToken() {
+  const value = useContext(AuthTokenContext);
   if (process.env.NODE_ENV !== "production") {
     if (!value) {
-      throw new Error("useToken must be wrapped in a <TokenProvider />");
+      throw new Error("useAuthToken must be wrapped in a <AuthTokenProvider />");
     }
   }
 
   return value;
 }
 
-export function TokenProvider({ children }: PropsWithChildren) {
+/* ======================================== PROVIDER */
+export const AuthTokenProvider = ({ children }: PropsWithChildren) => {
   const [[isLoading, token], setToken] = useStorageState("token");
 
   useEffect(() => {
@@ -43,7 +45,7 @@ export function TokenProvider({ children }: PropsWithChildren) {
   }, [token]);
 
   return (
-    <TokenContext.Provider
+    <AuthTokenContext.Provider
       value={{
         addToken: (token) => {
           // Perform sign-in logic here
@@ -57,6 +59,6 @@ export function TokenProvider({ children }: PropsWithChildren) {
       }}
     >
       {children}
-    </TokenContext.Provider>
+    </AuthTokenContext.Provider>
   );
-}
+};

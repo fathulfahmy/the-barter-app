@@ -1,10 +1,13 @@
 import { useTheme } from "react-native-paper";
 import { MD3DarkTheme, MD3LightTheme } from "react-native-paper";
 
+/* ======================================== HOOK */
 export const useAppTheme = () => useTheme<AppTheme>();
 
+/* ======================================== PROP */
 export type AppTheme = typeof AppLightTheme;
 
+/* ======================================== THEME */
 export const AppLightTheme = {
   ...MD3LightTheme,
   colors: {

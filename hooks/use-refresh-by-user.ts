@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 
 export const useRefreshByUser = (refetch: () => Promise<unknown>) => {
   const [isRefetchingByUser, setIsRefetchingByUser] = React.useState(false);

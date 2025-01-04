@@ -1,59 +1,119 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
-import { Button, Card, Text } from "react-native-paper";
+import { Card, Text } from "react-native-paper";
 
-import { router } from "expo-router";
+import { useIsFocused } from "@react-navigation/native";
 
-import { LoadingStateScreen } from "@/components/screens";
 import { AppList, Spacer } from "@/components/ui";
 import { AvatarWithName } from "@/components/ui/avatar";
+import { Buttons } from "@/components/ui/button";
+import { useConfirmationDialog } from "@/components/ui/dialog";
 import { useRefreshByUser } from "@/hooks/use-refresh-by-user";
+import { useStreamChat } from "@/hooks/use-stream-chat";
 import { useAppTheme } from "@/lib/react-native-paper";
-import { formatInvoiceItems } from "@/utils/format";
+import { TransactionStatus } from "@/types/api";
+import { formatInvoiceItems, formatStripSuffix } from "@/utils/format";
 
 import { useInfiniteTransactions } from "../api/get-transactions";
+import { useUpdateTransaction } from "../api/update-transactions";
+import { OutgoingTransactionsSkeleton } from "../skeleton/outgoing-transactions";
 
 export const OutgoingTransactions = ({ barter_service_id }: { barter_service_id?: string }) => {
+  /* ======================================== HOOKS */
   const { colors } = useAppTheme();
+  const isFocused = useIsFocused();
+  const channel = useStreamChat();
 
+  /* ======================================== QUERIES */
   const transactionsQuery = useInfiniteTransactions({
     mode: "outgoing",
     ...(barter_service_id && { barter_service_id }),
+    // FIXME: pusher not working on expo go (pusher-websocket-react-native)
+    queryConfig: {
+      refetchInterval: isFocused ? 2000 : false,
+    },
+  });
+  const { isRefetchingByUser, refetchByUser } = useRefreshByUser(transactionsQuery.refetch);
+  const transactions = transactionsQuery.data?.pages.flatMap((page) => page.data.data);
+
+  /* ======================================== MUTATIONS */
+  const updateTransactionMutation = useUpdateTransaction({
+    mutationConfig: {
+      onSuccess: () => {
+        transactionsQuery.refetch();
+      },
+    },
   });
 
-  const { isRefetchingByUser, refetchByUser } = useRefreshByUser(transactionsQuery.refetch);
+  /* ======================================== FUNCTIONS */
+  const handleUpdate = ({
+    barter_transaction_id,
+    status,
+  }: {
+    barter_transaction_id: string;
+    status: TransactionStatus;
+  }) => {
+    useConfirmationDialog.getState().setConfirmationDialog({
+      type: "warning",
+      title: `${formatStripSuffix(status, "led")} barter?`,
+      confirmButtonFn: () => {
+        updateTransactionMutation.mutate({
+          barter_transaction_id,
+          data: {
+            status,
+          },
+        });
+      },
+    });
+  };
 
+  /* ======================================== RETURNS */
   if (transactionsQuery.isLoading) {
-    return <LoadingStateScreen />;
+    return <OutgoingTransactionsSkeleton />;
   }
-
-  const barter_transactions = transactionsQuery.data?.pages.flatMap((page) => page.data.data);
 
   return (
     <AppList
-      data={barter_transactions}
-      renderItem={({ item }) => (
-        <Card>
-          <Card.Content style={styles.card}>
-            <View style={styles.header}>
-              <AvatarWithName user={item.barter_provider} />
-            </View>
+      data={transactions}
+      renderItem={({ item }) => {
+        const otherUser = item.barter_acquirer;
+        const title = item.barter_service?.title;
+        const subtitle = formatInvoiceItems(item.barter_invoice);
 
-            <View style={styles.body}>
-              <Text variant="titleMedium">{item.barter_service?.title}</Text>
-              <Text variant="bodyMedium" style={{ color: colors.secondary }}>
-                {`For ${formatInvoiceItems(item.barter_invoice)}`}
-              </Text>
-            </View>
+        return (
+          <Card>
+            <Card.Content style={styles.card}>
+              <AvatarWithName user={otherUser} />
 
-            <View style={{ gap: 4 }}>
-              <Button mode="contained" onPress={() => router.push(`/chat/${item.barter_acquirer_id}`)}>
-                Chat
-              </Button>
-            </View>
-          </Card.Content>
-        </Card>
-      )}
+              <View style={styles.body}>
+                <Text variant="titleMedium">{title}</Text>
+                <Text variant="bodyMedium" style={{ color: colors.secondary }}>
+                  For {subtitle}
+                </Text>
+              </View>
+
+              <Buttons
+                vertical
+                buttons={[
+                  {
+                    label: "Chat",
+                    mode: "outlined",
+                    onPress: () => channel.createAndRedirect(item.barter_provider_id),
+                  },
+                  {
+                    label: "Cancel",
+                    mode: "contained",
+                    textColor: colors.onRed,
+                    style: { backgroundColor: colors.red },
+                    onPress: () => handleUpdate({ status: "cancelled", barter_transaction_id: item.id }),
+                    disabled: updateTransactionMutation.isPending,
+                  },
+                ]}
+              />
+            </Card.Content>
+          </Card>
+        );
+      }}
       estimatedItemSize={15}
       onEndReached={() => {
         transactionsQuery.hasNextPage && transactionsQuery.fetchNextPage();
@@ -61,6 +121,7 @@ export const OutgoingTransactions = ({ barter_service_id }: { barter_service_id?
       onRefresh={refetchByUser}
       refreshing={isRefetchingByUser}
       ItemSeparatorComponent={() => <Spacer y={8} />}
+      containerStyle={{ flex: 1 }}
       contentContainerStyle={{ padding: 16 }}
     />
   );
@@ -69,11 +130,6 @@ export const OutgoingTransactions = ({ barter_service_id }: { barter_service_id?
 const styles = StyleSheet.create({
   card: {
     gap: 16,
-  },
-  header: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
   },
   body: {
     gap: 2,

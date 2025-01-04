@@ -9,16 +9,20 @@ import { configureAuth } from "./react-query-auth";
 // api call definitions for auth (types, schemas, requests):
 // these are not part of features as this is a module shared across features
 
+/* ======================================== AXIOS */
+/* ======================================== AUTH USER */
 const getUser = async (): Promise<User> => {
   const response = await api.get("/auth/me");
 
   return response.data;
 };
 
+/* ======================================== LOGOUT */
 const logout = (): Promise<void> => {
   return api.post("/auth/logout");
 };
 
+/* ======================================== LOGIN */
 export const loginInputSchema = z.object({
   email: z.string().min(1, "Email is required").email("Please enter a valid email address"),
   password: z.string().min(1, "Password is required"),
@@ -29,6 +33,7 @@ const loginWithEmailAndPassword = (data: LoginInput) => {
   return api.post("/auth/login", data);
 };
 
+/* ======================================== REGISTER */
 export const registerInputSchema = z
   .object({
     name: z.string().min(1, "Name is required"),
@@ -47,6 +52,7 @@ const registerWithEmailAndPassword = (data: RegisterInput) => {
   return api.post("/auth/register", data);
 };
 
+/* ======================================== REACT-QUERY-AUTH */
 const authConfig = {
   userFn: getUser,
   loginFn: async (data: LoginInput): Promise<AuthResponse> => {

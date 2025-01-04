@@ -12,7 +12,7 @@ type RatingChipProps = Omit<ChipProps, "children"> & {
 export const RatingChip: React.FC<RatingChipProps> = ({ rating, style, ...props }) => {
   const { colors, fonts } = useAppTheme();
 
-  if (rating === null || rating === undefined) return null;
+  if (!rating) return null;
 
   const chipStyle = [
     styles.chip,

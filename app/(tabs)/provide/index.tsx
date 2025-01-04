@@ -13,7 +13,7 @@ const ProvideScreen = () => {
 
   return (
     <>
-      {/* temporary fix headerRight not working on adroid */}
+      {/* FIXME: headerRight not working on android (expo-router) */}
       <Stack.Screen
         options={{
           headerRight:
@@ -30,7 +30,7 @@ const ProvideScreen = () => {
         }}
       />
       <ScreenWrapper>
-        {/* temporary fix headerRight not working on adroid */}
+        {/* FIXME: headerRight not working on android (expo-router) */}
         {Platform.OS === "android" && (
           <View style={styles.plus}>
             <IconButton icon="plus" iconColor={colors.primary} onPress={() => router.push("/provide/create")} />

@@ -2,6 +2,7 @@ import { Platform } from "react-native";
 
 import * as ImagePicker from "expo-image-picker";
 
+/* ======================================== CHECK CAMERA/LIBRARY PERMISSION */
 export const getImagePickerPermission = async (useCamera: boolean = false) => {
   const permission = useCamera
     ? await ImagePicker.requestCameraPermissionsAsync()
@@ -13,6 +14,7 @@ export const getImagePickerPermission = async (useCamera: boolean = false) => {
   }
 };
 
+/* ======================================== PICK IMAGE */
 export const getImagePickerResult = async ({
   useCamera = false,
   options,
@@ -37,6 +39,7 @@ export const getImagePickerResult = async ({
   return result;
 };
 
+/* ======================================== PARSE ASSET TO FILE (SINGLE) */
 export const getImagePickerFile = (result: ImagePicker.ImagePickerSuccessResult) => {
   const asset = result.assets?.[0];
 
@@ -45,10 +48,11 @@ export const getImagePickerFile = (result: ImagePicker.ImagePickerSuccessResult)
     : {
         uri: asset.uri,
         name: asset.fileName ?? "image.jpg",
-        type: asset.type ?? "image/jpeg",
+        type: asset.mimeType ?? "image/jpeg",
       };
 };
 
+/* ======================================== PARSE ASSET TO FILE (MULTIPLE) */
 export const getImagePickerMultipleFile = (result: ImagePicker.ImagePickerSuccessResult) => {
   return result.assets
     .map((asset) =>
@@ -57,7 +61,7 @@ export const getImagePickerMultipleFile = (result: ImagePicker.ImagePickerSucces
         : {
             uri: asset.uri,
             name: asset.fileName ?? "image.jpg",
-            type: asset.type ?? "image/jpeg",
+            type: asset.mimeType ?? "image/jpeg",
           },
     )
     .filter((file): file is File | { uri: string; name: string; type: string } => Boolean(file));

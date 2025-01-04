@@ -8,6 +8,7 @@ import { Transaction } from "@/types/api";
 
 import { getInfiniteTransactionsQueryOptions } from "./get-transactions";
 
+/* ======================================== VALIDATION */
 export const createTransactionInputSchema = z.object({
   barter_service_id: z.string().min(1, "Service is required"),
   amount: z.coerce.number().nonnegative().nullable(),
@@ -16,6 +17,7 @@ export const createTransactionInputSchema = z.object({
 
 export type CreateTransactionInput = z.infer<typeof createTransactionInputSchema>;
 
+/* ======================================== AXIOS */
 export const createTransaction = ({ data }: { data: CreateTransactionInput }): Promise<{ data: Transaction }> => {
   return api.post(`/barter_transactions`, data);
 };
@@ -24,6 +26,7 @@ type UseCreateTransactionOptions = {
   mutationConfig?: MutationConfig<typeof createTransaction>;
 };
 
+/* ======================================== HOOK */
 export const useCreateTransaction = ({ mutationConfig }: UseCreateTransactionOptions = {}) => {
   const queryClient = useQueryClient();
 
@@ -32,7 +35,8 @@ export const useCreateTransaction = ({ mutationConfig }: UseCreateTransactionOpt
   return useMutation({
     onSuccess: (data, ...args) => {
       queryClient.invalidateQueries({
-        queryKey: getInfiniteTransactionsQueryOptions({ mode: "outgoing" }).queryKey,
+        queryKey: getInfiniteTransactionsQueryOptions({ mode: "outgoing" }),
+        refetchType: "all",
       });
 
       useStatusDialog.getState().setStatusDialog({

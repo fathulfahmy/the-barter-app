@@ -10,6 +10,7 @@ import { createFormData } from "@/utils/form";
 
 import { getInfiniteServicesQueryOptions } from "./get-services";
 
+/* ======================================== VALIDATION */
 export const createServiceInputSchema = z.object({
   barter_category_id: z.string().min(1, "Barter category is required"),
   title: z.string().min(1, "Title is required").max(255),
@@ -25,6 +26,7 @@ export const createServiceInputSchema = z.object({
 
 export type CreateServiceInput = z.infer<typeof createServiceInputSchema>;
 
+/* ======================================== AXIOS */
 export const createService = ({ data }: { data: CreateServiceInput }): Promise<Service> => {
   const formData = createFormData(data);
 
@@ -35,6 +37,7 @@ export const createService = ({ data }: { data: CreateServiceInput }): Promise<S
   });
 };
 
+/* ======================================== HOOK */
 type UseCreateServiceOptions = {
   mutationConfig?: MutationConfig<typeof createService>;
 };
@@ -48,6 +51,7 @@ export const useCreateService = ({ mutationConfig }: UseCreateServiceOptions = {
     onSuccess: (...args) => {
       queryClient.invalidateQueries({
         queryKey: getInfiniteServicesQueryOptions({ mode: "provide" }).queryKey,
+        refetchType: "all",
       });
 
       useStatusDialog.getState().setStatusDialog({

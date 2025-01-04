@@ -3,6 +3,7 @@ import { router, usePathname } from "expo-router";
 
 import { useNotification } from "@/components/ui/notification";
 
+/* ======================================== CONFIG */
 function authRequestInterceptor(config: InternalAxiosRequestConfig) {
   if (config.headers) {
     config.headers.Accept = "application/json";
@@ -11,6 +12,7 @@ function authRequestInterceptor(config: InternalAxiosRequestConfig) {
   return config;
 }
 
+/* ======================================== SINGLETON */
 export const api = Axios.create({
   baseURL: process.env.EXPO_PUBLIC_API_URL,
 });
@@ -18,10 +20,12 @@ export const api = Axios.create({
 api.interceptors.request.use(authRequestInterceptor);
 api.interceptors.response.use(
   (response) => {
+    /* ======================================== SUCCESS RESPONSE INTERCEPTOR */
     return response.data;
   },
-  (error) => {
-    if (error.response?.status === 401) {
+  (e) => {
+    /* ======================================== ERROR RESPONSE INTERCEPTOR */
+    if (e.response?.status === 401) {
       const currentRoute = usePathname();
       const publicRoutes = ["/login", "/register"];
       const isPublicRoute = publicRoutes.includes(currentRoute);
@@ -31,14 +35,14 @@ api.interceptors.response.use(
       }
     }
 
-    const data = error.response?.data ?? {};
+    const data = e.response?.data ?? {};
     const errors = data.errors ?? [];
-    const message = data.message ?? error.message;
+    const message = data.message ?? e.message;
     const isValidErrors = Array.isArray(errors) && errors.length > 0;
 
     let messages = "";
 
-    if (error.response?.status === 422) {
+    if (e.response?.status === 422) {
       messages = isValidErrors ? errors : message;
     } else {
       messages = message;
@@ -49,6 +53,6 @@ api.interceptors.response.use(
       messages,
     });
 
-    return Promise.reject(error);
+    return Promise.reject(e);
   },
 );

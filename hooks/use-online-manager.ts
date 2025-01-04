@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import { Platform } from "react-native";
 
 import { onlineManager } from "@tanstack/react-query";

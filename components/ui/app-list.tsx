@@ -5,7 +5,7 @@ import { FlashList, FlashListProps } from "@shopify/flash-list";
 
 import { EmptyStateScreen } from "../screens";
 
-type AppListProps<T> = FlashListProps<T> & {
+export type AppListProps<T> = FlashListProps<T> & {
   containerStyle?: StyleProp<ViewStyle>;
 };
 
@@ -13,11 +13,12 @@ export const AppList = <T,>({ containerStyle, ...props }: AppListProps<T>) => {
   return (
     <View style={[styles.container, containerStyle]}>
       <FlashList
-        {...props}
-        keyExtractor={(item, index) => index.toString()}
+        keyExtractor={(item, index) => `${index}`}
         ListEmptyComponent={<EmptyStateScreen />}
         showsVerticalScrollIndicator={false}
         showsHorizontalScrollIndicator={false}
+        estimatedItemSize={15}
+        {...props}
       />
     </View>
   );
@@ -25,6 +26,6 @@ export const AppList = <T,>({ containerStyle, ...props }: AppListProps<T>) => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    minHeight: 4,
   },
 });

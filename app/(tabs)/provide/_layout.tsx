@@ -11,7 +11,6 @@ const ProvideLayout = () => {
     <Stack
       screenOptions={{
         title: "Provide",
-
         headerStyle: { backgroundColor: colors.primary },
         headerTintColor: colors.onPrimary,
         headerBackButtonDisplayMode: "minimal",
@@ -21,7 +20,9 @@ const ProvideLayout = () => {
       <Stack.Screen name="create" />
       <Stack.Screen name="[barter_service_id]/edit" />
       <Stack.Screen name="[barter_service_id]/(tabs)" />
-      <Stack.Screen name="[barter_transaction_id]/payment" />
+      <Stack.Screen name="transaction/[barter_transaction_id]/payment" />
+      <Stack.Screen name="transaction/[barter_transaction_id]/review" />
+      <Stack.Screen name="transaction/[barter_transaction_id]/invoice" />
     </Stack>
   );
 };

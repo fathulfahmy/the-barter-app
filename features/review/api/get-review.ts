@@ -4,10 +4,12 @@ import { api } from "@/lib/axios";
 import { QueryConfig } from "@/lib/react-query";
 import { Review } from "@/types/api";
 
+/* ======================================== AXIOS */
 export const getReview = ({ reviewId }: { reviewId: string }): Promise<{ data: Review }> => {
   return api.get(`/barter_reviews/${reviewId}`);
 };
 
+/* ======================================== REACT QUERY */
 export const getReviewQueryOptions = (reviewId: string) => {
   return queryOptions({
     queryKey: ["review", reviewId],
@@ -15,6 +17,7 @@ export const getReviewQueryOptions = (reviewId: string) => {
   });
 };
 
+/* ======================================== HOOK */
 type UseReviewOptions = {
   reviewId: string;
   queryConfig?: QueryConfig<typeof getReviewQueryOptions>;

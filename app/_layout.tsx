@@ -7,17 +7,18 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 import { useReactQueryDevTools } from "@dev-plugins/react-query";
 import { QueryClient, QueryClientProvider, focusManager } from "@tanstack/react-query";
 import { Stack } from "expo-router";
-import { OverlayProvider } from "stream-chat-expo";
+import { StatusBar } from "expo-status-bar";
 
 import { ConfirmationDialog } from "@/components/ui/dialog";
 import { StatusDialog } from "@/components/ui/dialog/status-dialog";
 import { Notification } from "@/components/ui/notification";
 import { useAppState } from "@/hooks/use-app-state";
 import { useOnlineManager } from "@/hooks/use-online-manager";
-import { TokenProvider } from "@/lib/auth/token";
+import { AuthTokenProvider } from "@/lib/auth/auth-token";
 import { AppLightTheme } from "@/lib/react-native-paper";
 import { defaultQueryConfig } from "@/lib/react-query";
-import { AppStripeProvider } from "@/lib/stripe";
+import { StreamChatProvider } from "@/lib/stream-chat/provider";
+import { StripePaymentProvider } from "@/lib/stripe";
 
 function onAppStateChange(status: AppStateStatus) {
   if (Platform.OS !== "web") {
@@ -39,11 +40,12 @@ const RootLayout = () => {
   return (
     <PaperProvider theme={theme}>
       <QueryClientProvider client={queryClient}>
-        <TokenProvider>
+        <AuthTokenProvider>
           <SafeAreaProvider>
             <GestureHandlerRootView>
-              <OverlayProvider>
-                <AppStripeProvider>
+              <StreamChatProvider>
+                <StripePaymentProvider>
+                  <StatusBar style="light" backgroundColor={theme.colors.primary} />
                   <Stack>
                     <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
                     <Stack.Screen name="(auth)" options={{ headerShown: false }} />
@@ -52,11 +54,11 @@ const RootLayout = () => {
                   <StatusDialog />
                   <ConfirmationDialog />
                   <Notification />
-                </AppStripeProvider>
-              </OverlayProvider>
+                </StripePaymentProvider>
+              </StreamChatProvider>
             </GestureHandlerRootView>
           </SafeAreaProvider>
-        </TokenProvider>
+        </AuthTokenProvider>
       </QueryClientProvider>
     </PaperProvider>
   );

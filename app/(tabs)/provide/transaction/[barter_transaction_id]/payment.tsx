@@ -3,7 +3,7 @@ import { useLocalSearchParams } from "expo-router";
 import { ScreenWrapper } from "@/components/screens";
 import { CreatePayment } from "@/features/transaction/components/create-payment";
 
-const ProvidePayment = () => {
+const ProvideTransactionPayment = () => {
   const { barter_transaction_id } = useLocalSearchParams<{ barter_transaction_id: string }>();
 
   return (
@@ -13,4 +13,4 @@ const ProvidePayment = () => {
   );
 };
 
-export default ProvidePayment;
+export default ProvideTransactionPayment;

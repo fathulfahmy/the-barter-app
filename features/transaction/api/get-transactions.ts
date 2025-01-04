@@ -1,11 +1,12 @@
 import { infiniteQueryOptions, useInfiniteQuery } from "@tanstack/react-query";
 
 import { api } from "@/lib/axios";
-import { QueryConfig, alwaysRefetchQueryConfig } from "@/lib/react-query";
+import { QueryConfig } from "@/lib/react-query";
 import { Paginator, Transaction } from "@/types/api";
 
 type Mode = "incoming" | "outgoing" | "ongoing" | "history";
 
+/* ======================================== AXIOS */
 export const getTransactions = ({
   mode,
   barter_service_id,
@@ -24,6 +25,7 @@ export const getTransactions = ({
   });
 };
 
+/* ======================================== REACT QUERY */
 export const getInfiniteTransactionsQueryOptions = ({
   mode,
   barter_service_id,
@@ -49,6 +51,7 @@ export const getInfiniteTransactionsQueryOptions = ({
   });
 };
 
+/* ======================================== HOOK */
 type UseInfiniteTransactionsOptions = {
   mode: Mode;
   barter_service_id?: string;
@@ -59,7 +62,6 @@ type UseInfiniteTransactionsOptions = {
 export const useInfiniteTransactions = ({ mode, barter_service_id, queryConfig }: UseInfiniteTransactionsOptions) => {
   return useInfiniteQuery({
     ...getInfiniteTransactionsQueryOptions({ mode, barter_service_id }),
-    ...alwaysRefetchQueryConfig,
     ...queryConfig,
   });
 };

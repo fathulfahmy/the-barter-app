@@ -6,14 +6,14 @@ import { api } from "@/lib/axios";
 import { MutationConfig } from "@/lib/react-query";
 import { Transaction } from "@/types/api";
 
-import { getInfiniteTransactionsQueryOptions } from "./get-transactions";
-
+/* ======================================== VALIDATION */
 export const updateTransactionInputSchema = z.object({
   status: z.string().min(1, "Status is required"),
 });
 
 export type UpdateTransactionInput = z.infer<typeof updateTransactionInputSchema>;
 
+/* ======================================== AXIOS */
 export const updateTransaction = ({
   barter_transaction_id,
   data,
@@ -24,6 +24,7 @@ export const updateTransaction = ({
   return api.patch(`/barter_transactions/${barter_transaction_id}`, data);
 };
 
+/* ======================================== HOOK */
 type UseUpdateTransactionOptions = {
   mutationConfig?: MutationConfig<typeof updateTransaction>;
 };
@@ -36,21 +37,13 @@ export const useUpdateTransaction = ({ mutationConfig }: UseUpdateTransactionOpt
   return useMutation({
     onSuccess: (data, ...args) => {
       queryClient.invalidateQueries({
-        queryKey: getInfiniteTransactionsQueryOptions({ mode: "incoming" }).queryKey,
-      });
-      queryClient.invalidateQueries({
-        queryKey: getInfiniteTransactionsQueryOptions({ mode: "outgoing" }).queryKey,
-      });
-      queryClient.invalidateQueries({
-        queryKey: getInfiniteTransactionsQueryOptions({ mode: "ongoing" }).queryKey,
-      });
-      queryClient.invalidateQueries({
-        queryKey: getInfiniteTransactionsQueryOptions({ mode: "history" }).queryKey,
+        queryKey: ["transactions"],
+        refetchType: "all",
       });
 
       useStatusDialog.getState().setStatusDialog({
         type: "success",
-        title: `Barter ${data.data.status}`,
+        title: "Barter updated",
       });
 
       onSuccess?.(data, ...args);

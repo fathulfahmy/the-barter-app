@@ -4,6 +4,7 @@ import { api } from "@/lib/axios";
 import { QueryConfig } from "@/lib/react-query";
 import { Paginator, Review } from "@/types/api";
 
+/* ======================================== AXIOS */
 export const getReviews = ({
   barter_service_id,
   page = 1,
@@ -19,6 +20,7 @@ export const getReviews = ({
   });
 };
 
+/* ======================================== REACT QUERY */
 export const getInfiniteReviewsQueryOptions = ({ barter_service_id }: { barter_service_id?: string }) => {
   return infiniteQueryOptions({
     queryKey: ["reviews", barter_service_id],
@@ -37,6 +39,7 @@ export const getInfiniteReviewsQueryOptions = ({ barter_service_id }: { barter_s
   });
 };
 
+/* ======================================== HOOK */
 type UseInfiniteReviewsOptions = {
   barter_service_id?: string;
   page?: number;

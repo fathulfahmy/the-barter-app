@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 
 export const useDisclosure = (initial = false) => {
   const [isOpen, setIsOpen] = React.useState(initial);

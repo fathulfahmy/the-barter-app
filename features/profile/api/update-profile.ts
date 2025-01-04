@@ -8,6 +8,7 @@ import { zodMedia, zodPassword } from "@/lib/zod";
 import { User } from "@/types/api";
 import { createFormData } from "@/utils/form";
 
+/* ======================================== VALIDATION */
 export const updateProfileInputSchema = z
   .object({
     avatar: zodMedia().or(z.instanceof(File)).optional().nullable(),
@@ -21,6 +22,7 @@ export const updateProfileInputSchema = z
     message: "Passwords do not match",
   });
 
+/* ======================================== AXIOS */
 export type UpdateProfileInput = z.infer<typeof updateProfileInputSchema>;
 
 export const updateProfile = ({ user_id, data }: { user_id: string; data: UpdateProfileInput }): Promise<User> => {
@@ -35,6 +37,7 @@ export const updateProfile = ({ user_id, data }: { user_id: string; data: Update
   });
 };
 
+/* ======================================== HOOK */
 type UseUpdateProfileOptions = {
   mutationConfig?: MutationConfig<typeof updateProfile>;
 };
@@ -48,13 +51,13 @@ export const useUpdateProfile = ({ mutationConfig }: UseUpdateProfileOptions = {
     onSuccess: (...args) => {
       queryClient.invalidateQueries({
         queryKey: ["authenticated-user"],
+        refetchType: "all",
       });
 
       useStatusDialog.getState().setStatusDialog({
         type: "success",
         title: "Profile updated",
       });
-
       onSuccess?.(...args);
     },
     ...restConfig,

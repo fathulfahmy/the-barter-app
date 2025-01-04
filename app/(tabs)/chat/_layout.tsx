@@ -11,7 +11,6 @@ const ChatLayout = () => {
     <Stack
       screenOptions={{
         title: "Chat",
-
         headerStyle: { backgroundColor: colors.primary },
         headerTintColor: colors.onPrimary,
         headerBackButtonDisplayMode: "minimal",

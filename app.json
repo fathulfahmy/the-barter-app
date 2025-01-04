@@ -5,8 +5,8 @@
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/tba-icon.png",
-    "scheme": "the-barter-app",
-    "userInterfaceStyle": "automatic",
+    "scheme": "thebarterapp",
+    "userInterfaceStyle": "light",
     "newArchEnabled": true,
     "ios": {
       "supportsTablet": true,
@@ -17,6 +17,7 @@
         "foregroundImage": "./assets/images/tba-adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
       },
+      "softwareKeyboardLayoutMode": "pan",
       "package": "com.fathulfahmy.thebarterapp"
     },
     "web": {
@@ -76,6 +77,11 @@
     "updates": {
       "url": "https://u.expo.dev/e4abf043-5a9c-433e-9ade-5c99ddd8b7f2"
     },
-    "runtimeVersion": "1.0.0"
+    "runtimeVersion": "1.0.0",
+    "description": "A platform where you can exchange services for other services, cash, or both.",
+    "githubUrl": "https://github.com/fathulfahmy/the-barter-app",
+    "backgroundColor": "#fefbff",
+    "primaryColor": "#005ac2",
+    "platforms": ["ios", "android"]
   }
 }

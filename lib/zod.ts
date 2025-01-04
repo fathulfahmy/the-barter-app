@@ -1,5 +1,12 @@
 import { z } from "zod";
 
+/* ======================================== MEDIA INPUT VALIDATOR
+                                            { 
+                                              uri: 
+                                              name: 
+                                              type:
+                                            } 
+*/
 export const zodMedia = () => {
   return z.object({
     uri: z.string(),
@@ -14,6 +21,9 @@ export const zodMedia = () => {
   });
 };
 
+/* ======================================== PASSWORD INPUT VALIDATOR
+                                            Example1! 
+*/
 export const zodPassword = () => {
   return z
     .string()

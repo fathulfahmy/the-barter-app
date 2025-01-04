@@ -6,6 +6,7 @@ import { Paginator, Service } from "@/types/api";
 
 type Mode = "acquire" | "provide";
 
+/* ======================================== AXIOS */
 export const getServices = ({
   mode,
   page = 1,
@@ -21,6 +22,7 @@ export const getServices = ({
   });
 };
 
+/* ======================================== REACT QUERY */
 export const getInfiniteServicesQueryOptions = ({ mode }: { mode: Mode }) => {
   return infiniteQueryOptions({
     queryKey: ["services", mode],
@@ -39,6 +41,7 @@ export const getInfiniteServicesQueryOptions = ({ mode }: { mode: Mode }) => {
   });
 };
 
+/* ======================================== HOOK */
 type UseInfiniteServicesOptions = {
   mode: Mode;
   page?: number;

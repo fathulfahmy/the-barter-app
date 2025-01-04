@@ -4,7 +4,6 @@ import { Card, Text } from "react-native-paper";
 
 import { router } from "expo-router";
 
-import { LoadingStateScreen } from "@/components/screens";
 import { AppList, Spacer } from "@/components/ui";
 import { AvatarWithName } from "@/components/ui/avatar";
 import { RatingChip } from "@/components/ui/chip";
@@ -13,19 +12,25 @@ import { useAppTheme } from "@/lib/react-native-paper";
 import { formatServicePrice } from "@/utils/format";
 
 import { useInfiniteServices } from "../api/get-services";
+import { AcquireSkeleton } from "../skeleton/acquire";
 
 export const Acquire = () => {
   const { colors } = useAppTheme();
 
-  const servicesQuery = useInfiniteServices({ mode: "acquire" });
-
+  //======================================== QUERIES
+  const servicesQuery = useInfiniteServices({
+    mode: "acquire",
+    queryConfig: {
+      refetchOnWindowFocus: false,
+    },
+  });
   const { isRefetchingByUser, refetchByUser } = useRefreshByUser(servicesQuery.refetch);
-
-  if (servicesQuery.isLoading) {
-    return <LoadingStateScreen />;
-  }
-
   const services = servicesQuery.data?.pages.flatMap((page) => page.data.data);
+
+  //======================================== RETURNS
+  if (servicesQuery.isLoading) {
+    return <AcquireSkeleton />;
+  }
 
   return (
     <AppList
@@ -51,13 +56,13 @@ export const Acquire = () => {
           </Card.Content>
         </Card>
       )}
-      estimatedItemSize={15}
       onEndReached={() => {
         servicesQuery.hasNextPage && servicesQuery.fetchNextPage();
       }}
       onRefresh={refetchByUser}
       refreshing={isRefetchingByUser}
       ItemSeparatorComponent={() => <Spacer y={8} />}
+      containerStyle={{ flex: 1 }}
       contentContainerStyle={{ padding: 16 }}
     />
   );

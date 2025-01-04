@@ -36,21 +36,9 @@ const ProvideDetailTabsLayout = () => {
         },
       }}
     >
-      <MaterialTopTabs.Screen
-        name="incoming"
-        options={{ title: "Incoming" }}
-        initialParams={{ barter_service_id: barter_service_id }}
-      />
-      <MaterialTopTabs.Screen
-        name="ongoing"
-        options={{ title: "Ongoing" }}
-        initialParams={{ barter_service_id: barter_service_id }}
-      />
-      <MaterialTopTabs.Screen
-        name="history"
-        options={{ title: "History" }}
-        initialParams={{ barter_service_id: barter_service_id }}
-      />
+      <MaterialTopTabs.Screen name="incoming" options={{ title: "Incoming" }} initialParams={{ barter_service_id }} />
+      <MaterialTopTabs.Screen name="ongoing" options={{ title: "Ongoing" }} initialParams={{ barter_service_id }} />
+      <MaterialTopTabs.Screen name="history" options={{ title: "History" }} initialParams={{ barter_service_id }} />
     </MaterialTopTabs>
   );
 };

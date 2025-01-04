@@ -1,40 +1,24 @@
-import React, { useCallback } from "react";
+import React from "react";
 
 import { router, useLocalSearchParams } from "expo-router";
 
-import { LoadingStateScreen, ScreenWrapper } from "@/components/screens";
+import { ScreenWrapper } from "@/components/screens";
 import { Buttons } from "@/components/ui/button";
 import { useService } from "@/features/service/api/get-service";
-import { Service } from "@/features/service/components/barter-service";
-import { useUser } from "@/lib/auth/auth";
-import { useChat } from "@/lib/chat/chat-store";
-import { client } from "@/lib/chat/client";
+import { Service } from "@/features/service/components/service";
+import { ServiceSkeleton } from "@/features/service/skeleton/service";
+import { useStreamChat } from "@/hooks/use-stream-chat";
 
 const AcquireDetailScreen = () => {
   const { barter_service_id } = useLocalSearchParams<{ barter_service_id: string }>();
 
-  const userQuery = useUser();
-  const serviceQuery = useService({ barter_service_id });
+  const channel = useStreamChat();
 
-  const user = userQuery.data;
+  const serviceQuery = useService({ barter_service_id });
   const service = serviceQuery.data?.data;
 
-  const { setChannel } = useChat();
-
-  const handleChat = useCallback(async () => {
-    if (!user?.id || !service?.barter_provider_id) return;
-
-    const channel = client.channel("messaging", {
-      members: [user.id, service.barter_provider_id],
-    });
-    await channel.create();
-
-    setChannel(channel);
-    router.replace(`/chat/${channel.cid}`);
-  }, [user?.id, service?.barter_provider_id, setChannel]);
-
-  if (userQuery.isLoading || serviceQuery.isLoading) {
-    return <LoadingStateScreen />;
+  if (serviceQuery.isLoading || channel.isLoading) {
+    return <ServiceSkeleton />;
   }
 
   return (
@@ -44,7 +28,7 @@ const AcquireDetailScreen = () => {
       <Buttons
         variant="bottom"
         buttons={[
-          { label: "Chat", mode: "outlined", onPress: handleChat },
+          { label: "Chat", mode: "outlined", onPress: () => channel.createAndRedirect(service?.barter_provider_id) },
           { label: "Request", mode: "contained", onPress: () => router.push(`/acquire/${barter_service_id}/request`) },
         ]}
       />

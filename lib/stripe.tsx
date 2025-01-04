@@ -5,7 +5,8 @@ import * as Linking from "expo-linking";
 const merchantId = Constants.expoConfig?.plugins?.find((p) => p[0] === "@stripe/stripe-react-native")?.[1]
   .merchantIdentifier;
 
-export const AppStripeProvider = (
+/* ======================================== PROVIDER */
+export const StripePaymentProvider = (
   props: Omit<React.ComponentProps<typeof StripeProvider>, "publishableKey" | "merchantIdentifier">,
 ) => {
   return (

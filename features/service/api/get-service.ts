@@ -4,10 +4,12 @@ import { api } from "@/lib/axios";
 import { QueryConfig } from "@/lib/react-query";
 import { Service } from "@/types/api";
 
+/* ======================================== AXIOS */
 export const getService = ({ barter_service_id }: { barter_service_id: string }): Promise<{ data: Service }> => {
   return api.get(`/barter_services/${barter_service_id}`);
 };
 
+/* ======================================== REACT QUERY */
 export const getServiceQueryOptions = (barter_service_id: string) => {
   return queryOptions({
     queryKey: ["service", barter_service_id],
@@ -15,6 +17,7 @@ export const getServiceQueryOptions = (barter_service_id: string) => {
   });
 };
 
+/* ======================================== HOOK */
 type UseServiceOptions = {
   barter_service_id: string;
   queryConfig?: QueryConfig<typeof getServiceQueryOptions>;

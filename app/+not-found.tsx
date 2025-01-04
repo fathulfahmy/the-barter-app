@@ -1,4 +1,5 @@
 import React from "react";
+import { StyleSheet } from "react-native";
 import { Button, Text } from "react-native-paper";
 
 import { Stack, router } from "expo-router";
@@ -10,8 +11,10 @@ const NotFoundStateScreen = () => {
     <>
       <Stack.Screen options={{ title: "Oops" }} />
 
-      <ScreenWrapper contentContainerStyle={{ alignItems: "center", justifyContent: "center", gap: 8 }}>
-        <Text variant="bodyLarge">Not Found</Text>
+      <ScreenWrapper style={styles.container}>
+        <Text variant="bodyLarge" style={styles.text}>
+          Not Found
+        </Text>
         <Button mode="contained" onPress={() => router.push("/_sitemap")}>
           Sitemap
         </Button>
@@ -21,3 +24,14 @@ const NotFoundStateScreen = () => {
 };
 
 export default NotFoundStateScreen;
+
+const styles = StyleSheet.create({
+  container: {
+    alignItems: "center",
+    justifyContent: "center",
+    gap: 8,
+  },
+  text: {
+    textAlign: "center",
+  },
+});

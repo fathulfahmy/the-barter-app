@@ -2,6 +2,7 @@ import { Platform } from "react-native";
 
 import * as DocumentPicker from "expo-document-picker";
 
+/* ======================================== PICK DOCUMENT */
 export const getDocumentPickerResult = async ({
   options,
 }: {
@@ -19,6 +20,7 @@ export const getDocumentPickerResult = async ({
   return result;
 };
 
+/* ======================================== PARSE ASSET TO FILE (SINGLE) */
 export const getDocumentPickerFile = (result: DocumentPicker.DocumentPickerSuccessResult) => {
   const asset = result.assets?.[0];
 
@@ -31,6 +33,7 @@ export const getDocumentPickerFile = (result: DocumentPicker.DocumentPickerSucce
       };
 };
 
+/* ======================================== PARSE ASSET TO FILE (MULTIPLE) */
 export const getDocumentPickerMultipleFile = (result: DocumentPicker.DocumentPickerSuccessResult) => {
   return result.assets
     .map((asset) =>

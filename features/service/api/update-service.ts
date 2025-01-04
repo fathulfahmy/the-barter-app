@@ -1,16 +1,15 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { z } from "zod";
 
-import { useStatusDialog } from "@/components/ui/dialog";
 import { api } from "@/lib/axios";
 import { MutationConfig } from "@/lib/react-query";
 import { zodMedia } from "@/lib/zod";
 import { Service } from "@/types/api";
 import { createFormData } from "@/utils/form";
 
-import { getServiceQueryOptions } from "./get-service";
 import { getInfiniteServicesQueryOptions } from "./get-services";
 
+/* ======================================== VALIDATION */
 export const updateServiceInputSchema = z.object({
   barter_category_id: z.string().min(1, "Barter category is required").optional(),
   title: z.string().min(1, "Title is required").max(255).optional(),
@@ -27,6 +26,7 @@ export const updateServiceInputSchema = z.object({
 
 export type UpdateServiceInput = z.infer<typeof updateServiceInputSchema>;
 
+/* ======================================== AXIOS */
 export const updateService = ({
   barter_service_id,
   data,
@@ -45,6 +45,7 @@ export const updateService = ({
   });
 };
 
+/* ======================================== HOOK */
 type UseUpdateServiceOptions = {
   mutationConfig?: MutationConfig<typeof updateService>;
 };
@@ -58,14 +59,7 @@ export const useUpdateService = ({ mutationConfig }: UseUpdateServiceOptions = {
     onSuccess: (data, ...args) => {
       queryClient.invalidateQueries({
         queryKey: getInfiniteServicesQueryOptions({ mode: "provide" }).queryKey,
-      });
-      queryClient.invalidateQueries({
-        queryKey: getServiceQueryOptions(data.data.id).queryKey,
-      });
-
-      useStatusDialog.getState().setStatusDialog({
-        type: "success",
-        title: "Service updated",
+        refetchType: "all",
       });
 
       onSuccess?.(data, ...args);
