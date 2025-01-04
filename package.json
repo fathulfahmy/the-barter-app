@@ -17,6 +17,7 @@
   },
   "dependencies": {
     "@dev-plugins/react-query": "^0.1.0",
+    "@expo/react-native-action-sheet": "^4.1.0",
     "@expo/vector-icons": "^14.0.2",
     "@hookform/resolvers": "^3.9.1",
     "@op-engineering/op-sqlite": "^11.2.8",

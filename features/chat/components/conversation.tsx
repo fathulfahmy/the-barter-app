@@ -5,6 +5,8 @@ import { Channel, MessageInput, MessageList } from "stream-chat-expo";
 
 import { useChat } from "@/lib/stream-chat/chat-store";
 
+import { CustomAttachButton } from "./custom-attach-button";
+
 export const Conversation = () => {
   /* ======================================== HOOKS */
   const { channel, setThread } = useChat();
@@ -13,7 +15,7 @@ export const Conversation = () => {
   if (!channel) return null;
 
   return (
-    <Channel channel={channel} keyboardVerticalOffset={90}>
+    <Channel channel={channel} keyboardVerticalOffset={90} AttachButton={CustomAttachButton}>
       <MessageList
         onThreadSelect={(thread) => {
           setThread(thread);

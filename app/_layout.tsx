@@ -5,6 +5,7 @@ import { PaperProvider } from "react-native-paper";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 
 import { useReactQueryDevTools } from "@dev-plugins/react-query";
+import { ActionSheetProvider } from "@expo/react-native-action-sheet";
 import { QueryClient, QueryClientProvider, focusManager } from "@tanstack/react-query";
 import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
@@ -43,19 +44,22 @@ const RootLayout = () => {
         <AuthTokenProvider>
           <SafeAreaProvider>
             <GestureHandlerRootView>
-              <StreamChatProvider>
-                <StripePaymentProvider>
-                  <StatusBar style="light" backgroundColor={theme.colors.primary} />
-                  <Stack>
-                    <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-                    <Stack.Screen name="(auth)" options={{ headerShown: false }} />
-                    <Stack.Screen name="+not-found" />
-                  </Stack>
-                  <StatusDialog />
-                  <ConfirmationDialog />
-                  <Notification />
-                </StripePaymentProvider>
-              </StreamChatProvider>
+              {/* Wrap root layout with ActionSheetProvider */}
+              <ActionSheetProvider>
+                <StreamChatProvider>
+                  <StripePaymentProvider>
+                    <StatusBar style="light" backgroundColor={theme.colors.primary} />
+                    <Stack>
+                      <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+                      <Stack.Screen name="(auth)" options={{ headerShown: false }} />
+                      <Stack.Screen name="+not-found" />
+                    </Stack>
+                    <StatusDialog />
+                    <ConfirmationDialog />
+                    <Notification />
+                  </StripePaymentProvider>
+                </StreamChatProvider>
+              </ActionSheetProvider>
             </GestureHandlerRootView>
           </SafeAreaProvider>
         </AuthTokenProvider>

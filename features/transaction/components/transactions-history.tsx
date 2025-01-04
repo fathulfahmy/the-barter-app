@@ -62,7 +62,6 @@ export const TransactionsHistory = ({ barter_service_id }: { barter_service_id?:
       renderItem={({ item }) => {
         const isUserAcquirer = user?.id === item.barter_acquirer_id;
         const isCompleted = item.status === "completed";
-        const otherUser = isUserAcquirer ? item.barter_provider : item.barter_acquirer;
         const title = isUserAcquirer ? formatInvoiceItems(item.barter_invoice) : item.barter_service?.title;
         const subtitle = isUserAcquirer ? item.barter_service?.title : formatInvoiceItems(item.barter_invoice);
         const review = item.barter_reviews?.find((review) => review.author_id == user?.id);
