@@ -76,6 +76,7 @@ export type Service = {
   deleted_at: Date | null;
   pending_count: number;
   completed_count: number;
+  reviews_count: number;
   images: Media[];
   barter_provider?: User | null;
   barter_category?: Category | null;

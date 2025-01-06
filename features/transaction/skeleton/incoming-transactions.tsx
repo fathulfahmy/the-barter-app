@@ -58,7 +58,7 @@ export const IncomingTransactionsSkeleton = () => {
             </ContentLoader>
             <View style={styles.buttons}>
               <ContentLoader
-                width="45%"
+                width="49%"
                 height={40}
                 backgroundColor={colors.surfaceVariant}
                 foregroundColor={colors.surface}
@@ -66,7 +66,7 @@ export const IncomingTransactionsSkeleton = () => {
                 <Rect x="0" y="0" rx="4" ry="4" width="100%" height="40" />
               </ContentLoader>
               <ContentLoader
-                width="50%"
+                width="49%"
                 height={40}
                 backgroundColor={colors.surfaceVariant}
                 foregroundColor={colors.surface}

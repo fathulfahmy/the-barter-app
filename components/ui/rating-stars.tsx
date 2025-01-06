@@ -13,17 +13,29 @@ type RatingStarsProps = Omit<ComponentProps<typeof Icon>, "source" | "size" | "c
 export const RatingStars: React.FC<RatingStarsProps> = ({ rating, size, color, ...props }) => {
   const { colors, fonts } = useAppTheme();
 
-  const fullStars = Math.floor(rating);
+  const whole = Math.floor(rating);
+  const fraction = rating % 1 >= 0.5;
+  const total = 5;
 
   const renderStars = () => {
     let stars = [];
 
-    for (let i = 0; i < 5; i++) {
-      if (i < fullStars) {
+    for (let i = 0; i < total; i++) {
+      if (i < whole) {
         stars.push(
           <Icon
             key={`full-${i}`}
             source="star"
+            size={size ?? fonts.bodyMedium.fontSize}
+            color={color ?? colors.yellow}
+            {...props}
+          />,
+        );
+      } else if (i === whole && fraction) {
+        stars.push(
+          <Icon
+            key={`half-${i}`}
+            source="star-half-full"
             size={size ?? fonts.bodyMedium.fontSize}
             color={color ?? colors.yellow}
             {...props}
@@ -44,6 +56,7 @@ export const RatingStars: React.FC<RatingStarsProps> = ({ rating, size, color, .
 
     return stars;
   };
+
   return <View style={styles.container}>{renderStars()}</View>;
 };
 

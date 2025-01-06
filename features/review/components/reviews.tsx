@@ -57,6 +57,7 @@ export const Reviews = ({ barter_service_id }: { barter_service_id?: string }) =
       refreshing={isRefetchingByUser}
       ItemSeparatorComponent={() => <Spacer y={8} />}
       contentContainerStyle={{ padding: 16 }}
+      containerStyle={{ flex: 1 }}
     />
   );
 };

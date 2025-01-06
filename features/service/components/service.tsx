@@ -2,7 +2,7 @@ import React from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
 import { Text } from "react-native-paper";
 
-import { Link } from "expo-router";
+import { router } from "expo-router";
 
 import { Gallery } from "@/components/ui";
 import { AvatarWithName } from "@/components/ui/avatar";
@@ -42,12 +42,11 @@ export const Service = ({ barter_service_id }: { barter_service_id: string }) =>
         {service?.completed_count && service.completed_count > 0 && (
           <View style={styles.review}>
             <RatingChip rating={service?.rating} />
-            <Link href={`/acquire/${service?.id}/reviews`} asChild>
-              <Text
-                variant="bodyMedium"
-                style={{ color: colors.yellow }}
-              >{`View ${service?.completed_count} fulfilled barters`}</Text>
-            </Link>
+            <Text
+              variant="bodyMedium"
+              style={{ color: colors.yellow }}
+              onPress={() => router.push(`/acquire/${service?.id}/reviews`)}
+            >{`View all ${service?.reviews_count} user reviews`}</Text>
           </View>
         )}
       </View>
