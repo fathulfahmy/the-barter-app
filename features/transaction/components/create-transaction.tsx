@@ -58,7 +58,7 @@ export const CreateTransaction = ({ barter_service_id }: { barter_service_id: st
   const checked = watch("barter_service_ids", []);
 
   /* ======================================== FUNCTIONS */
-  const toggleCheck = (id: string, checked: string[]) => {
+  const handleServiceSelect = (id: string, checked: string[]) => {
     const updated = checked.includes(id) ? checked.filter((checkedIds) => checkedIds !== id) : [...checked, id];
     setValue("barter_service_ids", updated);
   };
@@ -140,7 +140,7 @@ export const CreateTransaction = ({ barter_service_id }: { barter_service_id: st
                       <Checkbox.Item
                         label={item.title}
                         status={checked.includes(item.id) ? "checked" : "unchecked"}
-                        onPress={() => toggleCheck(item.id, checked)}
+                        onPress={() => handleServiceSelect(item.id, checked)}
                       />
                     )}
                   />

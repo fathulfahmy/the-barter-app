@@ -20,7 +20,7 @@ export const AcquireSkeleton = () => {
               <View style={styles.avatar}>
                 {/* ======================================== AVATAR WITH NAME */}
                 <ContentLoader
-                  width="10%"
+                  width={32}
                   height={32}
                   backgroundColor={colors.surfaceVariant}
                   foregroundColor={colors.surface}
@@ -28,7 +28,7 @@ export const AcquireSkeleton = () => {
                   <Circle cx="16" cy="16" r="16" />
                 </ContentLoader>
                 <ContentLoader
-                  width="40%"
+                  width="50%"
                   height={20}
                   backgroundColor={colors.surfaceVariant}
                   foregroundColor={colors.surface}

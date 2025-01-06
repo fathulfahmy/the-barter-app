@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { StyleSheet, View } from "react-native";
-import { Avatar, Button, TextInput } from "react-native-paper";
+import { Avatar, TextInput } from "react-native-paper";
 
 import { useActionSheet } from "@expo/react-native-action-sheet";
 import { zodResolver } from "@hookform/resolvers/zod";

@@ -18,16 +18,14 @@ export const ProvideSkeleton = () => {
           <Card.Content>
             <View style={styles.header}>
               {/* ======================================== CATEGORY CHIP */}
-              <View style={styles.avatar}>
-                <ContentLoader
-                  width="50%"
-                  height={20}
-                  backgroundColor={colors.surfaceVariant}
-                  foregroundColor={colors.surface}
-                >
-                  <Rect x="0" y="0" rx="4" ry="4" width="100%" height="20" />
-                </ContentLoader>
-              </View>
+              <ContentLoader
+                width="50%"
+                height={20}
+                backgroundColor={colors.surfaceVariant}
+                foregroundColor={colors.surface}
+              >
+                <Rect x="0" y="0" rx="4" ry="4" width="100%" height="20" />
+              </ContentLoader>
 
               {/* ======================================== MENU */}
               <ContentLoader
@@ -65,10 +63,6 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: "row",
     justifyContent: "space-between",
-    alignItems: "center",
-  },
-  avatar: {
-    flexDirection: "row",
     alignItems: "center",
   },
 });

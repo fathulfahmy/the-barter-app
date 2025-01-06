@@ -3,8 +3,6 @@ import { StyleProp, StyleSheet, View, ViewStyle } from "react-native";
 
 import { FlashList, FlashListProps } from "@shopify/flash-list";
 
-import { EmptyStateScreen } from "../screens";
-
 export type AppListProps<T> = FlashListProps<T> & {
   containerStyle?: StyleProp<ViewStyle>;
 };
@@ -14,7 +12,6 @@ export const AppList = <T,>({ containerStyle, ...props }: AppListProps<T>) => {
     <View style={[styles.container, containerStyle]}>
       <FlashList
         keyExtractor={(item, index) => `${index}`}
-        ListEmptyComponent={<EmptyStateScreen />}
         showsVerticalScrollIndicator={false}
         showsHorizontalScrollIndicator={false}
         estimatedItemSize={15}

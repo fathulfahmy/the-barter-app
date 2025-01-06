@@ -153,6 +153,7 @@ export const CreateService = () => {
                     onPress={() => handleCategorySelect(item)}
                   />
                 )}
+                containerStyle={{ flex: 1 }}
               />
             }
           />
@@ -189,12 +190,7 @@ export const CreateService = () => {
             <HelperText type="info">{`RM${min_price} - RM${max_price} per ${price_unit}`}</HelperText>
           </FormField>
 
-          <Button
-            mode="contained-tonal"
-            icon="image"
-            onPress={() => handlePickImages()}
-            disabled={images.length >= 5}
-          >
+          <Button mode="contained-tonal" icon="image" onPress={() => handlePickImages()} disabled={images.length >= 5}>
             {`Upload photos (${images.length}/5)`}
           </Button>
         </View>

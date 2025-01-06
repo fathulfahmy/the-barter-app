@@ -43,7 +43,7 @@ export const getInfiniteTransactionsQueryOptions = ({
       });
     },
     getNextPageParam: (lastPage) => {
-      if (lastPage.data.current_page === lastPage.data.total) return undefined;
+      if (lastPage.data.current_page === lastPage.data.last_page) return undefined;
       const nextPage = lastPage.data.current_page + 1;
       return nextPage;
     },

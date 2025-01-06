@@ -1,25 +1,22 @@
 import React from "react";
-import { Icon } from "react-native-paper";
+import { Icon, IconButton } from "react-native-paper";
 
 import { Redirect, Tabs } from "expo-router";
 
-import { LoadingStateScreen } from "@/components/screens";
 import { HapticTab } from "@/components/ui";
 import { useAuthToken } from "@/lib/auth/auth-token";
 import { useAppTheme } from "@/lib/react-native-paper";
 import { useInitialPrefetch } from "@/utils/use-initial-prefetch";
 
 const TabsLayout = () => {
+  /* ======================================== HOOKS */
   const { colors } = useAppTheme();
-  const { token, isLoading: authLoading } = useAuthToken();
-  const { isLoading: prefetchLoading } = useInitialPrefetch();
+  const { token } = useAuthToken();
+  useInitialPrefetch();
 
+  /* ======================================== RETURNS */
   if (!token) {
     return <Redirect href="/login" />;
-  }
-
-  if (authLoading || prefetchLoading) {
-    return <LoadingStateScreen />;
   }
 
   return (
@@ -48,15 +45,22 @@ const TabsLayout = () => {
         options={{
           tabBarLabel: "Provide",
           tabBarIcon: ({ color, focused, size }) => (
-            <Icon source={focused ? "hand-extended" : "hand-extended-outline"} color={color} size={size} />
+            <Icon source={focused ? "briefcase" : "briefcase-outline"} color={color} size={size} />
           ),
         }}
       />
       <Tabs.Screen
         name="my_barters"
         options={{
-          tabBarLabel: "My Barters",
-          tabBarIcon: ({ color, focused, size }) => <Icon source={"swap-vertical-circle"} color={color} size={size} />,
+          tabBarLabelStyle: { height: 0, padding: 0 },
+          tabBarIcon: ({ color, focused, size }) => (
+            <IconButton
+              icon={"swap-vertical-variant"}
+              containerColor={color}
+              iconColor={colors.onPrimary}
+              style={{ marginTop: 16 }}
+            />
+          ),
         }}
       />
       <Tabs.Screen

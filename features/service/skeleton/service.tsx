@@ -17,7 +17,7 @@ export const ServiceSkeleton = () => {
         {/* ======================================== AVATAR WITH NAME */}
         <View style={styles.avatar}>
           <ContentLoader
-            width="10%"
+            width={32}
             height={32}
             backgroundColor={colors.surfaceVariant}
             foregroundColor={colors.surface}
@@ -25,7 +25,7 @@ export const ServiceSkeleton = () => {
             <Circle cx="16" cy="16" r="16" />
           </ContentLoader>
           <ContentLoader
-            width="40%"
+            width="50%"
             height={20}
             backgroundColor={colors.surfaceVariant}
             foregroundColor={colors.surface}
