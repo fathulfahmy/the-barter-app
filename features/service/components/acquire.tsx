@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { StyleSheet, View } from "react-native";
+import { Keyboard, StyleSheet, View } from "react-native";
 import { Badge, Card, Checkbox, IconButton, Searchbar, Text } from "react-native-paper";
 
 import { router } from "expo-router";
@@ -75,6 +75,7 @@ export const Acquire = () => {
                 icon="filter"
                 iconColor={colors.onPrimary}
                 onPress={() => {
+                  Keyboard.dismiss();
                   setTempCategories([...searchCategories]);
                   open();
                 }}
