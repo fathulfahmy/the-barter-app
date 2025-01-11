@@ -18,7 +18,7 @@ export const RegisterForm = () => {
   const { isOpen: passwordConfirmVisible, toggle: togglePasswordConfirmVisible } = useDisclosure(false);
 
   /* ======================================== MUTATIONS */
-  const register = useRegister({ onSuccess: () => router.replace("/(tabs)") });
+  const register = useRegister();
 
   /* ======================================== FORM */
   const defaultValues = {

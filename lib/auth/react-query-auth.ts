@@ -14,7 +14,7 @@ import {
 import { User as ApiUser, AuthResponse } from "@/types/api";
 
 import { client } from "../stream-chat/client";
-import { useAuthToken } from "./auth-token";
+import { useAuthToken } from "./token";
 
 /* ======================================== PROPS */
 export interface ReactQueryAuthConfig<User, LoginInput, RegisterInput> {

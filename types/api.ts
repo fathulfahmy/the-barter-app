@@ -39,11 +39,16 @@ export type User = {
   email: string;
   phone?: string;
   email_verified_at: Date | null;
+  suspension_starts_at: Date | null;
+  suspension_ends_at: Date | null;
+  suspension_reason: string | null;
   created_at: Date;
   updated_at: Date;
   deleted_at: Date | null;
   avatar: Media | null;
   barter_services?: Service[];
+  is_suspended_temporarily: boolean;
+  is_suspended_permanently: boolean;
 };
 
 export type Category = {

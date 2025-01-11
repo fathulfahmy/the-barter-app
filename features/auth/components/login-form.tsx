@@ -17,7 +17,7 @@ export const LoginForm = () => {
   const { isOpen: passwordVisible, toggle: togglePasswordVisibility } = useDisclosure(false);
 
   /* ======================================== MUTATIONS */
-  const login = useLogin({ onSuccess: () => router.replace("/(tabs)") });
+  const login = useLogin();
 
   /* ======================================== FORM */
   const defaultValues =

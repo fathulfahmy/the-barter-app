@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 import { useQueryClient } from "@tanstack/react-query";
 
@@ -13,7 +13,7 @@ export const useInitialPrefetch = () => {
   const queryClient = useQueryClient();
 
   /* ======================================== FUNCTIONS */
-  const fetch = async () => {
+  const prefetch = useCallback(async () => {
     try {
       await Promise.all([
         queryClient.prefetchInfiniteQuery(getInfiniteServicesQueryOptions({ mode: "acquire" })),
@@ -23,15 +23,16 @@ export const useInitialPrefetch = () => {
         queryClient.prefetchInfiniteQuery(getInfiniteTransactionsQueryOptions({ mode: "ongoing" })),
         queryClient.prefetchInfiniteQuery(getInfiniteTransactionsQueryOptions({ mode: "history" })),
       ]);
+    } catch (error) {
+      console.error(error);
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [queryClient]);
 
   /* ======================================== RETURNS */
   useEffect(() => {
-    fetch();
-  });
-
+    prefetch();
+  }, [prefetch]);
   return { isLoading };
 };

@@ -13,7 +13,7 @@ import { useAppTheme } from "@/lib/react-native-paper";
 
 const AuthProfileScreen = () => {
   const { colors } = useAppTheme();
-  const logout = useLogout({ onSuccess: () => router.replace("/(tabs)") });
+  const logout = useLogout();
 
   const onSubmit = () => logout.mutate(undefined);
 

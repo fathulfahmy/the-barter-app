@@ -15,7 +15,7 @@ import { StatusDialog } from "@/components/ui/dialog/status-dialog";
 import { Notification } from "@/components/ui/notification";
 import { useAppState } from "@/hooks/use-app-state";
 import { useOnlineManager } from "@/hooks/use-online-manager";
-import { AuthTokenProvider } from "@/lib/auth/auth-token";
+import { AuthTokenProvider } from "@/lib/auth/token";
 import { AppLightTheme } from "@/lib/react-native-paper";
 import { defaultQueryConfig } from "@/lib/react-query";
 import { StreamChatProvider } from "@/lib/stream-chat/provider";
@@ -44,7 +44,6 @@ const RootLayout = () => {
         <AuthTokenProvider>
           <SafeAreaProvider>
             <GestureHandlerRootView>
-              {/* Wrap root layout with ActionSheetProvider */}
               <ActionSheetProvider>
                 <StreamChatProvider>
                   <StripePaymentProvider>

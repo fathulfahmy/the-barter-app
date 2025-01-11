@@ -1,5 +1,4 @@
 import Axios, { InternalAxiosRequestConfig } from "axios";
-import { router, usePathname } from "expo-router";
 
 import { useNotification } from "@/components/ui/notification";
 
@@ -19,22 +18,22 @@ export const api = Axios.create({
 
 api.interceptors.request.use(authRequestInterceptor);
 api.interceptors.response.use(
+  /* ======================================== SUCCESS RESPONSE INTERCEPTOR */
   (response) => {
-    /* ======================================== SUCCESS RESPONSE INTERCEPTOR */
     return response.data;
   },
+  /* ======================================== ERROR RESPONSE INTERCEPTOR */
   (e) => {
-    /* ======================================== ERROR RESPONSE INTERCEPTOR */
-    if (e.response?.status === 401) {
-      const currentRoute = usePathname();
-      const publicRoutes = ["/login", "/register"];
-      const isPublicRoute = publicRoutes.includes(currentRoute);
+    /* ======================================== UNNOTIFIABLE ERROR */
+    const status = e.response?.status;
+    const unnotifiableStatus = [401];
+    const isUnnotifiable = unnotifiableStatus.includes(status);
 
-      if (!isPublicRoute) {
-        router.replace("/login");
-      }
+    if (isUnnotifiable) {
+      return Promise.reject(e);
     }
 
+    /* ======================================== NOTIFIABLE ERROR */
     const data = e.response?.data ?? {};
     const errors = data.errors ?? [];
     const message = data.message ?? e.message;
@@ -42,7 +41,7 @@ api.interceptors.response.use(
 
     let messages = "";
 
-    if (e.response?.status === 422) {
+    if (status === 422) {
       messages = isValidErrors ? errors : message;
     } else {
       messages = message;

@@ -4,15 +4,13 @@ import { Icon, IconButton } from "react-native-paper";
 import { Redirect, Tabs } from "expo-router";
 
 import { HapticTab } from "@/components/ui";
-import { useAuthToken } from "@/lib/auth/auth-token";
+import { useAuthToken } from "@/lib/auth/token";
 import { useAppTheme } from "@/lib/react-native-paper";
-import { useInitialPrefetch } from "@/utils/use-initial-prefetch";
 
 const TabsLayout = () => {
   /* ======================================== HOOKS */
   const { colors } = useAppTheme();
   const { token } = useAuthToken();
-  useInitialPrefetch();
 
   /* ======================================== RETURNS */
   if (!token) {
