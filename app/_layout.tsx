@@ -39,8 +39,8 @@ const RootLayout = () => {
   useReactQueryDevTools(queryClient);
 
   return (
-    <PaperProvider theme={theme}>
-      <QueryClientProvider client={queryClient}>
+    <QueryClientProvider client={queryClient}>
+      <PaperProvider theme={theme}>
         <AuthTokenProvider>
           <SafeAreaProvider>
             <GestureHandlerRootView>
@@ -62,8 +62,8 @@ const RootLayout = () => {
             </GestureHandlerRootView>
           </SafeAreaProvider>
         </AuthTokenProvider>
-      </QueryClientProvider>
-    </PaperProvider>
+      </PaperProvider>
+    </QueryClientProvider>
   );
 };
 

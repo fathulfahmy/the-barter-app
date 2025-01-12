@@ -11,7 +11,7 @@ import { useUpdateService } from "@/features/service/api/update-service";
 import { useDisclosure } from "@/hooks/use-disclosure";
 import { useRefreshByUser } from "@/hooks/use-refresh-by-user";
 import { useAppTheme } from "@/lib/react-native-paper";
-import { ServiceStatus } from "@/types/api";
+import { Service, ServiceStatus } from "@/types/api";
 import { formatServicePrice } from "@/utils/format";
 
 import { useInfiniteServices } from "../api/get-services";
@@ -52,7 +52,7 @@ export const Provide = () => {
   };
 
   /* ======================================== COMPONENTS */
-  const MenuWrapper = ({ item }: { item: any }) => {
+  const MenuWrapper = ({ item }: { item: Service }) => {
     const { isOpen, open, close } = useDisclosure();
 
     return (

@@ -100,6 +100,7 @@ export type Transaction = {
   created_at: Date;
   updated_at: Date;
   deleted_at: Date | null;
+  other_user: User;
   barter_acquirer?: User | null;
   barter_provider?: User | null;
   barter_service?: Service | null;
@@ -139,4 +140,26 @@ export type PaymentSheetParams = {
   ephemeral_key: string;
   customer: string;
   publishable_key: string;
+};
+
+export type Reason = {
+  id: string;
+  name: string;
+  created_at: Date;
+  updated_at: Date;
+};
+
+export type ReportModelName = "user" | "barter_service" | "barter_transaction" | "barter_review";
+
+export type ReportStatus = "unread" | "read";
+
+export type Report = {
+  id: string;
+  author_id: string;
+  user_report_reason_id: string;
+  model_id: string;
+  model_name: ReportModelName;
+  status: ReportStatus;
+  created_at: Date;
+  updated_at: Date;
 };

@@ -18,6 +18,7 @@ const ProvideLayout = () => {
     >
       <Stack.Screen name="index" />
       <Stack.Screen name="create" />
+      <Stack.Screen name="report" />
       <Stack.Screen name="[barter_service_id]/edit" />
       <Stack.Screen name="[barter_service_id]/(tabs)" />
       <Stack.Screen name="transaction/[barter_transaction_id]/payment" />

@@ -17,6 +17,7 @@ import { formatInvoiceItems, formatStripSuffix } from "@/utils/format";
 import { useInfiniteTransactions } from "../api/get-transactions";
 import { useUpdateTransaction } from "../api/update-transactions";
 import { IncomingTransactionsSkeleton } from "../skeleton/incoming-transactions";
+import { MenuWrapper } from "./menu-wrapper";
 
 export const IncomingTransactions = ({ barter_service_id }: { barter_service_id?: string }) => {
   /* ======================================== HOOKS */
@@ -83,7 +84,10 @@ export const IncomingTransactions = ({ barter_service_id }: { barter_service_id?
         return (
           <Card>
             <Card.Content style={styles.card}>
-              <AvatarWithName user={otherUser} />
+              <View style={styles.header}>
+                <AvatarWithName user={otherUser} />
+                <MenuWrapper item={item} barter_service_id={barter_service_id} />
+              </View>
 
               <View style={styles.body}>
                 <Text variant="titleMedium">{title}</Text>
@@ -141,6 +145,12 @@ export const IncomingTransactions = ({ barter_service_id }: { barter_service_id?
 const styles = StyleSheet.create({
   card: {
     gap: 16,
+  },
+  header: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: 8,
   },
   body: {
     gap: 2,

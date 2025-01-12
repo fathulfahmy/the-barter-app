@@ -14,6 +14,7 @@ import { formatInvoiceItems, formatSentenceCase } from "@/utils/format";
 
 import { useInfiniteTransactions } from "../api/get-transactions";
 import { TransactionsHistorySkeleton } from "../skeleton/transactions-history";
+import { MenuWrapper } from "./menu-wrapper";
 
 export const TransactionsHistory = ({ barter_service_id }: { barter_service_id?: string }) => {
   /* ======================================== HOOKS */
@@ -69,7 +70,10 @@ export const TransactionsHistory = ({ barter_service_id }: { barter_service_id?:
         return (
           <Card>
             <Card.Content style={styles.card}>
-              <AvatarWithName user={user} />
+              <View style={styles.header}>
+                <AvatarWithName user={user} />
+                <MenuWrapper item={item} barter_service_id={barter_service_id} />
+              </View>
 
               <View style={styles.body}>
                 <Text variant="titleMedium">{title}</Text>
@@ -129,6 +133,12 @@ export const TransactionsHistory = ({ barter_service_id }: { barter_service_id?:
 const styles = StyleSheet.create({
   card: {
     gap: 16,
+  },
+  header: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: 8,
   },
   body: {
     gap: 2,
