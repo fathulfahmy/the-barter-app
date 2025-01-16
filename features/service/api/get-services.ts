@@ -18,14 +18,20 @@ export const getServices = ({
   search?: string;
   categories?: string[];
 }): Promise<{ data: Paginator<Service> }> => {
-  return api.get(`/barter_services`, {
-    params: {
-      mode,
-      page,
-      search,
-      categories: categories.length > 0 ? categories : undefined,
-    },
-  });
+  const params: Record<string, any> = {
+    mode,
+    page,
+  };
+
+  if (search) {
+    params.search = search;
+  }
+
+  if (categories && categories.length > 0) {
+    params.categories = categories;
+  }
+
+  return api.get(`/barter_services`, { params });
 };
 
 /* ======================================== REACT QUERY */
@@ -49,11 +55,19 @@ export const getInfiniteServicesQueryOptions = ({
       });
     },
     getNextPageParam: (lastPage) => {
-      if (lastPage.data.current_page === lastPage.data.last_page) return undefined;
+      if (!lastPage || !lastPage.data) {
+        return undefined;
+      }
+
+      if (lastPage.data.current_page === lastPage.data.last_page) {
+        return undefined;
+      }
+
       const nextPage = lastPage.data.current_page + 1;
       return nextPage;
     },
     initialPageParam: 1,
+    placeholderData: (previousData, previousQuery) => previousData,
   });
 };
 

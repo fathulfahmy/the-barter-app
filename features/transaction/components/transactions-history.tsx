@@ -29,11 +29,11 @@ export const TransactionsHistory = ({ barter_service_id }: { barter_service_id?:
     ...(barter_service_id && { barter_service_id }),
     // FIXME: pusher not working on expo go (pusher-websocket-react-native)
     queryConfig: {
-      refetchInterval: isFocused ? 2000 : false,
+      refetchInterval: isFocused ? 5000 : false,
     },
   });
   const { isRefetchingByUser, refetchByUser } = useRefreshByUser(transactionsQuery.refetch);
-  const transactions = transactionsQuery.data?.pages.flatMap((page) => page.data.data);
+  const transactions = transactionsQuery.data?.pages?.flatMap((page) => page.data?.data || []) || [];
 
   /* ======================================== FUNCTIONS */
   const handleReview = (barter_transaction_id: string) => {
@@ -90,21 +90,15 @@ export const TransactionsHistory = ({ barter_service_id }: { barter_service_id?:
               )}
 
               <View style={styles.buttonGroup}>
-                {isCompleted && (
-                  <Button mode="contained" onPress={() => handleInvoice(item.id)}>
-                    View invoice
+                {isCompleted && !review && (
+                  <Button mode="contained-tonal" onPress={() => handleReview(item.id)}>
+                    Write a review
                   </Button>
                 )}
 
-                {isCompleted && !review && (
-                  <Button
-                    mode="contained"
-                    icon="star"
-                    textColor={colors.onYellow}
-                    style={{ backgroundColor: colors.yellow }}
-                    onPress={() => handleReview(item.id)}
-                  >
-                    Write a review
+                {isCompleted && (
+                  <Button mode="contained" onPress={() => handleInvoice(item.id)}>
+                    View invoice
                   </Button>
                 )}
 

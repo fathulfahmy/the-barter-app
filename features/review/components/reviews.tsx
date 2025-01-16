@@ -20,7 +20,7 @@ export const Reviews = ({ barter_service_id }: { barter_service_id?: string }) =
     ...(barter_service_id && { barter_service_id }),
   });
   const { isRefetchingByUser, refetchByUser } = useRefreshByUser(reviewsQuery.refetch);
-  const reviews = reviewsQuery.data?.pages.flatMap((page) => page.data.data);
+  const reviews = reviewsQuery.data?.pages?.flatMap((page) => page.data?.data || []) || [];
 
   /* ======================================== RETURNS */
   if (reviewsQuery.isLoading) {

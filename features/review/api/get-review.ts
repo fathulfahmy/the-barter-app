@@ -14,6 +14,7 @@ export const getReviewQueryOptions = (reviewId: string) => {
   return queryOptions({
     queryKey: ["review", reviewId],
     queryFn: () => getReview({ reviewId }),
+    placeholderData: (previousData, previousQuery) => previousData,
   });
 };
 

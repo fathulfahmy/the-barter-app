@@ -37,7 +37,7 @@ export const Acquire = () => {
     },
   });
   const { isRefetchingByUser, refetchByUser } = useRefreshByUser(servicesQuery.refetch);
-  const services = servicesQuery.data?.pages.flatMap((page) => page.data.data);
+  const services = servicesQuery.data?.pages?.flatMap((page) => page.data?.data || []) || [];
 
   const categoriesQuery = useCategories();
   const categories = categoriesQuery.data?.data;

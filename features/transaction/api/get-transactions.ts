@@ -16,13 +16,16 @@ export const getTransactions = ({
   barter_service_id?: string;
   page?: number;
 }): Promise<{ data: Paginator<Transaction> }> => {
-  return api.get(`/barter_transactions`, {
-    params: {
-      mode,
-      page,
-      ...(barter_service_id && { barter_service_id }),
-    },
-  });
+  const params: Record<string, any> = {
+    mode,
+    page,
+  };
+
+  if (barter_service_id) {
+    params.barter_service_id = barter_service_id;
+  }
+
+  return api.get(`/barter_transactions`, { params });
 };
 
 /* ======================================== REACT QUERY */
@@ -43,11 +46,19 @@ export const getInfiniteTransactionsQueryOptions = ({
       });
     },
     getNextPageParam: (lastPage) => {
-      if (lastPage.data.current_page === lastPage.data.last_page) return undefined;
+      if (!lastPage || !lastPage.data) {
+        return undefined;
+      }
+
+      if (lastPage.data.current_page === lastPage.data.last_page) {
+        return undefined;
+      }
+
       const nextPage = lastPage.data.current_page + 1;
       return nextPage;
     },
     initialPageParam: 1,
+    placeholderData: (previousData, previousQuery) => previousData,
   });
 };
 

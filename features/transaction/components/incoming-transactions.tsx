@@ -15,7 +15,7 @@ import { TransactionStatus } from "@/types/api";
 import { formatInvoiceItems, formatStripSuffix } from "@/utils/format";
 
 import { useInfiniteTransactions } from "../api/get-transactions";
-import { useUpdateTransaction } from "../api/update-transactions";
+import { useUpdateTransaction } from "../api/update-transaction";
 import { IncomingTransactionsSkeleton } from "../skeleton/incoming-transactions";
 import { MenuWrapper } from "./menu-wrapper";
 
@@ -31,11 +31,11 @@ export const IncomingTransactions = ({ barter_service_id }: { barter_service_id?
     ...(barter_service_id && { barter_service_id }),
     // FIXME: pusher not working on expo go (pusher-websocket-react-native)
     queryConfig: {
-      refetchInterval: isFocused ? 2000 : false,
+      refetchInterval: isFocused ? 5000 : false,
     },
   });
   const { isRefetchingByUser, refetchByUser } = useRefreshByUser(transactionsQuery.refetch);
-  const transactions = transactionsQuery.data?.pages.flatMap((page) => page.data.data);
+  const transactions = transactionsQuery.data?.pages?.flatMap((page) => page.data?.data || []) || [];
 
   /* ======================================== MUTATIONS */
   const updateTransactionMutation = useUpdateTransaction({

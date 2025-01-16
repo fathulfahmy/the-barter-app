@@ -13,6 +13,7 @@ export const getReasonsQueryOptions = () => {
   return queryOptions({
     queryKey: ["reasons"],
     queryFn: () => getReasons(),
+    placeholderData: (previousData, previousQuery) => previousData,
   });
 };
 

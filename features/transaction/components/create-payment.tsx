@@ -14,7 +14,7 @@ import { useUser } from "@/lib/auth/auth";
 import { formatEllipses, formatInvoiceItems } from "@/utils/format";
 
 import { useTransaction } from "../api/get-transaction";
-import { useUpdateTransaction } from "../api/update-transactions";
+import { useUpdateTransaction } from "../api/update-transaction";
 
 export const CreatePayment = ({ barter_transaction_id }: { barter_transaction_id: string }) => {
   /* ======================================== STATES */

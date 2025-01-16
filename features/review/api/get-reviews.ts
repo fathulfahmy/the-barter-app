@@ -12,12 +12,15 @@ export const getReviews = ({
   barter_service_id?: string;
   page?: number;
 }): Promise<{ data: Paginator<Review> }> => {
-  return api.get(`/barter_reviews`, {
-    params: {
-      page,
-      ...(barter_service_id && { barter_service_id }),
-    },
-  });
+  const params: Record<string, any> = {
+    page,
+  };
+
+  if (barter_service_id) {
+    params.barter_service_id = barter_service_id;
+  }
+
+  return api.get(`/barter_reviews`, { params });
 };
 
 /* ======================================== REACT QUERY */
@@ -31,11 +34,19 @@ export const getInfiniteReviewsQueryOptions = ({ barter_service_id }: { barter_s
       });
     },
     getNextPageParam: (lastPage) => {
-      if (lastPage.data.current_page === lastPage.data.last_page) return undefined;
+      if (!lastPage || !lastPage.data) {
+        return undefined;
+      }
+
+      if (lastPage.data.current_page === lastPage.data.last_page) {
+        return undefined;
+      }
+
       const nextPage = lastPage.data.current_page + 1;
       return nextPage;
     },
     initialPageParam: 1,
+    placeholderData: (previousData, previousQuery) => previousData,
   });
 };
 
