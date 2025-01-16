@@ -30,7 +30,7 @@ export const useStreamChat = () => {
 
         await channel.create();
         setChannel(channel);
-        router.push(`/chat/${channel.id}`);
+        router.push(`/chat/${channel.id}`, { withAnchor: true });
       } catch (e: any) {
         useNotification.getState().setNotification({
           type: "error",
