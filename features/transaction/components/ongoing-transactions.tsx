@@ -32,11 +32,11 @@ export const OngoingTransactions = ({ barter_service_id }: { barter_service_id?:
     ...(barter_service_id && { barter_service_id }),
     // FIXME: pusher not working on expo go (pusher-websocket-react-native)
     queryConfig: {
-      refetchInterval: isFocused ? 5000 : false,
+      refetchInterval: isFocused ? 3000 : false,
     },
   });
   const { isRefetchingByUser, refetchByUser } = useRefreshByUser(transactionsQuery.refetch);
-  const transactions = transactionsQuery.data?.pages?.flatMap((page) => page.data?.data || []) || [];
+  const transactions = transactionsQuery.data?.pages?.flatMap((page) => page.data?.data ?? []) ?? [];
 
   /* ======================================== FUNCTIONS */
   const handleComplete = (barter_transaction_id: string) => {

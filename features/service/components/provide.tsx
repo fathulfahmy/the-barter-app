@@ -26,11 +26,11 @@ export const Provide = () => {
     mode: "provide",
     // FIXME: pusher not working on expo go (pusher-websocket-react-native)
     queryConfig: {
-      refetchInterval: isFocused ? 5000 : false,
+      refetchInterval: isFocused ? 3000 : false,
     },
   });
   const { isRefetchingByUser, refetchByUser } = useRefreshByUser(servicesQuery.refetch);
-  const services = servicesQuery.data?.pages?.flatMap((page) => page.data?.data || []) || [];
+  const services = servicesQuery.data?.pages?.flatMap((page) => page.data?.data ?? []) ?? [];
 
   /* ======================================== MUTATIONS */
   const updateServiceMutation = useUpdateService({

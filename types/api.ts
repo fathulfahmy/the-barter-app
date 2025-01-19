@@ -163,3 +163,8 @@ export type Report = {
   created_at: Date;
   updated_at: Date;
 };
+
+export type StatsData = {
+  value: number;
+  label: string;
+};

@@ -3,6 +3,8 @@ import { useCallback, useEffect, useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 
 import { getInfiniteServicesQueryOptions } from "@/features/service/api/get-services";
+import { getMonthlyTransactionsQueryOptions } from "@/features/statistic/api/get-monthly-transactions";
+import { getTrendingServicesQueryOptions } from "@/features/statistic/api/get-trending-services";
 import { getInfiniteTransactionsQueryOptions } from "@/features/transaction/api/get-transactions";
 
 export const useInitialPrefetch = () => {
@@ -22,6 +24,8 @@ export const useInitialPrefetch = () => {
         queryClient.prefetchInfiniteQuery(getInfiniteTransactionsQueryOptions({ mode: "outgoing" })),
         queryClient.prefetchInfiniteQuery(getInfiniteTransactionsQueryOptions({ mode: "ongoing" })),
         queryClient.prefetchInfiniteQuery(getInfiniteTransactionsQueryOptions({ mode: "history" })),
+        queryClient.prefetchQuery(getMonthlyTransactionsQueryOptions()),
+        queryClient.prefetchQuery(getTrendingServicesQueryOptions()),
       ]);
     } catch (error) {
       console.error(error);

@@ -25,6 +25,5 @@ const styles = StyleSheet.create({
   container: {
     alignItems: "center",
     gap: 8,
-    padding: 16,
   },
 });
