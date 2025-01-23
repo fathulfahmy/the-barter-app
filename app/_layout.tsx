@@ -1,5 +1,5 @@
 import React from "react";
-import { AppStateStatus, Platform } from "react-native";
+import { AppStateStatus, LogBox, Platform } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { PaperProvider } from "react-native-paper";
 import { SafeAreaProvider } from "react-native-safe-area-context";
@@ -32,6 +32,9 @@ const queryClient = new QueryClient({
 });
 
 const RootLayout = () => {
+  // FIXME: line chart tooltip on press
+  LogBox.ignoreLogs(["Maximum update depth exceeded"]);
+
   const theme = AppLightTheme;
 
   useOnlineManager();

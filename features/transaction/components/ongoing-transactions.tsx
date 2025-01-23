@@ -57,14 +57,14 @@ export const OngoingTransactions = ({ barter_service_id }: { barter_service_id?:
       data={transactions}
       renderItem={({ item }) => {
         const isUserAcquirer = user?.id === item.barter_acquirer_id;
-        const isUserAwaiting = user?.id == item.awaiting_completed_user_id;
-        const otherUser = isUserAcquirer ? item.barter_provider : item.barter_acquirer;
+        const isUserAwaiting = user?.id == item.awaiting_user_id;
+        const otherUser = item.other_user;
         const title = isUserAcquirer ? item.barter_service?.title : formatInvoiceItems(item.barter_invoice);
         const subtitle = isUserAcquirer ? formatInvoiceItems(item.barter_invoice) : item.barter_service?.title;
 
         return (
           <Card>
-            <Card.Content style={styles.card}>
+            <Card.Content>
               <View style={styles.header}>
                 <AvatarWithName user={otherUser} />
                 <MenuWrapper item={item} barter_service_id={barter_service_id} />
@@ -76,6 +76,8 @@ export const OngoingTransactions = ({ barter_service_id }: { barter_service_id?:
                   For {subtitle}
                 </Text>
               </View>
+
+              <Spacer y={16} />
 
               <View style={styles.buttons}>
                 <Button mode="outlined" onPress={() => channel.createAndRedirect(otherUser?.id)}>
@@ -103,9 +105,6 @@ export const OngoingTransactions = ({ barter_service_id }: { barter_service_id?:
 };
 
 const styles = StyleSheet.create({
-  card: {
-    gap: 16,
-  },
   header: {
     flexDirection: "row",
     justifyContent: "space-between",

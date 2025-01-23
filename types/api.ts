@@ -94,7 +94,7 @@ export type Transaction = {
   id: string;
   barter_acquirer_id: string;
   barter_provider_id: string;
-  awaiting_completed_user_id: string;
+  awaiting_user_id: string;
   barter_service_id: string;
   status: TransactionStatus;
   created_at: Date;

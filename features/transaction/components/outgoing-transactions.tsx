@@ -76,14 +76,16 @@ export const OutgoingTransactions = ({ barter_service_id }: { barter_service_id?
     <AppList
       data={transactions}
       renderItem={({ item }) => {
-        const otherUser = item.barter_acquirer;
+        const otherUser = item.other_user;
         const title = item.barter_service?.title;
         const subtitle = formatInvoiceItems(item.barter_invoice);
 
         return (
           <Card>
-            <Card.Content style={styles.card}>
+            <Card.Content>
               <AvatarWithName user={otherUser} />
+
+              <Spacer y={16} />
 
               <View style={styles.body}>
                 <Text variant="titleMedium">{title}</Text>
@@ -91,6 +93,8 @@ export const OutgoingTransactions = ({ barter_service_id }: { barter_service_id?
                   For {subtitle}
                 </Text>
               </View>
+
+              <Spacer y={16} />
 
               <Buttons
                 vertical
@@ -128,9 +132,6 @@ export const OutgoingTransactions = ({ barter_service_id }: { barter_service_id?
 };
 
 const styles = StyleSheet.create({
-  card: {
-    gap: 16,
-  },
   body: {
     gap: 2,
   },

@@ -6,6 +6,7 @@ import { Stack, router } from "expo-router";
 
 import { ScreenWrapper } from "@/components/screens";
 import { Buttons } from "@/components/ui/button";
+import { useConfirmationDialog } from "@/components/ui/dialog";
 import { AuthProfile } from "@/features/profile/components/auth-profile";
 import { MonthlyTransactionsChart } from "@/features/statistic/components/monthly-transactions-chart";
 import { TrendingServicesChart } from "@/features/statistic/components/trending-services-chart";
@@ -16,7 +17,15 @@ const AuthProfileScreen = () => {
   const { colors } = useAppTheme();
   const logout = useLogout();
 
-  const onSubmit = () => logout.mutate(undefined);
+  const handleLogout = () => {
+    useConfirmationDialog.getState().setConfirmationDialog({
+      type: "warning",
+      title: "Confirm logout?",
+      confirmButtonFn: () => {
+        logout.mutate(undefined);
+      },
+    });
+  };
 
   return (
     <>
@@ -43,21 +52,20 @@ const AuthProfileScreen = () => {
 
           <MonthlyTransactionsChart />
           <TrendingServicesChart />
-        </ScrollView>
 
-        <Buttons
-          vertical
-          buttons={[
-            {
-              label: "Logout",
-              mode: "contained",
-              onPress: onSubmit,
-              disabled: logout.isPending,
-              loading: logout.isPending,
-            },
-          ]}
-          style={styles.buttons}
-        />
+          <Buttons
+            vertical
+            buttons={[
+              {
+                label: "Logout",
+                mode: "contained",
+                onPress: handleLogout,
+                disabled: logout.isPending,
+                loading: logout.isPending,
+              },
+            ]}
+          />
+        </ScrollView>
       </ScreenWrapper>
     </>
   );
@@ -69,9 +77,5 @@ const styles = StyleSheet.create({
   container: {
     padding: 16,
     gap: 24,
-  },
-  buttons: {
-    paddingVertical: 8,
-    paddingHorizontal: 16,
   },
 });

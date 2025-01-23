@@ -69,7 +69,7 @@ export const TransactionsHistory = ({ barter_service_id }: { barter_service_id?:
 
         return (
           <Card>
-            <Card.Content style={styles.card}>
+            <Card.Content>
               <View style={styles.header}>
                 <AvatarWithName user={user} />
                 <MenuWrapper item={item} barter_service_id={barter_service_id} />
@@ -82,11 +82,17 @@ export const TransactionsHistory = ({ barter_service_id }: { barter_service_id?:
                 </Text>
               </View>
 
+              <Spacer y={16} />
+
               {isCompleted && review && (
-                <View style={styles.body}>
-                  <RatingStars rating={review.rating} />
-                  <Text variant="bodyMedium">{review.description}</Text>
-                </View>
+                <>
+                  <View style={styles.body}>
+                    <RatingStars rating={review.rating} />
+                    <Text variant="bodyMedium">{review.description}</Text>
+                  </View>
+
+                  <Spacer y={16} />
+                </>
               )}
 
               <View style={styles.buttonGroup}>
@@ -125,9 +131,6 @@ export const TransactionsHistory = ({ barter_service_id }: { barter_service_id?:
 };
 
 const styles = StyleSheet.create({
-  card: {
-    gap: 16,
-  },
   header: {
     flexDirection: "row",
     justifyContent: "space-between",
