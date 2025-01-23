@@ -40,6 +40,8 @@ export const registerInputSchema = z
     email: z.string().min(1, "Email is required").email("Please enter a valid email address."),
     password: zodPassword(),
     password_confirmation: z.string().min(1, "Password confirmation is required"),
+    bank_name: z.string().min(1, "Bank name is required"),
+    bank_account_number: z.string().min(1, "Bank account number is required"),
   })
   .refine((data) => data.password === data.password_confirmation, {
     path: ["password_confirmation"],

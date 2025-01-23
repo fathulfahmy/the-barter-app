@@ -37,8 +37,9 @@ export type User = {
   id: string;
   name: string;
   email: string;
-  phone?: string;
   email_verified_at: Date | null;
+  bank_name: string;
+  bank_account_number: string;
   suspension_starts_at: Date | null;
   suspension_ends_at: Date | null;
   suspension_reason: string | null;

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import { StyleSheet, View } from "react-native";
-import { Avatar, TextInput } from "react-native-paper";
+import { Keyboard, StyleSheet, View } from "react-native";
+import { Avatar, RadioButton, TextInput } from "react-native-paper";
 
 import { useActionSheet } from "@expo/react-native-action-sheet";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -9,7 +9,9 @@ import { CameraType } from "expo-image-picker";
 import { router } from "expo-router";
 
 import { KeyboardWrapper, LoadingStateScreen } from "@/components/screens";
+import { AppList } from "@/components/ui";
 import { Buttons } from "@/components/ui/button";
+import { AppDialog } from "@/components/ui/dialog";
 import { FormInput } from "@/components/ui/form";
 import { useDisclosure } from "@/hooks/use-disclosure";
 import { useUser } from "@/lib/auth/auth";
@@ -48,10 +50,13 @@ const UpdateProfile = () => {
     email: user?.email ?? "",
     password: "",
     password_confirmation: "",
+    bank_name: user?.bank_name ?? "",
+    bank_account_number: user?.bank_account_number ?? "",
   };
 
   const {
     control,
+    watch,
     handleSubmit,
     setValue,
     formState: { errors },
@@ -60,6 +65,8 @@ const UpdateProfile = () => {
     values,
     mode: "onChange",
   });
+
+  const [bank_name] = watch(["bank_name"]);
 
   /* ======================================== FUNCTIONS */
   const handlePickImage = async ({ useCamera = false }: { useCamera?: boolean } = {}) => {
@@ -85,6 +92,10 @@ const UpdateProfile = () => {
         setImage(asset.uri);
       }
     }
+  };
+
+  const handleBankNameSelect = (item: string) => {
+    setValue("bank_name", item);
   };
 
   const onSubmit = handleSubmit((values) => {
@@ -156,6 +167,62 @@ const UpdateProfile = () => {
           right={
             <TextInput.Icon icon={passwordConfirmVisible ? "eye" : "eye-off"} onPress={togglePasswordConfirmVisible} />
           }
+        />
+        <AppDialog
+          renderTriggerButton={(open) => (
+            <FormInput
+              control={control}
+              label="Bank name"
+              name="bank_name"
+              errors={errors.bank_name?.message}
+              value={bank_name}
+              editable={false}
+              onPress={() => {
+                Keyboard.dismiss();
+                open();
+              }}
+            />
+          )}
+          title="Select bank"
+          body={
+            <AppList
+              data={[
+                "Affin Bank",
+                "Agro Bank",
+                "Alliance Bank",
+                "Ambank",
+                "Bank Islam",
+                "Bank Muamalat",
+                "Bank Rakyat",
+                "Bank Simpanan Malaysia",
+                "CIMB Bank",
+                "Hong Leong Bank",
+                "HSBC Bank",
+                "Maybank",
+                "OCBC Bank",
+                "Public Bank",
+                "RHB Bank",
+                "Standard Chartered Bank",
+                "United Overseas Bank",
+              ]}
+              extraData={bank_name}
+              renderItem={({ item }) => (
+                <RadioButton.Item
+                  label={item}
+                  value={item}
+                  status={bank_name == item ? "checked" : "unchecked"}
+                  onPress={() => handleBankNameSelect(item)}
+                />
+              )}
+              containerStyle={{ flex: 1 }}
+            />
+          }
+        />
+        <FormInput
+          control={control}
+          label="Bank account number"
+          name="bank_account_number"
+          errors={errors.bank_account_number?.message}
         />
       </KeyboardWrapper>
 

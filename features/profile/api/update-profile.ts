@@ -16,6 +16,8 @@ export const updateProfileInputSchema = z
     email: z.string().min(1, "Email is required").email("Please enter a valid email address.").optional(),
     password: zodPassword().optional(),
     password_confirmation: z.string().optional(),
+    bank_name: z.string().min(1, "Bank name is required").optional(),
+    bank_account_number: z.string().min(1, "Bank account number is required").optional(),
   })
   .refine((data) => data.password === data.password_confirmation, {
     path: ["password_confirmation"],
