@@ -3,16 +3,16 @@ import React from "react";
 import { useLocalSearchParams } from "expo-router";
 
 import { ScreenWrapper } from "@/components/screens";
-import { TransactionsHistory } from "@/features/transaction/components/transactions-history";
+import { Reviews } from "@/features/review/components/reviews";
 
-const ProvideHistoryScreen = () => {
+const ProvideReviewsScreen = () => {
   const { barter_service_id } = useLocalSearchParams<{ barter_service_id: string }>();
 
   return (
     <ScreenWrapper>
-      <TransactionsHistory barter_service_id={barter_service_id} />
+      <Reviews barter_service_id={barter_service_id} />
     </ScreenWrapper>
   );
 };
 
-export default ProvideHistoryScreen;
+export default ProvideReviewsScreen;

@@ -15,14 +15,14 @@ export const ServiceSkeleton = () => {
         </ContentLoader>
 
         {/* ======================================== AVATAR WITH NAME */}
-        <View style={styles.avatar}>
+        <View style={styles.row}>
           <ContentLoader
-            width={32}
-            height={32}
+            width={30}
+            height={30}
             backgroundColor={colors.surfaceVariant}
             foregroundColor={colors.surface}
           >
-            <Circle cx="16" cy="16" r="16" />
+            <Circle cx="15" cy="15" r="15" />
           </ContentLoader>
           <ContentLoader
             width="50%"
@@ -58,7 +58,7 @@ export const ServiceSkeleton = () => {
         </ContentLoader>
 
         {/* ======================================== REVIEW */}
-        <View style={styles.avatar}>
+        <View style={styles.row}>
           <ContentLoader
             width="15%"
             height={30}
@@ -78,7 +78,7 @@ export const ServiceSkeleton = () => {
         </View>
 
         {/* ======================================== GALLERY */}
-        <View style={styles.gallery}>
+        <View style={styles.row}>
           {Array.from({ length: 3 }).map((_, index) => (
             <ContentLoader
               key={index}
@@ -101,18 +101,9 @@ const styles = StyleSheet.create({
     padding: 16,
     gap: 20,
   },
-  avatar: {
+  row: {
     flexDirection: "row",
     alignItems: "center",
-    gap: 8,
-  },
-  review: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 8,
-  },
-  gallery: {
-    flexDirection: "row",
     gap: 8,
   },
 });

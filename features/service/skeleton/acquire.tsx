@@ -8,7 +8,7 @@ import { useAppTheme } from "@/lib/react-native-paper";
 
 export const AcquireSkeleton = () => {
   const { colors } = useAppTheme();
-  const items = Array.from({ length: 6 }, (_, i) => i);
+  const items = Array.from({ length: 5 }, (_, i) => i);
 
   return (
     <AppList
@@ -16,16 +16,16 @@ export const AcquireSkeleton = () => {
       renderItem={() => (
         <Card>
           <Card.Content>
-            <View style={styles.header}>
-              <View style={styles.avatar}>
+            <View style={[styles.row, styles.header]}>
+              <View style={styles.row}>
                 {/* ======================================== AVATAR WITH NAME */}
                 <ContentLoader
-                  width={32}
-                  height={32}
+                  width={30}
+                  height={30}
                   backgroundColor={colors.surfaceVariant}
                   foregroundColor={colors.surface}
                 >
-                  <Circle cx="16" cy="16" r="16" />
+                  <Circle cx="15" cy="15" r="15" />
                 </ContentLoader>
                 <ContentLoader
                   width="50%"
@@ -40,7 +40,7 @@ export const AcquireSkeleton = () => {
               {/* ======================================== RATING CHIP */}
               <ContentLoader
                 width="20%"
-                height={32}
+                height={30}
                 backgroundColor={colors.surfaceVariant}
                 foregroundColor={colors.surface}
               >
@@ -71,11 +71,9 @@ export const AcquireSkeleton = () => {
 
 const styles = StyleSheet.create({
   header: {
-    flexDirection: "row",
     justifyContent: "space-between",
-    alignItems: "center",
   },
-  avatar: {
+  row: {
     flexDirection: "row",
     alignItems: "center",
     gap: 8,

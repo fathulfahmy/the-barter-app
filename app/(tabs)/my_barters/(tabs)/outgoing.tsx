@@ -3,7 +3,7 @@ import React from "react";
 import { ScreenWrapper } from "@/components/screens";
 import { OutgoingTransactions } from "@/features/transaction/components/outgoing-transactions";
 
-const OutgoingTransactionsScreen = () => {
+const MyBartersOutgoingScreen = () => {
   return (
     <ScreenWrapper>
       <OutgoingTransactions />
@@ -11,4 +11,4 @@ const OutgoingTransactionsScreen = () => {
   );
 };
 
-export default OutgoingTransactionsScreen;
+export default MyBartersOutgoingScreen;

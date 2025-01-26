@@ -111,7 +111,7 @@ export const Acquire = () => {
           data={services}
           renderItem={({ item }) => (
             <Card onPress={() => router.push(`/acquire/${item.id}`)}>
-              <Card.Content style={styles.card}>
+              <Card.Content>
                 <View style={styles.header}>
                   <AvatarWithName user={item.barter_provider} />
                   <RatingChip rating={item.rating}></RatingChip>
@@ -164,15 +164,14 @@ const styles = StyleSheet.create({
     top: 4,
     right: 4,
   },
-  card: {
-    gap: 16,
-  },
   header: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
+    paddingBottom: 16,
   },
   body: {
     gap: 2,
+    paddingBottom: 16,
   },
 });

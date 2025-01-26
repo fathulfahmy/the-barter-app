@@ -8,7 +8,7 @@ import { useAppTheme } from "@/lib/react-native-paper";
 
 export const ReviewsSkeleton = () => {
   const { colors } = useAppTheme();
-  const items = Array.from({ length: 6 }, (_, i) => i);
+  const items = Array.from({ length: 4 }, (_, i) => i);
 
   return (
     <AppList
@@ -17,14 +17,14 @@ export const ReviewsSkeleton = () => {
         <Card>
           <Card.Content>
             {/* ======================================== AVATAR WITH NAME */}
-            <View style={styles.avatar}>
+            <View style={styles.row}>
               <ContentLoader
-                width={32}
-                height={32}
+                width={30}
+                height={30}
                 backgroundColor={colors.surfaceVariant}
                 foregroundColor={colors.surface}
               >
-                <Circle cx="16" cy="16" r="16" />
+                <Circle cx="15" cy="15" r="15" />
               </ContentLoader>
               <ContentLoader
                 width="50%"
@@ -62,12 +62,7 @@ export const ReviewsSkeleton = () => {
 };
 
 const styles = StyleSheet.create({
-  avatar: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 8,
-  },
-  buttons: {
+  row: {
     flexDirection: "row",
     alignItems: "center",
     gap: 8,

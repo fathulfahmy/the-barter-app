@@ -96,8 +96,6 @@ export const IncomingTransactions = ({ barter_service_id }: { barter_service_id?
                 </Text>
               </View>
 
-              <Spacer y={16} />
-
               <View style={styles.buttonGroup}>
                 <Buttons
                   buttons={[
@@ -149,10 +147,11 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    marginBottom: 8,
+    paddingBottom: 8,
   },
   body: {
     gap: 2,
+    paddingBottom: 16,
   },
   buttonGroup: {
     gap: 4,

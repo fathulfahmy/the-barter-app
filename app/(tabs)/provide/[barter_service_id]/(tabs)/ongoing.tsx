@@ -5,7 +5,7 @@ import { useLocalSearchParams } from "expo-router";
 import { ScreenWrapper } from "@/components/screens";
 import { OngoingTransactions } from "@/features/transaction/components/ongoing-transactions";
 
-const ServiceOngoingTransactionsScreen = () => {
+const ProvideOngoingScreen = () => {
   const { barter_service_id } = useLocalSearchParams<{ barter_service_id: string }>();
 
   return (
@@ -15,4 +15,4 @@ const ServiceOngoingTransactionsScreen = () => {
   );
 };
 
-export default ServiceOngoingTransactionsScreen;
+export default ProvideOngoingScreen;

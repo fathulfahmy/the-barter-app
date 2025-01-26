@@ -83,9 +83,9 @@ export const OutgoingTransactions = ({ barter_service_id }: { barter_service_id?
         return (
           <Card>
             <Card.Content>
-              <AvatarWithName user={otherUser} />
-
-              <Spacer y={16} />
+              <View style={styles.header}>
+                <AvatarWithName user={otherUser} />
+              </View>
 
               <View style={styles.body}>
                 <Text variant="titleMedium">{title}</Text>
@@ -93,8 +93,6 @@ export const OutgoingTransactions = ({ barter_service_id }: { barter_service_id?
                   For {subtitle}
                 </Text>
               </View>
-
-              <Spacer y={16} />
 
               <Buttons
                 vertical
@@ -132,7 +130,11 @@ export const OutgoingTransactions = ({ barter_service_id }: { barter_service_id?
 };
 
 const styles = StyleSheet.create({
+  header: {
+    paddingBottom: 16,
+  },
   body: {
     gap: 2,
+    paddingBottom: 16,
   },
 });

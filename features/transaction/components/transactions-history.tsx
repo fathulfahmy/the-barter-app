@@ -78,17 +78,11 @@ export const TransactionsHistory = ({ barter_service_id }: { barter_service_id?:
                 </Text>
               </View>
 
-              <Spacer y={16} />
-
               {isCompleted && review ? (
-                <>
-                  <View style={styles.body}>
-                    <RatingStars rating={review.rating} />
-                    <Text variant="bodyMedium">{review.description}</Text>
-                  </View>
-
-                  <Spacer y={16} />
-                </>
+                <View style={styles.review}>
+                  <RatingStars rating={review.rating} />
+                  <Text variant="bodyMedium">{review.description}</Text>
+                </View>
               ) : null}
 
               <View style={styles.buttonGroup}>
@@ -129,10 +123,15 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    marginBottom: 8,
+    paddingBottom: 8,
   },
   body: {
     gap: 2,
+    paddingBottom: 16,
+  },
+  review: {
+    gap: 4,
+    paddingBottom: 16,
   },
   buttonGroup: {
     gap: 4,

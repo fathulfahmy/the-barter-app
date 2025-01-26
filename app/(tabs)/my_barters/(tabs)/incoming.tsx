@@ -3,7 +3,7 @@ import React from "react";
 import { ScreenWrapper } from "@/components/screens";
 import { IncomingTransactions } from "@/features/transaction/components/incoming-transactions";
 
-const IncomingTransactionsScreen = () => {
+const MyBartersIncomingScreen = () => {
   return (
     <ScreenWrapper>
       <IncomingTransactions />
@@ -11,4 +11,4 @@ const IncomingTransactionsScreen = () => {
   );
 };
 
-export default IncomingTransactionsScreen;
+export default MyBartersIncomingScreen;

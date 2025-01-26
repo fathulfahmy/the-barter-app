@@ -1,6 +1,6 @@
 import React from "react";
-import { ScrollView, StyleSheet, View } from "react-native";
-import { Button, Text } from "react-native-paper";
+import { Pressable, ScrollView, StyleSheet, View } from "react-native";
+import { Text } from "react-native-paper";
 
 import { router } from "expo-router";
 
@@ -40,21 +40,23 @@ export const Service = ({ barter_service_id }: { barter_service_id: string }) =>
         </Text>
 
         {service?.reviews_count && service.reviews_count > 0 ? (
-          <View style={styles.review}>
-            <RatingChip rating={service?.rating} />
+          <Pressable onPress={() => router.push(`/acquire/${service?.id}/reviews`)}>
+            <View style={styles.row}>
+              <RatingChip rating={service?.rating} />
 
-            <Spacer x={4} />
+              <Spacer x={4} />
 
-            <Text
-              variant="bodyMedium"
-              style={{ color: colors.onYellowContainer }}
-            >{`(${service?.reviews_count})`}</Text>
+              <Text variant="bodyMedium" style={{ color: colors.onYellowContainer }}>
+                {`(${service?.reviews_count})`}
+              </Text>
 
-            <Button
-              textColor={colors.yellow}
-              onPress={() => router.push(`/acquire/${service?.id}/reviews`)}
-            >{`View all reviews`}</Button>
-          </View>
+              <Spacer x={8} />
+
+              <Text variant="bodyMedium" style={{ color: colors.yellow }}>
+                {`View all reviews`}
+              </Text>
+            </View>
+          </Pressable>
         ) : null}
       </View>
 
@@ -68,7 +70,7 @@ const styles = StyleSheet.create({
     padding: 16,
     gap: 16,
   },
-  review: {
+  row: {
     flexDirection: "row",
     alignItems: "center",
   },

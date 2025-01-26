@@ -8,7 +8,7 @@ import { useAppTheme } from "@/lib/react-native-paper";
 
 export const OutgoingTransactionsSkeleton = () => {
   const { colors } = useAppTheme();
-  const items = Array.from({ length: 6 }, (_, i) => i);
+  const items = Array.from({ length: 4 }, (_, i) => i);
 
   return (
     <AppList
@@ -17,14 +17,14 @@ export const OutgoingTransactionsSkeleton = () => {
         <Card>
           <Card.Content>
             {/* ======================================== AVATAR WITH NAME */}
-            <View style={styles.avatar}>
+            <View style={styles.row}>
               <ContentLoader
-                width={32}
-                height={32}
+                width={30}
+                height={30}
                 backgroundColor={colors.surfaceVariant}
                 foregroundColor={colors.surface}
               >
-                <Circle cx="16" cy="16" r="16" />
+                <Circle cx="15" cy="15" r="15" />
               </ContentLoader>
               <ContentLoader
                 width="50%"
@@ -50,22 +50,13 @@ export const OutgoingTransactionsSkeleton = () => {
             {/* ======================================== BUTTONS */}
             <ContentLoader
               width="100%"
-              height={50}
+              height={100}
               backgroundColor={colors.surfaceVariant}
               foregroundColor={colors.surface}
             >
               <Rect x="0" y="0" rx="4" ry="4" width="100%" height="40" />
+              <Rect x="0" y="50" rx="4" ry="4" width="100%" height="40" />
             </ContentLoader>
-            <View style={styles.buttons}>
-              <ContentLoader
-                width="100%"
-                height={40}
-                backgroundColor={colors.surfaceVariant}
-                foregroundColor={colors.surface}
-              >
-                <Rect x="0" y="0" rx="4" ry="4" width="100%" height="40" />
-              </ContentLoader>
-            </View>
           </Card.Content>
         </Card>
       )}
@@ -77,12 +68,7 @@ export const OutgoingTransactionsSkeleton = () => {
 };
 
 const styles = StyleSheet.create({
-  avatar: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 8,
-  },
-  buttons: {
+  row: {
     flexDirection: "row",
     alignItems: "center",
     gap: 8,

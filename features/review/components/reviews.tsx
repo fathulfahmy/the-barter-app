@@ -32,8 +32,10 @@ export const Reviews = ({ barter_service_id }: { barter_service_id?: string }) =
       data={reviews}
       renderItem={({ item }) => (
         <Card>
-          <Card.Content style={styles.card}>
-            <AvatarWithName user={item.reviewer} />
+          <Card.Content>
+            <View style={styles.header}>
+              <AvatarWithName user={item.reviewer} />
+            </View>
 
             <View style={styles.body}>
               <Text variant="titleMedium">{formatInvoiceItems(item.barter_transaction?.barter_invoice)}</Text>
@@ -43,7 +45,7 @@ export const Reviews = ({ barter_service_id }: { barter_service_id?: string }) =
               >{`For ${item.barter_transaction?.barter_service?.title}`}</Text>
             </View>
 
-            <View style={styles.body}>
+            <View style={styles.review}>
               <RatingStars rating={item.rating} />
               <Text variant="bodyMedium">{item.description}</Text>
             </View>
@@ -63,10 +65,14 @@ export const Reviews = ({ barter_service_id }: { barter_service_id?: string }) =
 };
 
 const styles = StyleSheet.create({
-  card: {
-    gap: 16,
+  header: {
+    paddingBottom: 16,
   },
   body: {
     gap: 2,
+    paddingBottom: 16,
+  },
+  review: {
+    gap: 4,
   },
 });

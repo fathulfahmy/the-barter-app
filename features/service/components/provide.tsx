@@ -1,12 +1,12 @@
 import React from "react";
-import { StyleSheet, View } from "react-native";
+import { Pressable, StyleSheet, View } from "react-native";
 import { Card, IconButton, Menu, Text } from "react-native-paper";
 
 import { useIsFocused } from "@react-navigation/native";
 import { router } from "expo-router";
 
 import { AppList, Spacer } from "@/components/ui";
-import { AppChip } from "@/components/ui/chip";
+import { AppChip, RatingChip } from "@/components/ui/chip";
 import { useConfirmationDialog } from "@/components/ui/dialog";
 import { useUpdateService } from "@/features/service/api/update-service";
 import { useDisclosure } from "@/hooks/use-disclosure";
@@ -106,39 +106,64 @@ export const Provide = () => {
     <AppList
       data={services}
       renderItem={({ item }) => (
-        <Card onPress={() => router.push(`/provide/${item.id}/incoming`)}>
+        <Card>
           <Card.Content>
-            <View style={styles.header}>
-              <AppChip
-                style={
-                  item.status === "disabled"
-                    ? {
-                        backgroundColor: colors.surfaceDisabled,
-                      }
-                    : undefined
-                }
-                textStyle={item.status === "disabled" ? { color: colors.onSurfaceDisabled } : undefined}
-              >
-                {item.barter_category?.name}
-              </AppChip>
-              <MenuWrapper item={item} />
-            </View>
+            <Pressable onPress={() => router.push(`/provide/${item.id}/incoming`)}>
+              <View style={[styles.row, styles.header]}>
+                <AppChip
+                  style={
+                    item.status === "disabled"
+                      ? {
+                          backgroundColor: colors.surfaceDisabled,
+                        }
+                      : undefined
+                  }
+                  textStyle={item.status === "disabled" ? { color: colors.onSurfaceDisabled } : undefined}
+                >
+                  {item.barter_category?.name}
+                </AppChip>
+                <MenuWrapper item={item} />
+              </View>
 
-            <View style={styles.body}>
-              <Text variant="titleMedium" style={item.status === "disabled" ? { color: colors.secondary } : undefined}>
-                {item.title}
-              </Text>
-              <Text variant="bodyMedium" style={{ color: colors.secondary }}>
-                {formatServicePrice(item)}
-              </Text>
-            </View>
+              <View style={styles.body}>
+                <Text
+                  variant="titleMedium"
+                  style={item.status === "disabled" ? { color: colors.secondary } : undefined}
+                >
+                  {item.title}
+                </Text>
+                <Text variant="bodyMedium" style={{ color: colors.secondary }}>
+                  {formatServicePrice(item)}
+                </Text>
+              </View>
 
-            <Text
-              variant="bodyMedium"
-              style={{ color: item.status === "disabled" ? colors.secondary : colors.primary }}
-            >
-              {item.pending_count} pending requests
-            </Text>
+              <View style={styles.request}>
+                <Text
+                  variant="bodyMedium"
+                  style={{ color: item.status === "disabled" ? colors.secondary : colors.primary }}
+                >
+                  {item.pending_count} pending requests
+                </Text>
+              </View>
+            </Pressable>
+
+            <Pressable onPress={() => router.push(`/provide/${item.id}/reviews`)}>
+              <View style={styles.row}>
+                <RatingChip rating={item.rating} />
+
+                <Spacer x={4} />
+
+                <Text variant="bodyMedium" style={{ color: colors.onYellowContainer }}>
+                  {`(${item.reviews_count})`}
+                </Text>
+
+                <Spacer x={8} />
+
+                <Text variant="bodyMedium" style={{ color: colors.yellow }}>
+                  {`View all reviews`}
+                </Text>
+              </View>
+            </Pressable>
           </Card.Content>
         </Card>
       )}
@@ -155,14 +180,19 @@ export const Provide = () => {
 };
 
 const styles = StyleSheet.create({
-  header: {
+  row: {
     flexDirection: "row",
-    justifyContent: "space-between",
     alignItems: "center",
-    marginBottom: 8,
+  },
+  header: {
+    justifyContent: "space-between",
+    paddingBottom: 8,
   },
   body: {
     gap: 2,
-    marginBottom: 16,
+    paddingBottom: 8,
+  },
+  request: {
+    paddingBottom: 16,
   },
 });
