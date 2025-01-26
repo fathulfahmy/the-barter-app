@@ -1,10 +1,10 @@
 import React from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
-import { Text } from "react-native-paper";
+import { Button, Text } from "react-native-paper";
 
 import { router } from "expo-router";
 
-import { Gallery } from "@/components/ui";
+import { Gallery, Spacer } from "@/components/ui";
 import { AvatarWithName } from "@/components/ui/avatar";
 import { AppChip, RatingChip } from "@/components/ui/chip";
 import { useAppTheme } from "@/lib/react-native-paper";
@@ -39,16 +39,23 @@ export const Service = ({ barter_service_id }: { barter_service_id: string }) =>
           {formatServicePrice(service)}
         </Text>
 
-        {service?.completed_count && service.completed_count > 0 && (
+        {service?.reviews_count && service.reviews_count > 0 ? (
           <View style={styles.review}>
             <RatingChip rating={service?.rating} />
+
+            <Spacer x={4} />
+
             <Text
               variant="bodyMedium"
-              style={{ color: colors.yellow }}
+              style={{ color: colors.onYellowContainer }}
+            >{`(${service?.reviews_count})`}</Text>
+
+            <Button
+              textColor={colors.yellow}
               onPress={() => router.push(`/acquire/${service?.id}/reviews`)}
-            >{`View all ${service?.reviews_count} user reviews`}</Text>
+            >{`View all reviews`}</Button>
           </View>
-        )}
+        ) : null}
       </View>
 
       <Gallery contentContainerStyle={styles.gallery} uris={service?.images.map((image) => image.uri)} />
@@ -64,7 +71,6 @@ const styles = StyleSheet.create({
   review: {
     flexDirection: "row",
     alignItems: "center",
-    gap: 8,
   },
   gallery: {
     paddingHorizontal: 16,

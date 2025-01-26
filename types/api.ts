@@ -123,7 +123,7 @@ export type Invoice = {
 
 export type Review = {
   id: string;
-  author_id: string;
+  reviewer_id: string;
   barter_service_id: string;
   barter_transaction_id: string;
   description: string;
@@ -131,7 +131,7 @@ export type Review = {
   created_at: Date;
   updated_at: Date;
   deleted_at: Date | null;
-  author?: User | null;
+  reviewer?: User | null;
   barter_service?: Service | null;
   barter_transaction?: Transaction | null;
 };
@@ -156,13 +156,14 @@ export type ReportStatus = "unread" | "read";
 
 export type Report = {
   id: string;
-  author_id: string;
+  reporter_id: string;
   user_report_reason_id: string;
   model_id: string;
   model_name: ReportModelName;
   status: ReportStatus;
   created_at: Date;
   updated_at: Date;
+  reporter?: User | null;
 };
 
 export type StatsData = {

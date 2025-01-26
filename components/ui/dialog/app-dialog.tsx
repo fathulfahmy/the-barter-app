@@ -37,7 +37,7 @@ export const AppDialog: React.FC<AppDialogProps> = ({
       {renderTriggerButton(open)}
       <Portal>
         <Dialog visible={isOpen} onDismiss={close}>
-          {title && <Dialog.Title>{formatSentenceCase(title)}</Dialog.Title>}
+          {title ? <Dialog.Title>{formatSentenceCase(title)}</Dialog.Title> : null}
           {withScrollView ? (
             <Dialog.ScrollArea style={{ height: 0.5 * Dimensions.get("window").height }}>{body}</Dialog.ScrollArea>
           ) : (

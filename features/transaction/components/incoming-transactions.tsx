@@ -35,7 +35,7 @@ export const IncomingTransactions = ({ barter_service_id }: { barter_service_id?
     },
   });
   const { isRefetchingByUser, refetchByUser } = useRefreshByUser(transactionsQuery.refetch);
-  const transactions = transactionsQuery.data?.pages?.flatMap((page) => page.data?.data ?? []) ?? [];
+  const transactions = transactionsQuery.data?.pages?.flatMap((page) => page?.data?.data ?? []) ?? [];
 
   /* ======================================== MUTATIONS */
   const updateTransactionMutation = useUpdateTransaction({

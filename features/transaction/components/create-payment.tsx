@@ -54,7 +54,7 @@ export const CreatePayment = ({ barter_transaction_id }: { barter_transaction_id
       customerId: customer,
       customerEphemeralKeySecret: ephemeral_key,
       paymentIntentClientSecret: payment_intent,
-      primaryButtonLabel: formatEllipses(payWith, 30),
+      primaryButtonLabel: formatEllipses(payWith, 25),
       defaultBillingDetails: {
         name: user?.name,
         email: user?.email,
@@ -130,7 +130,13 @@ export const CreatePayment = ({ barter_transaction_id }: { barter_transaction_id
         variant="bottom"
         buttons={[
           { label: "Cancel", mode: "outlined", onPress: () => router.back() },
-          { label: "Pay", mode: "contained", onPress: handleSubmit, disabled: loading, loading: loading },
+          {
+            label: "Complete",
+            mode: "contained",
+            onPress: handleSubmit,
+            disabled: loading || updateTransactionMutation.isPending,
+            loading: loading || updateTransactionMutation.isPending,
+          },
         ]}
       />
     </>

@@ -5,7 +5,7 @@ import { useLocalSearchParams } from "expo-router";
 import { ScreenWrapper } from "@/components/screens";
 import { IncomingTransactions } from "@/features/transaction/components/incoming-transactions";
 
-const ServiceIncomingTransactions = () => {
+const ServiceIncomingTransactionsScreen = () => {
   const { barter_service_id } = useLocalSearchParams<{ barter_service_id: string }>();
 
   return (
@@ -15,4 +15,4 @@ const ServiceIncomingTransactions = () => {
   );
 };
 
-export default ServiceIncomingTransactions;
+export default ServiceIncomingTransactionsScreen;

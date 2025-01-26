@@ -37,7 +37,7 @@ export const Acquire = () => {
     },
   });
   const { isRefetchingByUser, refetchByUser } = useRefreshByUser(servicesQuery.refetch);
-  const services = servicesQuery.data?.pages?.flatMap((page) => page.data?.data ?? []) ?? [];
+  const services = servicesQuery.data?.pages?.flatMap((page) => page?.data?.data ?? []) ?? [];
 
   const categoriesQuery = useCategories();
   const categories = categoriesQuery.data?.data;
@@ -80,7 +80,7 @@ export const Acquire = () => {
                   open();
                 }}
               />
-              {searchCategories.length > 0 && <Badge style={filterBadgeStyle}>{searchCategories.length}</Badge>}
+              {searchCategories.length > 0 ? <Badge style={filterBadgeStyle}>{searchCategories.length}</Badge> : null}
             </View>
           )}
           title="Filter by category"

@@ -3,6 +3,8 @@ import { StyleSheet, View } from "react-native";
 import { BarChart } from "react-native-gifted-charts";
 import { Card, Text } from "react-native-paper";
 
+import { useIsFocused } from "@react-navigation/native";
+
 import { useAppTheme } from "@/lib/react-native-paper";
 import { barDimensions, chartDimensions, getDataMaxValue } from "@/utils/chart";
 import { parseRgbToRgba } from "@/utils/format";
@@ -13,9 +15,14 @@ import { TrendingServicesChartSkeleton } from "../skeleton/trending-services-cha
 export const TrendingServicesChart = () => {
   /* ======================================== HOOKS */
   const { colors } = useAppTheme();
+  const isFocused = useIsFocused();
 
   /* ======================================== QUERIES */
-  const trendingServicesQuery = useTrendingServices();
+  const trendingServicesQuery = useTrendingServices({
+    queryConfig: {
+      refetchInterval: isFocused ? 3000 : false,
+    },
+  });
   const trendingServices = trendingServicesQuery.data?.data ?? [];
 
   /* ======================================== RETURNS */
@@ -69,9 +76,8 @@ export const TrendingServicesChart = () => {
             topColor={colors.primary}
           />
         </View>
-
         <View style={styles.list}>
-          {trendingServices?.map((item: any, index: number) => (
+          {trendingServices.map((item: any, index: number) => (
             <Text key={index} variant="bodyMedium">
               {index + 1}. {item.label}
             </Text>

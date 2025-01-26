@@ -75,16 +75,16 @@ export const Invoice = ({ barter_transaction_id }: { barter_transaction_id: stri
             <Text variant="bodyLarge">{transaction?.barter_acquirer?.name}</Text>
           </View>
 
-          {transaction?.barter_invoice?.amount && (
+          {transaction?.barter_invoice?.amount && transaction.barter_invoice.amount > 0 ? (
             <View style={styles.content}>
               <Text variant="bodyMedium" style={{ color: colors.secondary }}>
                 Amount
               </Text>
               <Text variant="bodyLarge">{formatCurrency(transaction.barter_invoice.amount)}</Text>
             </View>
-          )}
+          ) : null}
 
-          {transaction?.barter_invoice?.barter_services && (
+          {transaction?.barter_invoice?.barter_services && transaction?.barter_invoice?.barter_services.length > 0 ? (
             <View style={styles.content}>
               <Text variant="bodyMedium" style={{ color: colors.secondary }}>
                 Services
@@ -99,7 +99,7 @@ export const Invoice = ({ barter_transaction_id }: { barter_transaction_id: stri
                 ItemSeparatorComponent={() => <Spacer y={4} />}
               />
             </View>
-          )}
+          ) : null}
         </Card.Content>
       </Card>
     </ScrollView>

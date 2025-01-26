@@ -36,7 +36,7 @@ export const OngoingTransactions = ({ barter_service_id }: { barter_service_id?:
     },
   });
   const { isRefetchingByUser, refetchByUser } = useRefreshByUser(transactionsQuery.refetch);
-  const transactions = transactionsQuery.data?.pages?.flatMap((page) => page.data?.data ?? []) ?? [];
+  const transactions = transactionsQuery.data?.pages?.flatMap((page) => page?.data?.data ?? []) ?? [];
 
   /* ======================================== FUNCTIONS */
   const handleComplete = (barter_transaction_id: string) => {
@@ -44,6 +44,14 @@ export const OngoingTransactions = ({ barter_service_id }: { barter_service_id?:
       router.push(`/provide/transaction/${barter_transaction_id}/payment`);
     } else {
       router.push(`/my_barters/transaction/${barter_transaction_id}/payment`);
+    }
+  };
+
+  const handleReview = (barter_transaction_id: string) => {
+    if (barter_service_id) {
+      router.push(`/provide/transaction/${barter_transaction_id}/review`);
+    } else {
+      router.push(`/my_barters/transaction/${barter_transaction_id}/review`);
     }
   };
 
@@ -58,9 +66,12 @@ export const OngoingTransactions = ({ barter_service_id }: { barter_service_id?:
       renderItem={({ item }) => {
         const isUserAcquirer = user?.id === item.barter_acquirer_id;
         const isUserAwaiting = user?.id == item.awaiting_user_id;
+        const isOngoing = item.status === "accepted" || item.status === "awaiting_completed";
+        const isCompleted = item.status === "completed";
         const otherUser = item.other_user;
         const title = isUserAcquirer ? item.barter_service?.title : formatInvoiceItems(item.barter_invoice);
         const subtitle = isUserAcquirer ? formatInvoiceItems(item.barter_invoice) : item.barter_service?.title;
+        const review = item.barter_reviews?.find((review) => review.reviewer_id == user?.id);
 
         return (
           <Card>
@@ -79,14 +90,27 @@ export const OngoingTransactions = ({ barter_service_id }: { barter_service_id?:
 
               <Spacer y={16} />
 
-              <View style={styles.buttons}>
+              <View style={styles.buttonGroup}>
                 <Button mode="outlined" onPress={() => channel.createAndRedirect(otherUser?.id)}>
                   Chat
                 </Button>
 
-                <Button mode="contained" onPress={() => handleComplete(item.id)} disabled={isUserAwaiting}>
-                  {isUserAwaiting ? "Awaiting other user to complete" : "Complete"}
-                </Button>
+                {isOngoing ? (
+                  <Button mode="contained" onPress={() => handleComplete(item.id)} disabled={isUserAwaiting}>
+                    {isUserAwaiting ? "Awaiting other user to complete" : "Complete"}
+                  </Button>
+                ) : null}
+
+                {isCompleted && !review ? (
+                  <Button
+                    mode="contained"
+                    textColor={colors.onYellow}
+                    style={{ backgroundColor: colors.yellow }}
+                    onPress={() => handleReview(item.id)}
+                  >
+                    Write a review
+                  </Button>
+                ) : null}
               </View>
             </Card.Content>
           </Card>
@@ -114,7 +138,7 @@ const styles = StyleSheet.create({
   body: {
     gap: 2,
   },
-  buttons: {
+  buttonGroup: {
     gap: 4,
   },
 });

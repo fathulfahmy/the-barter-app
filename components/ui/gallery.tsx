@@ -30,9 +30,9 @@ export const Gallery: React.FC<GalleryProps> = ({
       {uris.map((uri, index) => (
         <View key={index} style={styles.imageContainer}>
           <Image source={{ uri }} style={[styles.image, imageStyle]} />
-          {renderOverlay && (
+          {renderOverlay ? (
             <View style={[styles.overlayContainer, overlayContainerStyle]}>{renderOverlay(index)}</View>
-          )}
+          ) : null}
         </View>
       ))}
     </ScrollView>

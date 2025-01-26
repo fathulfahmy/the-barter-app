@@ -29,13 +29,13 @@ export const StatusDialog = () => {
     <>
       <Portal>
         <Dialog visible={isOpen} onDismiss={dismissStatusDialog}>
-          {type && <Dialog.Icon icon={icon} size={64} />}
-          {title && <Dialog.Title style={{ textAlign: "center" }}>{formatSentenceCase(title)}</Dialog.Title>}
-          {body && (
+          {type ? <Dialog.Icon icon={icon} size={64} /> : null}
+          {title ? <Dialog.Title style={{ textAlign: "center" }}>{formatSentenceCase(title)}</Dialog.Title> : null}
+          {body ? (
             <Dialog.Content style={{ alignSelf: "center" }}>
               <Text variant="bodyMedium">{formatSentenceCase(body)}</Text>
             </Dialog.Content>
-          )}
+          ) : null}
           <Dialog.Actions>
             <Button onPress={dismissStatusDialog}>Close</Button>
           </Dialog.Actions>

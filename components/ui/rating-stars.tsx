@@ -26,7 +26,7 @@ export const RatingStars: React.FC<RatingStarsProps> = ({ rating, size, color, .
           <Icon
             key={`full-${i}`}
             source="star"
-            size={size ?? fonts.bodyMedium.fontSize}
+            size={size ?? fonts.bodyLarge.fontSize}
             color={color ?? colors.yellow}
             {...props}
           />,
@@ -36,7 +36,7 @@ export const RatingStars: React.FC<RatingStarsProps> = ({ rating, size, color, .
           <Icon
             key={`half-${i}`}
             source="star-half-full"
-            size={size ?? fonts.bodyMedium.fontSize}
+            size={size ?? fonts.bodyLarge.fontSize}
             color={color ?? colors.yellow}
             {...props}
           />,
@@ -46,7 +46,7 @@ export const RatingStars: React.FC<RatingStarsProps> = ({ rating, size, color, .
           <Icon
             key={`empty-${i}`}
             source="star-outline"
-            size={size ?? fonts.bodyMedium.fontSize}
+            size={size ?? fonts.bodyLarge.fontSize}
             color={color ?? colors.yellow}
             {...props}
           />,

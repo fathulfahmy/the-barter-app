@@ -7,6 +7,7 @@ import { router } from "expo-router";
 
 import { AppList, Spacer } from "@/components/ui";
 import { AppChip } from "@/components/ui/chip";
+import { useConfirmationDialog } from "@/components/ui/dialog";
 import { useUpdateService } from "@/features/service/api/update-service";
 import { useDisclosure } from "@/hooks/use-disclosure";
 import { useRefreshByUser } from "@/hooks/use-refresh-by-user";
@@ -14,6 +15,7 @@ import { useAppTheme } from "@/lib/react-native-paper";
 import { Service, ServiceStatus } from "@/types/api";
 import { formatServicePrice } from "@/utils/format";
 
+import { useDeleteService } from "../api/delete-service";
 import { useInfiniteServices } from "../api/get-services";
 import { ProvideSkeleton } from "../skeleton/provide";
 
@@ -30,7 +32,7 @@ export const Provide = () => {
     },
   });
   const { isRefetchingByUser, refetchByUser } = useRefreshByUser(servicesQuery.refetch);
-  const services = servicesQuery.data?.pages?.flatMap((page) => page.data?.data ?? []) ?? [];
+  const services = servicesQuery.data?.pages?.flatMap((page) => page?.data?.data ?? []) ?? [];
 
   /* ======================================== MUTATIONS */
   const updateServiceMutation = useUpdateService({
@@ -40,6 +42,8 @@ export const Provide = () => {
       },
     },
   });
+
+  const deleteServiceMutation = useDeleteService();
 
   /* ======================================== FUNCTIONS */
   const handleSubmit = ({ barter_service_id, status }: { barter_service_id: string; status: ServiceStatus }) => {
@@ -65,6 +69,17 @@ export const Provide = () => {
           title="Edit"
           onPress={() => {
             router.push(`/provide/${item.id}/edit`);
+            close();
+          }}
+        />
+        <Menu.Item
+          title="Delete"
+          onPress={() => {
+            useConfirmationDialog.getState().setConfirmationDialog({
+              type: "warning",
+              title: "Confirm delete?",
+              confirmButtonFn: () => deleteServiceMutation.mutate({ service_id: item.id }),
+            });
             close();
           }}
         />
@@ -96,11 +111,13 @@ export const Provide = () => {
             <View style={styles.header}>
               <AppChip
                 style={
-                  item.status === "disabled" && {
-                    backgroundColor: colors.surfaceDisabled,
-                  }
+                  item.status === "disabled"
+                    ? {
+                        backgroundColor: colors.surfaceDisabled,
+                      }
+                    : undefined
                 }
-                textStyle={item.status === "disabled" && { color: colors.onSurfaceDisabled }}
+                textStyle={item.status === "disabled" ? { color: colors.onSurfaceDisabled } : undefined}
               >
                 {item.barter_category?.name}
               </AppChip>
@@ -108,7 +125,7 @@ export const Provide = () => {
             </View>
 
             <View style={styles.body}>
-              <Text variant="titleMedium" style={item.status === "disabled" && { color: colors.secondary }}>
+              <Text variant="titleMedium" style={item.status === "disabled" ? { color: colors.secondary } : undefined}>
                 {item.title}
               </Text>
               <Text variant="bodyMedium" style={{ color: colors.secondary }}>

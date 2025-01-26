@@ -41,13 +41,13 @@ export const ConfirmationDialog = () => {
     <>
       <Portal>
         <Dialog visible={isOpen} onDismiss={dismissConfirmationDialog}>
-          {type && <Dialog.Icon icon={icon} size={64} />}
-          {title && <Dialog.Title style={{ textAlign: "center" }}>{formatSentenceCase(title)}</Dialog.Title>}
-          {body && (
+          {type ? <Dialog.Icon icon={icon} size={64} /> : null}
+          {title ? <Dialog.Title style={{ textAlign: "center" }}>{formatSentenceCase(title)}</Dialog.Title> : null}
+          {body ? (
             <Dialog.Content style={{ alignSelf: "center" }}>
               <Text variant="bodyMedium">{formatSentenceCase(body)}</Text>
             </Dialog.Content>
-          )}
+          ) : null}
           <Dialog.Actions>
             <Button onPress={dismissConfirmationDialog}>{cancelButtonText}</Button>
             <Button onPress={handleConfirm}>{confirmButtonText}</Button>

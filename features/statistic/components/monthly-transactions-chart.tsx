@@ -3,6 +3,8 @@ import { StyleSheet, View } from "react-native";
 import { LineChart } from "react-native-gifted-charts";
 import { Card, Text } from "react-native-paper";
 
+import { useIsFocused } from "@react-navigation/native";
+
 import { useAppTheme } from "@/lib/react-native-paper";
 import { StatsData } from "@/types/api";
 import { chartDimensions, getDatasetMaxValue, tooltipDimensions } from "@/utils/chart";
@@ -15,9 +17,14 @@ import { MonthlyTransactionsTooltip } from "./monthly-transactions-tooltip";
 export const MonthlyTransactionsChart = () => {
   /* ======================================== HOOKS */
   const { colors, fonts } = useAppTheme();
+  const isFocused = useIsFocused();
 
   /* ======================================== QUERIES */
-  const monthlyTransactionsQuery = useMonthlyTransactions();
+  const monthlyTransactionsQuery = useMonthlyTransactions({
+    queryConfig: {
+      refetchInterval: isFocused ? 3000 : false,
+    },
+  });
   const monthlyTransactions = monthlyTransactionsQuery.data?.data ?? [];
 
   /* ======================================== TRANSFORMATIONS */

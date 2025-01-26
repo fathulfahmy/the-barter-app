@@ -8,6 +8,7 @@ import { router } from "expo-router";
 import { AppList, RatingStars, Spacer } from "@/components/ui";
 import { AvatarWithName } from "@/components/ui/avatar";
 import { useRefreshByUser } from "@/hooks/use-refresh-by-user";
+import { useStreamChat } from "@/hooks/use-stream-chat";
 import { useUser } from "@/lib/auth/auth";
 import { useAppTheme } from "@/lib/react-native-paper";
 import { formatInvoiceItems, formatSentenceCase } from "@/utils/format";
@@ -20,10 +21,12 @@ export const TransactionsHistory = ({ barter_service_id }: { barter_service_id?:
   /* ======================================== HOOKS */
   const { colors } = useAppTheme();
   const isFocused = useIsFocused();
+  const channel = useStreamChat();
+
+  /* ======================================== QUERIES */
   const userQuery = useUser();
   const user = userQuery.data;
 
-  /* ======================================== QUERIES */
   const transactionsQuery = useInfiniteTransactions({
     mode: "history",
     ...(barter_service_id && { barter_service_id }),
@@ -33,17 +36,9 @@ export const TransactionsHistory = ({ barter_service_id }: { barter_service_id?:
     },
   });
   const { isRefetchingByUser, refetchByUser } = useRefreshByUser(transactionsQuery.refetch);
-  const transactions = transactionsQuery.data?.pages?.flatMap((page) => page.data?.data ?? []) ?? [];
+  const transactions = transactionsQuery.data?.pages?.flatMap((page) => page?.data?.data ?? []) ?? [];
 
   /* ======================================== FUNCTIONS */
-  const handleReview = (barter_transaction_id: string) => {
-    if (barter_service_id) {
-      router.push(`/provide/transaction/${barter_transaction_id}/review`);
-    } else {
-      router.push(`/my_barters/transaction/${barter_transaction_id}/review`);
-    }
-  };
-
   const handleInvoice = (barter_transaction_id: string) => {
     if (barter_service_id) {
       router.push(`/provide/transaction/${barter_transaction_id}/invoice`);
@@ -63,15 +58,16 @@ export const TransactionsHistory = ({ barter_service_id }: { barter_service_id?:
       renderItem={({ item }) => {
         const isUserAcquirer = user?.id === item.barter_acquirer_id;
         const isCompleted = item.status === "completed";
-        const title = isUserAcquirer ? formatInvoiceItems(item.barter_invoice) : item.barter_service?.title;
-        const subtitle = isUserAcquirer ? item.barter_service?.title : formatInvoiceItems(item.barter_invoice);
-        const review = item.barter_reviews?.find((review) => review.author_id == user?.id);
+        const otherUser = item.other_user;
+        const title = isUserAcquirer ? item.barter_service?.title : formatInvoiceItems(item.barter_invoice);
+        const subtitle = isUserAcquirer ? formatInvoiceItems(item.barter_invoice) : item.barter_service?.title;
+        const review = item.barter_reviews?.find((review) => review.reviewer_id == user?.id);
 
         return (
           <Card>
             <Card.Content>
               <View style={styles.header}>
-                <AvatarWithName user={user} />
+                <AvatarWithName user={otherUser} />
                 <MenuWrapper item={item} barter_service_id={barter_service_id} />
               </View>
 
@@ -84,7 +80,7 @@ export const TransactionsHistory = ({ barter_service_id }: { barter_service_id?:
 
               <Spacer y={16} />
 
-              {isCompleted && review && (
+              {isCompleted && review ? (
                 <>
                   <View style={styles.body}>
                     <RatingStars rating={review.rating} />
@@ -93,26 +89,24 @@ export const TransactionsHistory = ({ barter_service_id }: { barter_service_id?:
 
                   <Spacer y={16} />
                 </>
-              )}
+              ) : null}
 
               <View style={styles.buttonGroup}>
-                {isCompleted && !review && (
-                  <Button mode="contained-tonal" onPress={() => handleReview(item.id)}>
-                    Write a review
-                  </Button>
-                )}
+                <Button mode="outlined" onPress={() => channel.createAndRedirect(otherUser?.id)}>
+                  Chat
+                </Button>
 
-                {isCompleted && (
+                {isCompleted ? (
                   <Button mode="contained" onPress={() => handleInvoice(item.id)}>
                     View invoice
                   </Button>
-                )}
+                ) : null}
 
-                {!isCompleted && (
+                {!isCompleted ? (
                   <Button mode="contained" textColor={colors.onRed} style={{ backgroundColor: colors.red }}>
                     {formatSentenceCase(item.status)}
                   </Button>
-                )}
+                ) : null}
               </View>
             </Card.Content>
           </Card>

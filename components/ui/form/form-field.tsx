@@ -16,11 +16,11 @@ export type FormFieldPassThroughProps = Omit<FormFieldProps, "children">;
 export const FormField: React.FC<FormFieldProps> = ({ label, errors, children, style }) => {
   return (
     <View style={style}>
-      {label && (
+      {label ? (
         <Text variant="labelLarge" style={{ marginBottom: 8 }}>
           {label}
         </Text>
-      )}
+      ) : null}
       {children}
       <FormError messages={errors} />
     </View>

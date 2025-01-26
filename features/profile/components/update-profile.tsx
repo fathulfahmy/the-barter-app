@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Keyboard, StyleSheet, View } from "react-native";
-import { Avatar, RadioButton, TextInput } from "react-native-paper";
+import { RadioButton, TextInput } from "react-native-paper";
 
 import { useActionSheet } from "@expo/react-native-action-sheet";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -10,6 +10,7 @@ import { router } from "expo-router";
 
 import { KeyboardWrapper, LoadingStateScreen } from "@/components/screens";
 import { AppList } from "@/components/ui";
+import { AppAvatar } from "@/components/ui/avatar";
 import { Buttons } from "@/components/ui/button";
 import { AppDialog } from "@/components/ui/dialog";
 import { FormInput } from "@/components/ui/form";
@@ -116,7 +117,7 @@ const UpdateProfile = () => {
     <>
       <KeyboardWrapper contentContainerStyle={styles.form}>
         <View style={styles.avatar}>
-          {image && <Avatar.Image source={{ uri: image }} size={96} />}
+          <AppAvatar uri={image} size={96} />
           <Buttons
             buttons={[
               {

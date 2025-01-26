@@ -14,6 +14,7 @@ export const getMonthlyTransactionsQueryOptions = () => {
   return queryOptions({
     queryKey: ["monthly-transactions"],
     queryFn: () => getMonthlyTransactions(),
+    placeholderData: (previousData, previousQuery) => previousData,
   });
 };
 

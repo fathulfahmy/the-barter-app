@@ -82,7 +82,7 @@ export const CreateTransaction = ({ barter_service_id }: { barter_service_id: st
 
         <Divider />
 
-        {!mode && (
+        {!mode ? (
           <Buttons
             vertical
             buttons={[
@@ -109,9 +109,9 @@ export const CreateTransaction = ({ barter_service_id }: { barter_service_id: st
             ]}
             style={{ padding: 16 }}
           />
-        )}
+        ) : null}
 
-        {(mode === "cash" || mode === "mixed") && (
+        {mode === "cash" || mode === "mixed" ? (
           <View style={styles.container}>
             <FormInput
               control={control}
@@ -122,9 +122,9 @@ export const CreateTransaction = ({ barter_service_id }: { barter_service_id: st
               left={<TextInput.Affix text="RM " />}
             />
           </View>
-        )}
+        ) : null}
 
-        {(mode === "service" || mode === "mixed") && (
+        {mode === "service" || mode === "mixed" ? (
           <View style={styles.container}>
             <View style={styles.services}>
               <Text variant="labelLarge">Select service(s) to barter</Text>
@@ -148,7 +148,7 @@ export const CreateTransaction = ({ barter_service_id }: { barter_service_id: st
               />
             </View>
           </View>
-        )}
+        ) : null}
       </KeyboardWrapper>
 
       <Buttons
