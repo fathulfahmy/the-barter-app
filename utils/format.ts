@@ -170,17 +170,17 @@ export const parseRgba = (color: string, alpha: number): string => {
                                             RM99.99, Example service 1, Example service 2
 */
 export const formatInvoiceItems = (invoice: Invoice | null | undefined) => {
-  const amount = invoice?.amount?.toFixed(2);
+  const amount = invoice?.amount;
   const services = invoice?.barter_services?.map((service) => service.title).join(", ");
 
-  if (amount && services) {
-    return `RM${amount} and ${services}`;
-  } else if (amount) {
-    return `RM${amount}`;
+  if (amount && amount > 0 && services) {
+    return `RM${amount.toFixed(2)} and ${services}`;
+  } else if (amount && amount > 0) {
+    return `RM${amount.toFixed(2)}`;
   } else if (services) {
     return services;
   } else {
-    return "RM0.00";
+    return "Free";
   }
 };
 
