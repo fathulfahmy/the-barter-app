@@ -183,3 +183,7 @@ export type Remark = {
   user?: User | null;
   barter_transaction?: Transaction | null;
 };
+
+export type TabBarBadges = {
+  pending_barter_transactions: number;
+};

@@ -1,4 +1,5 @@
 import React from "react";
+import { StyleSheet, View } from "react-native";
 import { Card, Text } from "react-native-paper";
 
 import { AppList, Spacer } from "@/components/ui";
@@ -29,36 +30,56 @@ export const Remarks = () => {
     return <RemarksSkeleton />;
   }
 
-  return (
-    <AppList
-      data={remarks}
-      renderItem={({ item }) => {
-        const isUserAcquirer = user?.id === item.barter_transaction?.barter_acquirer_id;
-        const otherUser = item.barter_transaction?.other_user;
-        const title = isUserAcquirer
-          ? formatInvoiceItems(item.barter_transaction?.barter_invoice)
-          : item.barter_transaction?.barter_service?.title;
+  if (remarks && remarks.length <= 0) {
+    return null;
+  }
 
-        return (
-          <Card onPress={() => channel.createAndRedirect(otherUser?.id)}>
-            <Card.Content>
-              <Text variant="bodyMedium">{formatDateTime(item.datetime)}</Text>
-              <Text variant="bodyMedium" style={{ color: colors.secondary }}>
-                {title}
-              </Text>
-            </Card.Content>
-          </Card>
-        );
-      }}
-      onEndReached={() => {
-        remarksQuery.hasNextPage && remarksQuery.fetchNextPage();
-      }}
-      onRefresh={refetchByUser}
-      refreshing={isRefetchingByUser}
-      ItemSeparatorComponent={() => <Spacer y={8} />}
-      contentContainerStyle={{ padding: 16 }}
-      containerStyle={{ flex: 1 }}
-      nestedScrollEnabled
-    />
+  return (
+    <View style={styles.container}>
+      <Text variant="bodyLarge" style={styles.title}>
+        Ongoing transactions
+      </Text>
+
+      <AppList
+        data={remarks}
+        renderItem={({ item }) => {
+          const isUserAcquirer = user?.id === item.barter_transaction?.barter_acquirer_id;
+          const otherUser = item.barter_transaction?.other_user;
+          const title = isUserAcquirer
+            ? formatInvoiceItems(item.barter_transaction?.barter_invoice)
+            : item.barter_transaction?.barter_service?.title;
+
+          return (
+            <Card onPress={() => channel.createAndRedirect(otherUser?.id)}>
+              <Card.Content>
+                <Text variant="bodyMedium">{formatDateTime(item.datetime)}</Text>
+                <Text variant="bodyMedium" style={{ color: colors.secondary }}>
+                  {title}
+                </Text>
+              </Card.Content>
+            </Card>
+          );
+        }}
+        onEndReached={() => {
+          remarksQuery.hasNextPage && remarksQuery.fetchNextPage();
+        }}
+        onRefresh={refetchByUser}
+        refreshing={isRefetchingByUser}
+        ItemSeparatorComponent={() => <Spacer y={8} />}
+        contentContainerStyle={{ padding: 16 }}
+        containerStyle={{ flexGrow: 1 }}
+        nestedScrollEnabled
+      />
+    </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    gap: 8,
+  },
+  title: {
+    textAlign: "center",
+  },
+});

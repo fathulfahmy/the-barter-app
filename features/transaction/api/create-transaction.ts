@@ -36,6 +36,7 @@ export const useCreateTransaction = ({ mutationConfig }: UseCreateTransactionOpt
     onSuccess: (data, ...args) => {
       queryClient.invalidateQueries({
         queryKey: getInfiniteTransactionsQueryOptions({ mode: "outgoing" }),
+        exact: false,
         refetchType: "all",
       });
 

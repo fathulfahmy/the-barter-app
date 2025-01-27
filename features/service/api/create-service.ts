@@ -51,6 +51,7 @@ export const useCreateService = ({ mutationConfig }: UseCreateServiceOptions = {
     onSuccess: (...args) => {
       queryClient.invalidateQueries({
         queryKey: getInfiniteServicesQueryOptions({ mode: "provide" }).queryKey,
+        exact: false,
         refetchType: "all",
       });
 

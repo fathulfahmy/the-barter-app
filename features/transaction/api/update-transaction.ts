@@ -38,6 +38,7 @@ export const useUpdateTransaction = ({ mutationConfig }: UseUpdateTransactionOpt
     onSuccess: (data, ...args) => {
       queryClient.invalidateQueries({
         queryKey: ["transactions"],
+        exact: false,
         refetchType: "all",
       });
 

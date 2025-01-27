@@ -59,6 +59,7 @@ export const useUpdateRemark = ({ mutationConfig }: UseUpdateRemarkOptions = {})
 
       queryClient.invalidateQueries({
         queryKey: getInfiniteTransactionsQueryOptions({ mode: "ongoing" }).queryKey,
+        exact: false,
         refetchType: "all",
       });
 

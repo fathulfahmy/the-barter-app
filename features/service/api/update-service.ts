@@ -64,6 +64,7 @@ export const useUpdateService = ({ mutationConfig }: UseUpdateServiceOptions = {
 
       queryClient.invalidateQueries({
         queryKey: getInfiniteServicesQueryOptions({ mode: "provide" }).queryKey,
+        exact: false,
         refetchType: "all",
       });
 

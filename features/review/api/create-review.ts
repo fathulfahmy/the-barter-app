@@ -2,6 +2,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { z } from "zod";
 
 import { useStatusDialog } from "@/components/ui/dialog";
+import { getInfiniteServicesQueryOptions } from "@/features/service/api/get-services";
 import { getInfiniteTransactionsQueryOptions } from "@/features/transaction/api/get-transactions";
 import { api } from "@/lib/axios";
 import { MutationConfig } from "@/lib/react-query";
@@ -39,7 +40,20 @@ export const useCreateReview = ({ mutationConfig }: UseCreateReviewOptions = {})
       });
 
       queryClient.invalidateQueries({
+        queryKey: getInfiniteTransactionsQueryOptions({ mode: "ongoing" }).queryKey,
+        exact: false,
+        refetchType: "all",
+      });
+
+      queryClient.invalidateQueries({
         queryKey: getInfiniteTransactionsQueryOptions({ mode: "history" }).queryKey,
+        exact: false,
+        refetchType: "all",
+      });
+
+      queryClient.invalidateQueries({
+        queryKey: getInfiniteServicesQueryOptions({ mode: "provide" }).queryKey,
+        exact: false,
         refetchType: "all",
       });
 

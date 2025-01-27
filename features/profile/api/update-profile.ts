@@ -53,6 +53,7 @@ export const useUpdateProfile = ({ mutationConfig }: UseUpdateProfileOptions = {
     onSuccess: (...args) => {
       queryClient.invalidateQueries({
         queryKey: ["authenticated-user"],
+        exact: false,
         refetchType: "all",
       });
 

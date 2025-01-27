@@ -38,13 +38,7 @@ export const AuthProfile = () => {
         <Text variant="titleMedium">{user?.name}</Text>
       </View>
 
-      <View style={styles.remarks}>
-        <Text variant="bodyLarge" style={styles.title}>
-          Ongoing transactions
-        </Text>
-
-        <Remarks />
-      </View>
+      <Remarks />
 
       <View style={styles.container}>
         <MonthlyTransactionsChart />
@@ -80,9 +74,5 @@ const styles = StyleSheet.create({
   },
   title: {
     textAlign: "center",
-  },
-  remarks: {
-    height: 400,
-    gap: 8,
   },
 });

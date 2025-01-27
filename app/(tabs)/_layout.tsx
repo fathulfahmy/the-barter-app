@@ -1,16 +1,44 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Icon, IconButton } from "react-native-paper";
 
 import { Redirect, Tabs } from "expo-router";
 
 import { HapticTab } from "@/components/ui";
+import { useTabBarBadges } from "@/features/statistic/api/get-tab-bar-badges";
 import { useAuthToken } from "@/lib/auth/token";
 import { useAppTheme } from "@/lib/react-native-paper";
+import { client } from "@/lib/stream-chat/client";
 
 const TabsLayout = () => {
+  /* ======================================== STATES */
+  const [unreadCount, setUnreadCount] = useState(0);
+
   /* ======================================== HOOKS */
   const { colors } = useAppTheme();
   const { token } = useAuthToken();
+
+  /* ======================================== QUERIES */
+  const tabBarBadgesQuery = useTabBarBadges({
+    queryConfig: {
+      refetchInterval: 3000,
+    },
+  });
+  const tabBarBadges = tabBarBadgesQuery?.data?.data ?? { pending_barter_transactions: 0 };
+
+  /* ======================================== EFFECTS */
+  useEffect(() => {
+    const handleEvent = (event: any) => {
+      if (event.total_unread_count !== undefined) {
+        setUnreadCount(event.total_unread_count);
+      }
+    };
+
+    client.on(handleEvent);
+
+    return () => {
+      client.off(handleEvent);
+    };
+  }, []);
 
   /* ======================================== RETURNS */
   if (!token) {
@@ -29,6 +57,10 @@ const TabsLayout = () => {
         },
         tabBarButton: HapticTab,
         tabBarHideOnKeyboard: true,
+        tabBarBadgeStyle: {
+          backgroundColor: colors.red,
+          color: colors.onRed,
+        },
       }}
       backBehavior="history"
     >
@@ -46,6 +78,11 @@ const TabsLayout = () => {
           tabBarIcon: ({ color, focused, size }) => (
             <Icon source={focused ? "briefcase" : "briefcase-outline"} color={color} size={size} />
           ),
+          tabBarBadge: tabBarBadges
+            ? tabBarBadges?.pending_barter_transactions > 0
+              ? tabBarBadges.pending_barter_transactions
+              : undefined
+            : undefined,
         }}
       />
       <Tabs.Screen
@@ -69,6 +106,7 @@ const TabsLayout = () => {
           tabBarIcon: ({ color, focused, size }) => (
             <Icon source={focused ? "chat" : "chat-outline"} color={color} size={size} />
           ),
+          tabBarBadge: unreadCount > 0 ? unreadCount : undefined,
         }}
       />
       <Tabs.Screen

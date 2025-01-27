@@ -4,7 +4,6 @@ import { router } from "expo-router";
 import { ChannelSort } from "stream-chat";
 import { ChannelList } from "stream-chat-expo";
 
-import { LoadingStateScreen } from "@/components/screens";
 import { useUser } from "@/lib/auth/auth";
 import { useChat } from "@/lib/stream-chat/chat-store";
 
@@ -29,10 +28,6 @@ export const Conversations = () => {
   );
 
   /* ======================================== RETURNS */
-  if (userQuery.isLoading) {
-    return <LoadingStateScreen />;
-  }
-
   return (
     <ChannelList
       filters={memoizedFilters}
