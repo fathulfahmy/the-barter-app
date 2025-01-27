@@ -2,6 +2,7 @@ import React from "react";
 import { StyleSheet, View } from "react-native";
 import { Card, Text } from "react-native-paper";
 
+import { EmptyStateScreen } from "@/components/screens";
 import { AppList, RatingStars, Spacer } from "@/components/ui";
 import { AvatarWithName } from "@/components/ui/avatar";
 import { useRefreshByUser } from "@/hooks/use-refresh-by-user";
@@ -66,6 +67,7 @@ export const Reviews = ({ barter_service_id, tab }: { barter_service_id?: string
       ItemSeparatorComponent={() => <Spacer y={8} />}
       contentContainerStyle={{ padding: 16 }}
       containerStyle={{ flex: 1 }}
+      ListEmptyComponent={<EmptyStateScreen />}
     />
   );
 };

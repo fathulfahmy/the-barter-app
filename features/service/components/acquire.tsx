@@ -4,6 +4,7 @@ import { Badge, Card, Checkbox, IconButton, Searchbar, Text } from "react-native
 
 import { router } from "expo-router";
 
+import { EmptyStateScreen } from "@/components/screens";
 import { AppList, Spacer } from "@/components/ui";
 import { AvatarWithName } from "@/components/ui/avatar";
 import { RatingChip } from "@/components/ui/chip";
@@ -138,6 +139,7 @@ export const Acquire = () => {
           ItemSeparatorComponent={() => <Spacer y={8} />}
           containerStyle={{ flex: 1 }}
           contentContainerStyle={{ padding: 16 }}
+          ListEmptyComponent={<EmptyStateScreen />}
         />
       )}
     </>

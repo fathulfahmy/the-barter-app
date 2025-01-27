@@ -5,6 +5,7 @@ import { Button, Card, Searchbar, Text } from "react-native-paper";
 import { useIsFocused } from "@react-navigation/native";
 import { router } from "expo-router";
 
+import { EmptyStateScreen } from "@/components/screens";
 import { AppList, RatingStars, Spacer } from "@/components/ui";
 import { AvatarWithName } from "@/components/ui/avatar";
 import { useDebounce } from "@/hooks/use-debounce";
@@ -138,6 +139,7 @@ export const TransactionsHistory = ({ barter_service_id }: { barter_service_id?:
           ItemSeparatorComponent={() => <Spacer y={8} />}
           containerStyle={{ flex: 1 }}
           contentContainerStyle={{ padding: 16, paddingTop: 8 }}
+          ListEmptyComponent={<EmptyStateScreen />}
         />
       )}
     </>

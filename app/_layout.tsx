@@ -35,6 +35,7 @@ const queryClient = new QueryClient({
 const RootLayout = () => {
   // FIXME: line chart tooltip on press
   LogBox.ignoreLogs(["Maximum update depth exceeded"]);
+  LogBox.ignoreAllLogs();
 
   const theme = AppLightTheme;
 

@@ -4,6 +4,7 @@ import { Card, Searchbar, Text } from "react-native-paper";
 
 import { useIsFocused } from "@react-navigation/native";
 
+import { EmptyStateScreen } from "@/components/screens";
 import { AppList, Spacer } from "@/components/ui";
 import { AvatarWithName } from "@/components/ui/avatar";
 import { Buttons } from "@/components/ui/button";
@@ -151,6 +152,7 @@ export const OutgoingTransactions = ({ barter_service_id }: { barter_service_id?
           ItemSeparatorComponent={() => <Spacer y={8} />}
           containerStyle={{ flex: 1 }}
           contentContainerStyle={{ padding: 16, paddingTop: 8 }}
+          ListEmptyComponent={<EmptyStateScreen />}
         />
       )}
     </>

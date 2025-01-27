@@ -67,7 +67,7 @@ export const Remarks = () => {
         refreshing={isRefetchingByUser}
         ItemSeparatorComponent={() => <Spacer y={8} />}
         contentContainerStyle={{ padding: 16 }}
-        containerStyle={{ flexGrow: 1 }}
+        containerStyle={{ height: 200 }}
         nestedScrollEnabled
       />
     </View>
@@ -76,7 +76,6 @@ export const Remarks = () => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     gap: 8,
   },
   title: {

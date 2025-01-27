@@ -5,6 +5,7 @@ import { Button, Card, Menu, Searchbar, Text } from "react-native-paper";
 import { useIsFocused } from "@react-navigation/native";
 import { router } from "expo-router";
 
+import { EmptyStateScreen } from "@/components/screens";
 import { AppList, Spacer, TextWithIcon } from "@/components/ui";
 import { AvatarWithName } from "@/components/ui/avatar";
 import { useDebounce } from "@/hooks/use-debounce";
@@ -207,6 +208,7 @@ export const OngoingTransactions = ({ barter_service_id }: { barter_service_id?:
           ItemSeparatorComponent={() => <Spacer y={8} />}
           containerStyle={{ flex: 1 }}
           contentContainerStyle={{ padding: 16, paddingTop: 8 }}
+          ListEmptyComponent={<EmptyStateScreen />}
         />
       )}
     </>

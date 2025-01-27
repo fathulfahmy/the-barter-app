@@ -1,10 +1,11 @@
 import React, { useState } from "react";
-import { Keyboard, Pressable, StyleSheet, View } from "react-native";
+import { Keyboard, Platform, Pressable, StyleSheet, View } from "react-native";
 import { Badge, Card, Checkbox, IconButton, Menu, Searchbar, Text } from "react-native-paper";
 
 import { useIsFocused } from "@react-navigation/native";
 import { router } from "expo-router";
 
+import { EmptyStateScreen } from "@/components/screens";
 import { AppList, Spacer } from "@/components/ui";
 import { AppMenu } from "@/components/ui/app-menu";
 import { AppChip, RatingChip } from "@/components/ui/chip";
@@ -128,6 +129,12 @@ export const Provide = () => {
           confirmButtonFn={() => setSearchCategories(tempCategories)}
         />
       </View>
+
+      {Platform.OS === "android" ? (
+        <View style={styles.plus}>
+          <IconButton icon="plus" iconColor={colors.primary} onPress={() => router.push("/provide/create")} />
+        </View>
+      ) : null}
 
       {/* ======================================== LIST */}
       {servicesQuery.isLoading ? (
@@ -254,6 +261,7 @@ export const Provide = () => {
           ItemSeparatorComponent={() => <Spacer y={8} />}
           containerStyle={{ flex: 1 }}
           contentContainerStyle={{ padding: 16 }}
+          ListEmptyComponent={<EmptyStateScreen />}
         />
       )}
     </>
@@ -294,5 +302,8 @@ const styles = StyleSheet.create({
   },
   request: {
     paddingBottom: 16,
+  },
+  plus: {
+    alignItems: "flex-end",
   },
 });

@@ -1,4 +1,5 @@
 import React from "react";
+import { Platform } from "react-native";
 import { IconButton } from "react-native-paper";
 
 import { Stack, router } from "expo-router";
@@ -12,20 +13,25 @@ const ProvideScreen = () => {
 
   return (
     <>
+      {/* FIXME: headerRight not working on adroid */}
       <Stack.Screen
         options={{
-          headerRight: () => (
-            <IconButton
-              icon="plus"
-              iconColor={colors.onPrimary}
-              onPress={() => router.push("/provide/create")}
-              style={{ margin: 0 }}
-            />
-          ),
+          headerRight:
+            Platform.OS === "android"
+              ? undefined
+              : () => (
+                  <IconButton
+                    icon="plus"
+                    iconColor={colors.onPrimary}
+                    onPress={() => router.push("/provide/create")}
+                    style={{ margin: 0 }}
+                  />
+                ),
           headerShadowVisible: false,
         }}
       />
       <ScreenWrapper>
+        {/* FIXME: headerRight not working on adroid */}
         <Provide />
       </ScreenWrapper>
     </>
