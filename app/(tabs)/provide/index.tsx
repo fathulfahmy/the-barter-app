@@ -22,6 +22,7 @@ const ProvideScreen = () => {
               style={{ margin: 0 }}
             />
           ),
+          headerShadowVisible: false,
         }}
       />
       <ScreenWrapper>
