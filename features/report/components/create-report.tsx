@@ -106,7 +106,7 @@ export const CreateReport: React.FC<CreateReportProps> = ({ model_id, model_name
 const styles = StyleSheet.create({
   form: {
     gap: 32,
-    paddingTop: 32,
+    paddingVertical: 32,
     paddingHorizontal: 16,
   },
   content: {

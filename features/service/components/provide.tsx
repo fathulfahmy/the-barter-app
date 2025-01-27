@@ -103,12 +103,13 @@ export const Provide = () => {
                     />
                     <Menu.Item
                       title={item.status === "enabled" ? "Disable" : "Enable"}
-                      onPress={() =>
+                      onPress={() => {
                         handleSubmit({
                           status: item.status === "enabled" ? "disabled" : "enabled",
                           barter_service_id: item.id,
-                        })
-                      }
+                        });
+                        close();
+                      }}
                     />
                   </>
                 )}
@@ -163,9 +164,9 @@ export const Provide = () => {
 
                   <Text
                     variant="bodyMedium"
-                    style={{ color: item.status === "disabled" ? colors.secondary : colors.yellow }}
+                    style={{ color: item.status === "disabled" ? colors.onBackground : colors.yellow }}
                   >
-                    {`View all reviews`}
+                    View all reviews
                   </Text>
                 </View>
               </Pressable>
