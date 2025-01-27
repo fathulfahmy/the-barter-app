@@ -29,8 +29,10 @@ export const UpdateService = ({ barter_service_id }: { barter_service_id: string
   /* ======================================== QUERIES */
   const serviceQuery = useService({ barter_service_id });
   const service = serviceQuery.data?.data;
+
   const [images, setImages] = useState<string[]>(service?.images.map((img) => img.uri) ?? []);
   const [files, setFiles] = useState<(File | Media)[]>(service?.images ?? []);
+
   useEffect(() => {
     if (service?.barter_category) {
       setCategory({

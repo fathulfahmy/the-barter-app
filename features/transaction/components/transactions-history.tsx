@@ -11,11 +11,11 @@ import { useRefreshByUser } from "@/hooks/use-refresh-by-user";
 import { useStreamChat } from "@/hooks/use-stream-chat";
 import { useUser } from "@/lib/auth/auth";
 import { useAppTheme } from "@/lib/react-native-paper";
-import { formatInvoiceItems, formatSentenceCase } from "@/utils/format";
+import { formatDate, formatInvoiceItems, formatSentenceCase } from "@/utils/format";
 
 import { useInfiniteTransactions } from "../api/get-transactions";
 import { TransactionsHistorySkeleton } from "../skeleton/transactions-history";
-import { MenuWrapper } from "./menu-wrapper";
+import { TransactionMenu } from "./transaction-menu";
 
 export const TransactionsHistory = ({ barter_service_id }: { barter_service_id?: string }) => {
   /* ======================================== HOOKS */
@@ -67,8 +67,14 @@ export const TransactionsHistory = ({ barter_service_id }: { barter_service_id?:
           <Card>
             <Card.Content>
               <View style={styles.header}>
+                <Text variant="bodyMedium" style={{ color: colors.secondary }}>
+                  {formatDate(item.updated_at)}
+                </Text>
+                <TransactionMenu item={item} barter_service_id={barter_service_id} />
+              </View>
+
+              <View style={styles.body}>
                 <AvatarWithName user={otherUser} />
-                <MenuWrapper item={item} barter_service_id={barter_service_id} />
               </View>
 
               <View style={styles.body}>
@@ -123,7 +129,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    paddingBottom: 8,
+    paddingBottom: 4,
   },
   body: {
     gap: 2,

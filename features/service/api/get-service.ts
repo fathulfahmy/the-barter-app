@@ -14,7 +14,6 @@ export const getServiceQueryOptions = (barter_service_id: string) => {
   return queryOptions({
     queryKey: ["service", barter_service_id],
     queryFn: () => getService({ barter_service_id }),
-    placeholderData: (previousData, previousQuery) => previousData,
   });
 };
 

@@ -7,6 +7,7 @@ import { zodMedia } from "@/lib/zod";
 import { Service } from "@/types/api";
 import { createFormData } from "@/utils/form";
 
+import { getServiceQueryOptions } from "./get-service";
 import { getInfiniteServicesQueryOptions } from "./get-services";
 
 /* ======================================== VALIDATION */
@@ -57,6 +58,10 @@ export const useUpdateService = ({ mutationConfig }: UseUpdateServiceOptions = {
 
   return useMutation({
     onSuccess: (data, ...args) => {
+      queryClient.invalidateQueries({
+        queryKey: getServiceQueryOptions(data.data.id).queryKey,
+      });
+
       queryClient.invalidateQueries({
         queryKey: getInfiniteServicesQueryOptions({ mode: "provide" }).queryKey,
         refetchType: "all",

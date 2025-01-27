@@ -2,6 +2,7 @@ import React from "react";
 import { AppStateStatus, LogBox, Platform } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { PaperProvider } from "react-native-paper";
+import { en, registerTranslation } from "react-native-paper-dates";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 
 import { useReactQueryDevTools } from "@dev-plugins/react-query";
@@ -40,6 +41,8 @@ const RootLayout = () => {
   useOnlineManager();
   useAppState(onAppStateChange);
   useReactQueryDevTools(queryClient);
+
+  registerTranslation("en", en);
 
   return (
     <QueryClientProvider client={queryClient}>

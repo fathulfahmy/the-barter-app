@@ -6,7 +6,7 @@ import { ScreenWrapper } from "@/components/screens";
 import { CreateReport } from "@/features/report/components/create-report";
 import { ReportModelName } from "@/types/api";
 
-const ProvideReportScreen = () => {
+const AcquireReportScreen = () => {
   const { model_id, model_name } = useLocalSearchParams<{ model_id: string; model_name: ReportModelName }>();
 
   return (
@@ -16,4 +16,4 @@ const ProvideReportScreen = () => {
   );
 };
 
-export default ProvideReportScreen;
+export default AcquireReportScreen;

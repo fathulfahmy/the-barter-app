@@ -18,7 +18,6 @@ export const getTransactionQueryOptions = (barter_transaction_id: string) => {
   return queryOptions({
     queryKey: ["transaction", barter_transaction_id],
     queryFn: () => getTransaction({ barter_transaction_id }),
-    placeholderData: (previousData, previousQuery) => previousData,
   });
 };
 

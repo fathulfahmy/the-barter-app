@@ -17,12 +17,7 @@ const AcquireLayout = () => {
         headerTintColor: colors.onPrimary,
         headerBackButtonDisplayMode: "minimal",
       }}
-    >
-      <Stack.Screen name="index" />
-      <Stack.Screen name="[barter_service_id]/index" />
-      <Stack.Screen name="[barter_service_id]/request" />
-      <Stack.Screen name="[barter_service_id]/reviews" />
-    </Stack>
+    />
   );
 };
 

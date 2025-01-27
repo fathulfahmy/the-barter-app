@@ -25,7 +25,7 @@ export const CreateService = () => {
   const [files, setFiles] = useState<(File | Media)[]>([]);
 
   /* ======================================== HOOKS */
-  const { colors } = useAppTheme();
+  const { fonts, colors } = useAppTheme();
 
   /* ======================================== QUERIES */
   const categoriesQuery = useCategories();
@@ -202,7 +202,8 @@ export const CreateService = () => {
           renderOverlay={(index) => (
             <IconButton
               icon="close"
-              size={16}
+              mode="contained"
+              size={fonts.bodyMedium.fontSize}
               containerColor={colors.secondary}
               iconColor={colors.onSecondary}
               onPress={() => handleRemoveImages(index)}

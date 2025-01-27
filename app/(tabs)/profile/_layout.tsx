@@ -15,10 +15,7 @@ const ProfileLayout = () => {
         headerTintColor: colors.onPrimary,
         headerBackButtonDisplayMode: "minimal",
       }}
-    >
-      <Stack.Screen name="index" />
-      <Stack.Screen name="edit" />
-    </Stack>
+    />
   );
 };
 

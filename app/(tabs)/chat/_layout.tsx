@@ -15,11 +15,7 @@ const ChatLayout = () => {
         headerTintColor: colors.onPrimary,
         headerBackButtonDisplayMode: "minimal",
       }}
-    >
-      <Stack.Screen name="index" />
-      <Stack.Screen name="[channel_id]/index" />
-      <Stack.Screen name="[channel_id]/thread/[thread_id]/index" />
-    </Stack>
+    />
   );
 };
 

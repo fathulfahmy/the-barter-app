@@ -14,7 +14,6 @@ export const getTrendingServicesQueryOptions = () => {
   return queryOptions({
     queryKey: ["trending-services"],
     queryFn: () => getTrendingServices(),
-    placeholderData: (previousData, previousQuery) => previousData,
   });
 };
 

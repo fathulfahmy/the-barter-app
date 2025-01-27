@@ -62,8 +62,8 @@ export const LoginForm = () => {
       <Buttons
         vertical
         buttons={[
-          { label: "Don't have an account? Register", onPress: () => router.replace("/register") },
           { label: "Login", mode: "contained", onPress: onSubmit, disabled: login.isPending, loading: login.isPending },
+          { label: "Don't have an account? Register", onPress: () => router.replace("/register") },
         ]}
         style={styles.buttons}
       />

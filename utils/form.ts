@@ -2,8 +2,8 @@
 export const filterEmptyValues = (values: Record<string, any>): Record<string, any> => {
   const isEmpty = (value: any): boolean => {
     if (value === null || value === undefined || value === "") return true;
-    if (Array.isArray(value) && value.length === 0) return true;
-    if (typeof value === "object" && value !== null && Object.keys(value).length === 0) return true;
+    if (Array.isArray(value)) return value.length === 0 || value.every(isEmpty);
+    if (typeof value === "object" && !(value instanceof Date) && Object.keys(value).length === 0) return true;
     if (typeof value === "number" && isNaN(value)) return true;
     return false;
   };

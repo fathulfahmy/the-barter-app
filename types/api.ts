@@ -106,6 +106,7 @@ export type Transaction = {
   barter_provider?: User | null;
   barter_service?: Service | null;
   barter_invoice?: Invoice | null;
+  barter_remarks?: Remark[] | null;
   barter_reviews?: Review[] | null;
 };
 
@@ -169,4 +170,16 @@ export type Report = {
 export type StatsData = {
   value: number;
   label: string;
+};
+
+export type Remark = {
+  id: string;
+  user_id: string;
+  barter_transaction_id: string;
+  datetime: Date | null;
+  address: string | null;
+  deliverables: string[] | null;
+  note: string | null;
+  user?: User | null;
+  barter_transaction?: Transaction | null;
 };

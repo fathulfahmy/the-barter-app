@@ -6,12 +6,12 @@ import { AppList, RatingStars, Spacer } from "@/components/ui";
 import { AvatarWithName } from "@/components/ui/avatar";
 import { useRefreshByUser } from "@/hooks/use-refresh-by-user";
 import { useAppTheme } from "@/lib/react-native-paper";
-import { formatInvoiceItems } from "@/utils/format";
+import { formatDate, formatInvoiceItems } from "@/utils/format";
 
 import { useInfiniteReviews } from "../api/get-reviews";
 import { ReviewsSkeleton } from "../skeleton/reviews";
 
-export const Reviews = ({ barter_service_id }: { barter_service_id?: string }) => {
+export const Reviews = ({ barter_service_id, tab }: { barter_service_id?: string; tab?: string }) => {
   /* ======================================== HOOKS */
   const { colors } = useAppTheme();
 
@@ -34,6 +34,12 @@ export const Reviews = ({ barter_service_id }: { barter_service_id?: string }) =
         <Card>
           <Card.Content>
             <View style={styles.header}>
+              <Text variant="bodyMedium" style={{ color: colors.secondary }}>
+                {formatDate(item.updated_at)}
+              </Text>
+            </View>
+
+            <View style={styles.body}>
               <AvatarWithName user={item.reviewer} />
             </View>
 

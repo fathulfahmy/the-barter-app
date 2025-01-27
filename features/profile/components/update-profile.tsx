@@ -248,8 +248,8 @@ export default UpdateProfile;
 
 const styles = StyleSheet.create({
   form: {
-    gap: 16,
     padding: 16,
+    gap: 16,
   },
   avatar: {
     alignItems: "center",

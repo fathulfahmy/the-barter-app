@@ -30,6 +30,7 @@ const TabsLayout = () => {
         tabBarButton: HapticTab,
         tabBarHideOnKeyboard: true,
       }}
+      backBehavior="history"
     >
       <Tabs.Screen
         name="acquire"

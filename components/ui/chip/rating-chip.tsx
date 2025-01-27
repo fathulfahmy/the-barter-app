@@ -9,7 +9,7 @@ type RatingChipProps = Omit<ChipProps, "children"> & {
   rating: number | null | undefined;
 };
 
-export const RatingChip: React.FC<RatingChipProps> = ({ rating, style, ...props }) => {
+export const RatingChip: React.FC<RatingChipProps> = ({ rating, style, textStyle, ...props }) => {
   const { colors, fonts } = useAppTheme();
 
   if (!rating) return null;
@@ -22,6 +22,13 @@ export const RatingChip: React.FC<RatingChipProps> = ({ rating, style, ...props 
     style,
   ];
 
+  const chipTextStyle = [
+    {
+      color: colors.onYellowContainer,
+    },
+    textStyle,
+  ];
+
   return (
     <Chip
       compact
@@ -32,9 +39,9 @@ export const RatingChip: React.FC<RatingChipProps> = ({ rating, style, ...props 
           color={colors.onYellowContainer}
         />
       )}
-      textStyle={{ color: colors.onYellowContainer }}
-      style={chipStyle}
       {...props}
+      textStyle={chipTextStyle}
+      style={chipStyle}
     >
       {formatRating(rating)}
     </Chip>

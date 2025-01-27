@@ -13,7 +13,6 @@ export const getCategoriesQueryOptions = () => {
   return queryOptions({
     queryKey: ["categories"],
     queryFn: () => getCategories(),
-    placeholderData: (previousData, previousQuery) => previousData,
   });
 };
 
