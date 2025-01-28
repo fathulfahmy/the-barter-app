@@ -106,6 +106,8 @@ export function configureAuth<User, Error, LoginInput, RegisterInput>(
       mutationFn: logoutFn,
       ...options,
       onSuccess: (...args) => {
+        queryClient.cancelQueries();
+        queryClient.clear();
         removeToken();
         setUser(null);
         setChatUser();
